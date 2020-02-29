@@ -1,0 +1,13 @@
+name = "1dCellularAutomata"
+uuid = "878138dc-5b27-11ea-1a71-cb95d38d6b29"
+authors = ["Francesco Martinuzzi"]
+version = "0.1.0"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
