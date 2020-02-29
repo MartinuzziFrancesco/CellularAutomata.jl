@@ -1,4 +1,4 @@
-module 1dCellularAutomata
+module odCellularAutomata
 
 include("dca.jl")
 export dCA

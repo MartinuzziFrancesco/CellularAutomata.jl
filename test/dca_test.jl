@@ -1,4 +1,4 @@
-using 1dCellularAutomata
+using odCellularAutomata
  
 states = 4
 radius = 1
