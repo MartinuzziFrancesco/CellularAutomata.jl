@@ -1,6 +1,4 @@
-using 1dCellularAutomata
 using Test
+using SafeTestsets
 
-@testset "1dCellularAutomata.jl" begin
-    # Write your own tests here.
-end
+@time @safetestset "Constructor" begin include("dca_test.jl") end
