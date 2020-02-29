@@ -1,5 +1,6 @@
 module 1dCellularAutomata
 
-greet() = print("Hello World!")
+include("dca.jl")
+export dCA
 
 end # module
