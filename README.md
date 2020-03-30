@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.com/MartinuzziFrancesco/1dCellularAutomata.jl.svg?branch=master)](https://travis-ci.com/MartinuzziFrancesco/1dCellularAutomata.jl)
-[![Codecov](https://codecov.io/gh/MartinuzziFrancesco/1dCellularAutomata.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/MartinuzziFrancesco/1dCellularAutomata.jl)
+[![Build Status](https://travis-ci.com/MartinuzziFrancesco/odCellularAutomata.jl.svg?branch=master)](https://travis-ci.com/MartinuzziFrancesco/odCellularAutomata.jl)
+[![Codecov](https://codecov.io/gh/MartinuzziFrancesco/1dCellularAutomata.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/MartinuzziFrancesco/odCellularAutomata.jl)
 
 # odCellularAutomata
 One dimensional cellular automata creation and analysis tools
