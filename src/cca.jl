@@ -1,12 +1,12 @@
  mutable struct cCA
     rule::Float64
-    radius::Integer
+    radius::Int
     cells::Matrix{Float64}
     
     function cCA(rule::Float64, 
             starting_val::Array{Float64}, 
-            generations::Integer = 100,
-            radius::Integer=1)
+            generations::Int = 100,
+            radius::Int=1)
         
         ncells = length(starting_val)
         cells = zeros(Float64, generations, ncells)
@@ -20,7 +20,7 @@ end
 
 
 function next_gen!(cells::Matrix{Float64}, 
-        generations::Integer,
+        generations::Int,
         rule::Float64)
      
     l = size(cells)[2]

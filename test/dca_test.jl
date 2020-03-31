@@ -4,7 +4,7 @@ states = 4
 radius = 1
 generations = 10
 ncells = 11
-starting_val = convert(Array{Integer}, rand([0, 1], ncells))
+starting_val = convert(Array{Int}, rand([0, 1], ncells))
 rule = 107396
 
 #testing states > 2
