@@ -15,7 +15,7 @@ mutable struct dCA
         ncells = length(starting_val)
         cells = zeros(Int, generations, ncells)
         cells[1,:] = starting_val
-        ruleset = conversion(rule, states, states)
+        ruleset = conversion(rule, states, radius)
         
         if states == 2
             cells = next_gen!(cells, generations, ruleset)
