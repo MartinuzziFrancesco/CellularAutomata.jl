@@ -1,12 +1,11 @@
- 
-mutable struct dCA
+mutable struct DCA
     rule::Int
     ruleset::Array{Int}
     states::Int
     radius::Int
-    cells::Matrix{Int}
+    cells::AbstractArray{Int}
     
-    function dCA(rule::Int, 
+    function DCA(rule::Int, 
             starting_val::Array{Int}, 
             generations::Int = 100,
             states::Int = 2, 
