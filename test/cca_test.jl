@@ -5,7 +5,7 @@ starting_val = convert(Array{Float64}, rand(Float64, ncells))
 
 rule = 0.05
 
-ca = cCA(rule, starting_val, generations, radius)
+ca = DCA(rule, starting_val, generations, radius)
 
 @test isequal(radius, ca.radius)
 @test isequal(rule, ca.rule)

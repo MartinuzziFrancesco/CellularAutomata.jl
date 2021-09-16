@@ -6,7 +6,7 @@ starting_val = convert(Array{Int}, rand([0, 1], ncells))
 rule = 107396
 
 #testing states > 2
-ca = dCA(rule, starting_val, generations, states, radius)
+ca = DCA(rule, starting_val, generations, states, radius)
 
 @test isequal(states, ca.states)
 @test isequal(radius, ca.radius)
@@ -17,7 +17,7 @@ ca = dCA(rule, starting_val, generations, states, radius)
 states = 2
 rule = 110
 
-bca = dCA(rule, starting_val, generations, states, radius)
+bca = DCA(rule, starting_val, generations, states, radius)
 
 @test isequal(states, bca.states)
 @test isequal(radius, bca.radius)
