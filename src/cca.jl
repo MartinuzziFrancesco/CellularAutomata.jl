@@ -1,4 +1,4 @@
- mutable struct cCA
+ mutable struct CCA
     rule::Float64
     radius::Int
     cells::Matrix{Float64}

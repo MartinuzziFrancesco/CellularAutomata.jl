@@ -1,5 +1,3 @@
-using odCellularAutomata
- 
 states = 4
 radius = 1
 generations = 10

@@ -1,9 +1,9 @@
-module odCellularAutomata
+module CellularAutomata
 
 include("dca.jl")
-export dCA
+export DCA
 
 include("cca.jl")
-export cCA
+export CA
 
 end # module

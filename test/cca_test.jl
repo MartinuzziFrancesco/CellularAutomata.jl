@@ -1,5 +1,3 @@
-using odCellularAutomata
- 
 radius = 1
 generations = 10
 ncells = 11
