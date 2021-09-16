@@ -1,9 +1,9 @@
 module CellularAutomata
 
-include("DCA.jl")
+include("dca.jl")
 export DCA
 
-include("CCA.jl")
+include("cca.jl")
 export CCA
 
 end # module
