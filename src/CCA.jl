@@ -3,7 +3,7 @@
     radius::Int
     cells::Matrix{Float64}
     
-    function cCA(rule::Float64, 
+    function CCA(rule::Float64, 
             starting_val::Array{Float64}, 
             generations::Int = 100,
             radius::Int=1)

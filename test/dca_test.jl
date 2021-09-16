@@ -1,3 +1,5 @@
+using CellularAutomata
+
 states = 4
 radius = 1
 generations = 10

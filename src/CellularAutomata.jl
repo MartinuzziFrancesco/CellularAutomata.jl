@@ -4,6 +4,6 @@ include("dca.jl")
 export DCA
 
 include("cca.jl")
-export CA
+export CCA
 
 end # module
