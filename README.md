@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.com/MartinuzziFrancesco/odCellularAutomata.jl.svg?branch=master)](https://travis-ci.com/MartinuzziFrancesco/odCellularAutomata.jl)
-[![Codecov](https://codecov.io/gh/MartinuzziFrancesco/1dCellularAutomata.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/MartinuzziFrancesco/odCellularAutomata.jl)
+[![Build Status](https://travis-ci.com/MartinuzziFrancesco/CellularAutomata.jl.svg?branch=master)](https://travis-ci.com/MartinuzziFrancesco/CellularAutomata.jl)
+[![Codecov](https://codecov.io/gh/MartinuzziFrancesco/CellularAutomata.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/MartinuzziFrancesco/CellularAutomata.jl)
 
-# odCellularAutomata
+# CellularAutomata
 One dimensional cellular automata creation and analysis tools
 
 ## Installation
@@ -29,7 +29,7 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 18
 
-ca = dCA(rule, starting_val, generations, states, radius)
+ca = DCA(rule, starting_val, generations, states, radius)
 
 heatmap(ca.cells, 
     yflip=true, 
@@ -51,7 +51,7 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 30
 
-ca = dCA(rule, starting_val, generations, states, radius)
+ca = DCA(rule, starting_val, generations, states, radius)
 
 heatmap(ca.cells, 
     yflip=true, 
@@ -77,7 +77,7 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 1635
 
-ca = dCA(rule, starting_val, generations, states, radius)
+ca = DCA(rule, starting_val, generations, states, radius)
 
 heatmap(ca.cells, 
     yflip=true, 
@@ -99,7 +99,7 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 107398
 
-ca = dCA(rule, starting_val, generations, states, radius)
+ca = DCA(rule, starting_val, generations, states, radius)
 
 heatmap(ca.cells, 
     yflip=true, 
@@ -125,7 +125,7 @@ starting_val[Int(floor(ncells/2)+1)] = 1.0
 
 rule = 0.025
 
-ca = cCA(rule, starting_val, generations, radius)
+ca = CCA(rule, starting_val, generations, radius)
 
 heatmap(ca.cells, 
     yflip=true, 
@@ -148,7 +148,7 @@ starting_val[Int(floor(ncells/2)+1)] = 1.0
 
 rule = 0.2
 
-ca = cCA(rule, starting_val, generations, radius)
+ca = CCA(rule, starting_val, generations, radius)
 
 heatmap(ca.cells, 
     yflip=true, 
