@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/MartinuzziFrancesco/CellularAutomata.jl.svg?branch=master)](https://travis-ci.com/MartinuzziFrancesco/CellularAutomata.jl)
+[![Build Status](https://github.com/MartinuzziFrancesco/CellularAutomata.jl/workflows/CI/badge.svg)](https://github.com/MartinuzziFrancesco/CellularAutomata.jl/actions?query=workflow%3ACI)
 [![Codecov](https://codecov.io/gh/MartinuzziFrancesco/CellularAutomata.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/MartinuzziFrancesco/CellularAutomata.jl)
 
 # CellularAutomata
