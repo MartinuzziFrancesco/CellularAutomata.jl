@@ -1,5 +1,5 @@
 [![Build Status](https://github.com/MartinuzziFrancesco/CellularAutomata.jl/workflows/CI/badge.svg)](https://github.com/MartinuzziFrancesco/CellularAutomata.jl/actions?query=workflow%3ACI)
-[![Codecov](https://codecov.io/gh/MartinuzziFrancesco/CellularAutomata.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/MartinuzziFrancesco/CellularAutomata.jl)
+[![Codecov](https://codecov.io/gh/MartinuzziFrancesco/CellularAutomata.jl/coverage.svg?branch=master)](https://codecov.io/gh/MartinuzziFrancesco/CellularAutomata.jl?branch=master)
 
 # CellularAutomata
 One dimensional cellular automata creation and analysis tools
