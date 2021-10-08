@@ -18,24 +18,28 @@ Let's try and reproduce a couple of rules.
 [Rule 18](http://atlas.wolfram.com/01/01/18/)
 
 ```julia
-using odCellularAutomata
+using CellularAutomata, Plots
 
 states = 2
 radius = 1
 generations = 50
 ncells = 111
-sstarting_val = zeros(Integer, ncells)
+starting_val = zeros(Bool, ncells)
 starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 18
 
-ca = DCA(rule, starting_val, generations, states, radius)
+ca = DCA(rule, starting_val; 
+         generations=generations, 
+         states=states, 
+         radius=radius)
 
 heatmap(ca.cells, 
     yflip=true, 
-    color=ColorGradient([:white,:black]),
+    c=cgrad([:white, :black]),
     legend = :none,
-    axis=false)
+    axis=false,
+    ticks=false)
 ```
 ![dca18](https://user-images.githubusercontent.com/10376688/75625854-4a816b00-5bc2-11ea-8337-9132553cd38b.png)
 
@@ -46,18 +50,22 @@ states = 2
 radius = 1
 generations = 50
 ncells = 111
-sstarting_val = zeros(Integer, ncells)
+starting_val = zeros(Bool, ncells)
 starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 30
 
-ca = DCA(rule, starting_val, generations, states, radius)
+ca = DCA(rule, starting_val; 
+         generations=generations, 
+         states=states, 
+         radius=radius)
 
 heatmap(ca.cells, 
     yflip=true, 
-    color=ColorGradient([:white,:black]),
+    c=cgrad([:white, :black]),
     legend = :none,
-    axis=false)
+    axis=false,
+    ticks=false)
 ```
 ![dca30](https://user-images.githubusercontent.com/10376688/75625882-874d6200-5bc2-11ea-904a-e6658aab8403.png)
 
@@ -72,18 +80,22 @@ states = 3
 radius = 1
 generations = 50
 ncells = 111
-sstarting_val = zeros(Integer, ncells)
+starting_val = zeros(Integer, ncells)
 starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 1635
 
-ca = DCA(rule, starting_val, generations, states, radius)
+ca = DCA(rule, starting_val; 
+         generations=generations, 
+         states=states, 
+         radius=radius)
 
 heatmap(ca.cells, 
     yflip=true, 
-    color=ColorGradient([:white,:black]),
+    c=cgrad([:white, :black]),
     legend = :none,
-    axis=false)
+    axis=false,
+    ticks=false)
 ```
 ![dca1635](https://user-images.githubusercontent.com/10376688/75628258-7eb35680-5bd7-11ea-81c5-b95b25f1369d.png)
 
@@ -94,18 +106,22 @@ states = 4
 radius = 1
 generations = 50
 ncells = 111
-sstarting_val = zeros(Integer, ncells)
+starting_val = zeros(Integer, ncells)
 starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 107398
 
-ca = DCA(rule, starting_val, generations, states, radius)
+ca = DCA(rule, starting_val; 
+         generations=generations, 
+         states=states, 
+         radius=radius)
 
 heatmap(ca.cells, 
     yflip=true, 
-    color=ColorGradient([:white,:black]),
+    c=cgrad([:white, :black]),
     legend = :none,
-    axis=false)
+    axis=false,
+    ticks=false)
 ```
 
 ![dca107398](https://user-images.githubusercontent.com/10376688/75628292-cd60f080-5bd7-11ea-93c7-66277b0b6bd6.png)
@@ -125,13 +141,16 @@ starting_val[Int(floor(ncells/2)+1)] = 1.0
 
 rule = 0.025
 
-ca = CCA(rule, starting_val, generations, radius)
+ca = CCA(rule, starting_val; 
+         generations=generations, 
+         radius=radius)
 
 heatmap(ca.cells, 
     yflip=true, 
-    color=ColorGradient([:white,:black]),
+    c=cgrad([:white, :black]),
     legend = :none,
-    axis=false)
+    axis=false,
+    ticks=false)
 ```
 
 ![cca0025](https://user-images.githubusercontent.com/10376688/75628344-5f68f900-5bd8-11ea-8941-892c14036f37.png)
@@ -148,13 +167,16 @@ starting_val[Int(floor(ncells/2)+1)] = 1.0
 
 rule = 0.2
 
-ca = CCA(rule, starting_val, generations, radius)
+ca = CCA(rule, starting_val; 
+         generations=generations, 
+         radius=radius)
 
 heatmap(ca.cells, 
     yflip=true, 
-    color=ColorGradient([:white,:black]),
+    c=cgrad([:white, :black]),
     legend = :none,
-    axis=false)
+    axis=false,
+    ticks=false)
 ```
 
 ![cca02](https://user-images.githubusercontent.com/10376688/75628407-ed44e400-5bd8-11ea-95c4-d7a5a569923c.png)

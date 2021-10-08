@@ -1,27 +1,22 @@
- mutable struct CCA
-    rule::Float64
+ mutable struct CCA{T,M}
+    rule::T
     radius::Int
-    cells::Matrix{Float64}
-    
-    function CCA(rule::Float64, 
-            starting_val::Array{Float64}, 
-            generations::Int = 100,
-            radius::Int=1)
-        
-        ncells = length(starting_val)
-        cells = zeros(Float64, generations, ncells)
-        cells[1,:] = starting_val
-        
-        cells = next_gen!(cells, generations, rule)
-        
-        new(rule, radius, cells)
-    end
+    cells::M
 end
 
+function CCA(rule, starting_val; 
+             generations=100,
+             radius=1)
 
-function next_gen!(cells::Matrix{Float64}, 
-        generations::Int,
-        rule::Float64)
+    ncells = length(starting_val)
+    cells = zeros(Float64, generations, ncells)
+    cells[1,:] = starting_val
+    cells = cont_next_gen!(cells, generations, rule)
+    CCA(rule, radius, cells)
+
+end
+
+function cont_next_gen!(cells, generations, rule)
      
     l = size(cells)[2]
     nextgen = zeros(Float64, l)
@@ -36,5 +31,7 @@ function next_gen!(cells::Matrix{Float64},
         
     cells[j+1,:] = nextgen
     end
+
     return cells
+
 end

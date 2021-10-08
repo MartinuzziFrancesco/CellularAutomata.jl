@@ -1,14 +1,18 @@
-using CellularAutomata
+using CellularAutomata, Random
+Random.seed!(42)
 
-states = 4
-radius = 1
-generations = 10
-ncells = 11
-starting_val = convert(Array{Int}, rand([0, 1], ncells))
-rule = 107396
+const states = 4
+const radius = 1
+const generations = 10
+const ncells = 11
+const starting_array = rand(Int, ncells)
+const rule = 107396
 
 #testing states > 2
-ca = DCA(rule, starting_val, generations, states, radius)
+ca = DCA(rule, starting_array; 
+         generations = generations, 
+         states=states, 
+         radius=radius)
 
 @test isequal(states, ca.states)
 @test isequal(radius, ca.radius)
@@ -16,12 +20,16 @@ ca = DCA(rule, starting_val, generations, states, radius)
 @test size(ca.cells) == (generations, ncells)
 
 #testing states == 2
-states = 2
-rule = 110
+const bstates = 2
+const brule = 110
+const bstarting_array = rand(Bool, ncells)
 
-bca = DCA(rule, starting_val, generations, states, radius)
+bca = DCA(brule, bstarting_array; 
+         generations = generations, 
+         states=bstates, 
+         radius=radius)
 
-@test isequal(states, bca.states)
+@test isequal(bstates, bca.states)
 @test isequal(radius, bca.radius)
-@test isequal(rule, bca.rule)
+@test isequal(brule, bca.rule)
 @test size(bca.cells) == (generations, ncells)

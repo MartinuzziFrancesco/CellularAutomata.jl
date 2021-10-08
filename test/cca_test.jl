@@ -1,13 +1,15 @@
-using CellularAutomata
+using CellularAutomata, Random
+Random.seed!(42)
 
-radius = 1
-generations = 10
-ncells = 11
-starting_val = convert(Array{Float64}, rand(Float64, ncells))
+const radius = 1
+const generations = 10
+const ncells = 11
+const starting_val = rand(ncells)
 
-rule = 0.05
+const rule = 0.05
 
-ca = CCA(rule, starting_val, generations, radius)
+ca = CCA(rule, starting_val; generations=generations,
+         radius=radius)
 
 @test isequal(radius, ca.radius)
 @test isequal(rule, ca.rule)
