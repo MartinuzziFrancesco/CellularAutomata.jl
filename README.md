@@ -5,7 +5,11 @@
 One dimensional cellular automata creation and analysis tools
 
 ## Installation
-No yet avaiable on the ufficial package repo
+
+```julia
+julia> using Pkg
+julia> Pkg.add("https://github.com/MartinuzziFrancesco/CellularAutomata.jl")
+```
 
 ## Discrete Cellular Automata
 The package offers creation of all the cellular automata described in A New Kind of Science by Wolfram, and the rules for the creation are labelled as in the book.
@@ -114,7 +118,9 @@ heatmap(ca.evolution,
 
 ![dca107398](https://user-images.githubusercontent.com/10376688/75628292-cd60f080-5bd7-11ea-93c7-66277b0b6bd6.png)
 
-[Rule 53 with radius = 2](http://atlas.wolfram.com/01/06/Rules/53/index.html#01_06_9_53)
+Now let's also show some results for a bigger radius, using a radius of 2 as an example.
+
+[Rule 53](http://atlas.wolfram.com/01/06/Rules/53/index.html#01_06_9_53)
 
 ```julia
 states = 2
@@ -189,9 +195,9 @@ heatmap(ca.evolution,
 ![cca02](https://user-images.githubusercontent.com/10376688/75628407-ed44e400-5bd8-11ea-95c4-d7a5a569923c.png)
 
 ## To do list
-[x] Only radius possible is 1. Need to extend that
-[ ] Documentation
-[ ] Entropy functions and such
-[ ] Async neighborhoods
-[ ] Better tests
+- [x] Only radius possible is 1. Need to extend that
+- [ ] Documentation
+- [ ] Entropy functions and such
+- [ ] Async neighborhoods
+- [ ] Better tests
 

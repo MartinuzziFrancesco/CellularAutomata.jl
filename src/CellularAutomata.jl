@@ -26,9 +26,12 @@ end
 export CellularAutomaton
 
 include("dca.jl")
-export DCA
+export DCA, ECA
 
 include("cca.jl")
 export CCA
+
+include("tca.jl")
+export TCA
 
 end # module
