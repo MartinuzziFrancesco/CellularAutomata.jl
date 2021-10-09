@@ -1,37 +1,36 @@
- mutable struct CCA{T,M}
+abstract type AbstractCCARule <: AbstractODRule end 
+
+struct CCA{T} <: AbstractCCARule
     rule::T
     radius::Int
-    cells::M
 end
 
-function CCA(rule, starting_val; 
-             generations=100,
-             radius=1)
+function CCA(rule; radius=1)
+    CCA(rule, radius)
+end
 
-    ncells = length(starting_val)
-    cells = zeros(Float64, generations, ncells)
-    cells[1,:] = starting_val
-    cells = cont_next_gen!(cells, generations, rule)
-    CCA(rule, radius, cells)
+function (cca::CCA)(starting_array)
+
+    return nextgen = evolution(starting_array, cca.rule, cca.radius)
 
 end
 
-function cont_next_gen!(cells, generations, rule)
-     
-    l = size(cells)[2]
-    nextgen = zeros(Float64, l)
+function c_state_reader(neighborhood, radius)
+
+    return sum(neighborhood)/length(neighborhood)
+
+end
+
+function evolution(cell, rule, radius)
+
+    neighborhood_size = radius*2+1
+    output = zeros(length(cell))
+    cell = vcat(cell[end-neighborhood_size÷2+1:end], cell, cell[1:neighborhood_size÷2])
     
-    for j = 1:generations-1
-        for i = 1:l
-            left   = cells[j, mod1(i - 1, l)]
-            middle = cells[j, mod1(i, l)]
-            right  = cells[j, mod1(i + 1, l)]
-            nextgen[i] = modf((left+middle+right)/3+rule)[1]
-        end
-        
-    cells[j+1,:] = nextgen
+    for i=1:length(cell)-neighborhood_size+1
+        output[i] = modf(c_state_reader(cell[i:i+neighborhood_size-1], radius)+rule)[1]
     end
-
-    return cells
-
+    
+    output
+    
 end

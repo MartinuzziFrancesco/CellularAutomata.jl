@@ -8,9 +8,6 @@ const starting_val = rand(ncells)
 
 const rule = 0.05
 
-ca = CCA(rule, starting_val; generations=generations,
-         radius=radius)
+ca = ca = CellularAutomaton(CCA(rule), starting_val, generations)
 
-@test isequal(radius, ca.radius)
-@test isequal(rule, ca.rule)
-@test size(ca.cells) == (generations, ncells) 
+@test size(ca.evolution) == (generations, ncells) 

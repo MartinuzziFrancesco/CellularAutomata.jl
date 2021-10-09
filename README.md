@@ -29,12 +29,9 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 18
 
-ca = DCA(rule, starting_val; 
-         generations=generations, 
-         states=states, 
-         radius=radius)
+ca = CellularAutomaton(DCA(rule), starting_val, generations)
 
-heatmap(ca.cells, 
+heatmap(ca.evolution, 
     yflip=true, 
     c=cgrad([:white, :black]),
     legend = :none,
@@ -55,12 +52,9 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 30
 
-ca = DCA(rule, starting_val; 
-         generations=generations, 
-         states=states, 
-         radius=radius)
+ca = CellularAutomaton(DCA(rule), starting_val, generations)
 
-heatmap(ca.cells, 
+heatmap(ca.evolution, 
     yflip=true, 
     c=cgrad([:white, :black]),
     legend = :none,
@@ -85,12 +79,9 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 1635
 
-ca = DCA(rule, starting_val; 
-         generations=generations, 
-         states=states, 
-         radius=radius)
+ca = CellularAutomaton(DCA(rule, states=states), starting_val, generations)
 
-heatmap(ca.cells, 
+heatmap(ca.evolution, 
     yflip=true, 
     c=cgrad([:white, :black]),
     legend = :none,
@@ -111,12 +102,9 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 107398
 
-ca = DCA(rule, starting_val; 
-         generations=generations, 
-         states=states, 
-         radius=radius)
+ca = CellularAutomaton(DCA(rule, states=states), starting_val, generations)
 
-heatmap(ca.cells, 
+heatmap(ca.evolution, 
     yflip=true, 
     c=cgrad([:white, :black]),
     legend = :none,
@@ -126,6 +114,30 @@ heatmap(ca.cells,
 
 ![dca107398](https://user-images.githubusercontent.com/10376688/75628292-cd60f080-5bd7-11ea-93c7-66277b0b6bd6.png)
 
+[Rule 53 with radius = 2](http://atlas.wolfram.com/01/06/Rules/53/index.html#01_06_9_53)
+
+```julia
+states = 2
+radius = 2
+generations = 50
+ncells = 111
+starting_val = zeros(Integer, ncells)
+starting_val[Int(floor(ncells/2)+1)] = 1
+
+rule = 53
+
+ca = CellularAutomaton(DCA(rule, radius=radius), starting_val, generations)
+
+heatmap(ca.evolution, 
+    yflip=true, 
+    c=cgrad([:white, :black]),
+    legend = :none,
+    axis=false,
+    ticks=false)
+```
+
+![dca53r2](https://user-images.githubusercontent.com/10376688/136658595-0c860395-9a0d-4df2-ac4d-2ed85bd2927c.png)
+
 ## Continuous Cellular Automata
 
 In this case we deal with a continuous set of values. The examples are taken from the already mentioned book [NKS](https://www.wolframscience.com/nks/p159--continuous-cellular-automata/).
@@ -133,7 +145,6 @@ In this case we deal with a continuous set of values. The examples are taken fro
 Rule 0.025
 
 ```julia
-radius = 1
 generations = 50
 ncells = 111
 starting_val = zeros(Float64, ncells)
@@ -141,11 +152,9 @@ starting_val[Int(floor(ncells/2)+1)] = 1.0
 
 rule = 0.025
 
-ca = CCA(rule, starting_val; 
-         generations=generations, 
-         radius=radius)
+ca = CellularAutomaton(CCA(rule), starting_val, generations)
 
-heatmap(ca.cells, 
+heatmap(ca.evolution, 
     yflip=true, 
     c=cgrad([:white, :black]),
     legend = :none,
@@ -167,11 +176,9 @@ starting_val[Int(floor(ncells/2)+1)] = 1.0
 
 rule = 0.2
 
-ca = CCA(rule, starting_val; 
-         generations=generations, 
-         radius=radius)
+ca = CellularAutomaton(CCA(rule, radius=radius), starting_val, generations) #CCA(rule, radius=1) is default
 
-heatmap(ca.cells, 
+heatmap(ca.evolution, 
     yflip=true, 
     c=cgrad([:white, :black]),
     legend = :none,
@@ -182,7 +189,9 @@ heatmap(ca.cells,
 ![cca02](https://user-images.githubusercontent.com/10376688/75628407-ed44e400-5bd8-11ea-95c4-d7a5a569923c.png)
 
 ## To do list
-- Only radius possible is 1. Need to extend that
-- Documentation
-- Entropy function and such
+[x] Only radius possible is 1. Need to extend that
+[ ] Documentation
+[ ] Entropy functions and such
+[ ] Async neighborhoods
+[ ] Better tests
 
