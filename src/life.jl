@@ -29,8 +29,10 @@ end
 
 function life_application(state, born, survive)
 
-    past_value = state[size(state, 1)÷2+1, size(state, 2)÷2+1]
-    alive = sum(state)-past_value
+    
+    past_value = state[size(state, 1)÷2+1, size(state, 2)÷2+1] #save past cell value
+    state[size(state, 1)÷2+1, size(state, 2)÷2+1] = 0 #past cell value set to zero
+    alive = sum(state) #the sum is the number of cell alive in the neighborhood since the central value is equal to zero
 
     if past_value == 1 && alive in survive
         return 1
