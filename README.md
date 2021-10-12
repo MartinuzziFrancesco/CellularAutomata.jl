@@ -198,6 +198,6 @@ heatmap(ca.evolution,
 - [x] Only radius possible is 1. Need to extend that
 - [ ] Documentation
 - [ ] Entropy functions and such
-- [ ] Async neighborhoods
+- [x] Async neighborhoods (CCA is missing. can't find any xample of async cca atm)
 - [ ] Better tests
 
