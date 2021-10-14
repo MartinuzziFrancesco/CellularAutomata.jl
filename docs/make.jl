@@ -1,10 +1,10 @@
- 
-using Documenter, odCellularAutomata
+ using Documenter, CellularAutomata
 
-makedocs(sitename="Emergo.jl", 
+makedocs(sitename="CellularAutomata.jl", 
 pages = [
     "index.md"
     "Examples" => [
         
-        "One dimension" => "onedimension.md"
+        "One dimensional CA" => "onedimensionca.md"
+        "Two dimensional CA" => "twodimensionca.md"
         ]])
