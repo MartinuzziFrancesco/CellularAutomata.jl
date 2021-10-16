@@ -93,7 +93,8 @@ starting_val[Int(floor(ncells/2)+1)] = 2
 
 rule = 7110222193934 
 
-ca = CellularAutomaton(DCA(rule,states=states,radius=radius), starting_val, generations)
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius), 
+                       starting_val, generations)
 
 heatmap(ca.evolution, 
     yflip=true, 
@@ -121,7 +122,8 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 1388968789 
 
-ca = CellularAutomaton(DCA(rule,states=states,radius=radius), starting_val, generations)
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius), 
+                           starting_val, generations)
 
 heatmap(ca.evolution, 
     yflip=true, 
@@ -150,7 +152,8 @@ starting_val[Int(floor(ncells/2)+1)] = 2
 
 rule = 914752986721674989234787899872473589234512347899 
 
-ca = CellularAutomaton(DCA(rule,states=states,radius=radius), starting_val, generations)
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius), 
+                       starting_val, generations)
 
 heatmap(ca.evolution, 
     yflip=true, 
@@ -177,7 +180,8 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 1235 
 
-ca = CellularAutomaton(DCA(rule,states=states,radius=radius), starting_val, generations)
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius), 
+                       starting_val, generations)
 
 heatmap(ca.evolution, 
     yflip=true, 
@@ -197,6 +201,8 @@ Totalistic Cellular Automata takes the sum of the neighborhood to calculate the 
 [Rule 1635](http://atlas.wolfram.com/01/02/1635/)
 
 ```julia
+using CellularAutomata, Plots
+
 states = 3
 radius = 1
 generations = 50
@@ -206,7 +212,8 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 1635
 
-ca = CellularAutomaton(DCA(rule, states=states), starting_val, generations)
+ca = CellularAutomaton(DCA(rule, states=states), 
+                       starting_val, generations)
 
 heatmap(ca.evolution, 
     yflip=true, 
@@ -220,6 +227,8 @@ heatmap(ca.evolution,
 [Rule 107398](http://atlas.wolfram.com/01/03/107398/)
 
 ```julia
+using CellularAutomata, Plots
+
 states = 4
 radius = 1
 generations = 50
@@ -229,7 +238,8 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 107398
 
-ca = CellularAutomaton(DCA(rule, states=states), starting_val, generations)
+ca = CellularAutomaton(DCA(rule, states=states), 
+                       starting_val, generations)
 
 heatmap(ca.evolution, 
     yflip=true, 
@@ -246,6 +256,8 @@ Here are some results for a bigger radius, using a radius of 2 as an example.
 [Rule 53](http://atlas.wolfram.com/01/06/Rules/53/index.html#01_06_9_53)
 
 ```julia
+using CellularAutomata, Plots
+
 states = 2
 radius = 2
 generations = 50
@@ -255,7 +267,8 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 53
 
-ca = CellularAutomaton(DCA(rule, radius=radius), starting_val, generations)
+ca = CellularAutomaton(DCA(rule, radius=radius), 
+                           starting_val, generations)
 
 heatmap(ca.evolution, 
     yflip=true, 
@@ -274,6 +287,8 @@ Continuous Cellular Automata work in the same way as the totalistic but with rea
 Rule 0.025
 
 ```julia
+using CellularAutomata, Plots
+
 generations = 50
 ncells = 111
 starting_val = zeros(Float64, ncells)
@@ -297,6 +312,8 @@ heatmap(ca.evolution,
 Rule 0.2
 
 ```julia
+using CellularAutomata, Plots
+
 radius = 1
 generations = 50
 ncells = 111
@@ -305,7 +322,8 @@ starting_val[Int(floor(ncells/2)+1)] = 1.0
 
 rule = 0.2
 
-ca = CellularAutomaton(CCA(rule, radius=radius), starting_val, generations) #CCA(rule, radius=1) is default
+ca = CellularAutomaton(CCA(rule, radius=radius), 
+                       starting_val, generations)
 
 heatmap(ca.evolution, 
     yflip=true, 
@@ -327,7 +345,6 @@ This script reproduces the famous glider:
 using CellularAutomata, Plots
 
 glider = [[0, 0, 1, 0, 0] [0, 0, 0, 1, 0] [0, 1, 1, 1, 0]]
-#glider = [[0,0,0,0,0,0,0] [0,0,0,1,1,1,0] [0,0,1,0,0,1,0] [0,1,0,0,0,1,0] [0,1,0,0,1,0,0] [0,1,1,1,0,0,0] [0,0,0,0,0,0,0]]
 
 space = zeros(Bool, 30, 30)
 insert = 1
