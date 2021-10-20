@@ -4,21 +4,28 @@ struct CCA{T} <: AbstractCCARule
     rule::T
     radius::Int
 end
+""" 
+    TCA(code; radius=1)
 
+Returns a ```TCA``` object given a specific code and radius. 
+"""
 function CCA(rule; radius=1)
     CCA(rule, radius)
 end
 
+"""
+    (cca::CCA)(starting_array)
+
+Returns the next state of the given ```starting_array``` according to the evolution rule contained in the ```CCA``` struct.
+"""
 function (cca::CCA)(starting_array)
 
-    return nextgen = evolution(starting_array, cca.rule, cca.radius)
-
+    nextgen = evolution(starting_array, cca.rule, cca.radius)
 end
 
 function c_state_reader(neighborhood, radius)
 
-    return sum(neighborhood)/length(neighborhood)
-
+    sum(neighborhood)/length(neighborhood)
 end
 
 function evolution(cell, rule, radius)
@@ -32,5 +39,4 @@ function evolution(cell, rule, radius)
     end
     
     output
-    
 end

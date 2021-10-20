@@ -7,20 +7,30 @@ struct DCA{B,R,T} <: AbstractDCARule
     radius::T
 end
 
+""" 
+    DCA(rule; states=2, radius=1)
+
+Returns a ```DCA``` object given a specific rule, number of states and radius. The ruleset for the rule is computed and 
+stored in the struct as well.
+
+"""
 function DCA(rule;
     states=2,
     radius=1)
 
     ruleset = conversion(rule, states, radius)
-        
     DCA(rule, ruleset, states, radius)
-
 end
+
+"""
+    (dca::DCA)(starting_array)
+
+Returns the next state of the given ```starting_array``` according to the evolution rule contained in the ```DCA``` struct.
+"""
 
 function (dca::DCA)(starting_array)
 
-    return nextgen = evolution(starting_array, dca.ruleset, dca.states, dca.radius)
-
+    nextgen = evolution(starting_array, dca.ruleset, dca.states, dca.radius)
 end
 
 function conversion(rule, states, radius::Int)
@@ -28,9 +38,7 @@ function conversion(rule, states, radius::Int)
     rule_len = states^(2*radius+1)
     rule_bin = parse.(Int, split(string(rule, base=states), ""))
     rule_bin = vcat(zeros(typeof(rule_bin[1]), rule_len-length(rule_bin)), rule_bin)
-
-    return reverse!(rule_bin)
-
+    reverse!(rule_bin)
 end
 
 function conversion(rule, states, radius::Tuple)
@@ -38,15 +46,12 @@ function conversion(rule, states, radius::Tuple)
     rule_len = states^(sum(radius)+1)
     rule_bin = parse.(Int, split(string(rule, base=states), ""))
     rule_bin = vcat(zeros(typeof(rule_bin[1]), rule_len-length(rule_bin)), rule_bin)
-
-    return reverse!(rule_bin)
-
+    reverse!(rule_bin)
 end
 
 function state_reader(neighborhood, states)
 
-    return parse(Int,join(convert(Array{Int},neighborhood)), base=states)+1 #ugly
-
+    parse(Int,join(convert(Array{Int},neighborhood)), base=states)+1 #ugly
 end
 
 function evolution(cell, ruleset, states, radius::Int)
@@ -59,8 +64,7 @@ function evolution(cell, ruleset, states, radius::Int)
         output[i] = ruleset[state_reader(cell[i:i+neighborhood_size-1], states)]
     end
     
-    output
-    
+    output   
 end
 
 function evolution(cell, ruleset, states, radius::Tuple)
@@ -74,7 +78,6 @@ function evolution(cell, ruleset, states, radius::Tuple)
     end
     
     output
-    
 end
 
 #consider (single function, less lines)
