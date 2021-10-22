@@ -51,14 +51,15 @@ export CellularAutomaton
 
 include("dca.jl")
 export DCA, ECA
-
 include("cca.jl")
 export CCA
-
 include("tca.jl")
 export TCA
 
 include("life.jl")
 export Life
+
+include("measures.jl")
+export lempel_ziv
 
 end # module
