@@ -12,7 +12,6 @@ end
 
 Returns a ```DCA``` object given a specific rule, number of states and radius. The ruleset for the rule is computed and 
 stored in the struct as well.
-
 """
 function DCA(rule;
     states=2,

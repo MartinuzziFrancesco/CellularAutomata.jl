@@ -7,6 +7,13 @@ struct Life{T,A,C} <: AbstractLifeRule
     radius::C
 end
 
+""" 
+Life(life_description; radius=1)
+
+Returns a ```Life``` object given a tuple of tuples that follows the Golly notation ((b), (s)), where b stands for birth and s for survival. 
+These values indicates the number of neighbouring cells needed to birth a new one in the following generation, or to make the current alive 
+one survive.
+"""
 function Life(life_description; radius=1)
     born, survive = life_description[1], life_description[2]
     Life(born, survive, radius)

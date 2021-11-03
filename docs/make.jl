@@ -2,9 +2,14 @@
 
 makedocs(sitename="CellularAutomata.jl", 
 pages = [
-    "index.md"
+    "CellularAutomata.jl" => "index.md",
     "Examples" => [
-        
-        "One dimensional CA" => "onedimensionca.md"
-        "Two dimensional CA" => "twodimensionca.md"
-        ]])
+        "One dimensional CA" => "onedim/onedimensionca.md"
+        "Two dimensional CA" => "twodim/twodimensionca.md"
+        ],
+    "User Guide" => Any[
+        "One Dimensional CA" => "user/onedimensionca.md"
+        "Two Dimensial CA" => "user/twodimensionca.md"
+
+        ]
+    ])
