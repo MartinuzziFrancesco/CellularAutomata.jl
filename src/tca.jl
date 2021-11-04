@@ -21,11 +21,6 @@ function TCA(code;
     TCA(code, codeset, states, radius)
 end
 
-"""
-    (tca::TCA)(starting_array)
-
-Returns the next state of the given ```starting_array``` according to the evolution rule contained in the ```TCA``` struct.
-"""
 function (tca::TCA)(starting_array)
 
     nextgen = tca_evolution(starting_array, tca.codeset, tca.states, tca.radius)

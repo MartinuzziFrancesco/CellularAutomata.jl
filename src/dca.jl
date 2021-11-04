@@ -21,12 +21,6 @@ function DCA(rule;
     DCA(rule, ruleset, states, radius)
 end
 
-"""
-    (dca::DCA)(starting_array)
-
-Returns the next state of the given ```starting_array``` according to the evolution rule contained in the ```DCA``` struct.
-"""
-
 function (dca::DCA)(starting_array)
 
     nextgen = evolution(starting_array, dca.ruleset, dca.states, dca.radius)
@@ -78,20 +72,3 @@ function evolution(cell, ruleset, states, radius::Tuple)
     
     output
 end
-
-#consider (single function, less lines)
-#=
-function evolution(cell, ruleset, args...)
-
-    neighborhood_size = radius*2+1
-    output = zeros(length(cell))
-    cell = vcat(cell[end-neighborhood_size÷2+1:end], cell, cell[1:neighborhood_size÷2])
-    
-    for i=1:length(cell)-neighborhood_size+1
-        output[i] = ruleset[state_reader(cell[i:i+neighborhood_size-1], args...)+1]
-    end
-    
-    output
-    
-end
-=#

@@ -4,6 +4,7 @@ struct CCA{T} <: AbstractCCARule
     rule::T
     radius::Int
 end
+
 """ 
     TCA(code; radius=1)
 
@@ -13,11 +14,6 @@ function CCA(rule; radius=1)
     CCA(rule, radius)
 end
 
-"""
-    (cca::CCA)(starting_array)
-
-Returns the next state of the given ```starting_array``` according to the evolution rule contained in the ```CCA``` struct.
-"""
 function (cca::CCA)(starting_array)
 
     nextgen = evolution(starting_array, cca.rule, cca.radius)

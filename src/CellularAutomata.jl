@@ -16,11 +16,10 @@ end
     CellularAutomaton(rule::AbstractODRule, initial_conditions, generations)
     CellularAutomaton(rule::AbstractTDRule, initial_conditions, generations)
 
-Given a cellular automata rule (inluded in the library of provided by the user) returns a CellularAutomaton evolution
+Given a cellular automata rule (inluded in the library or provided by the user) returns a CellularAutomaton evolution
 with given initial conditions and number of generations. OD indicates one-diomensional cellular automata rules, TD
 indicates two-dimensiona cellular automata rules.
 """
-
 function CellularAutomaton(rule::AbstractODRule, initial_conditions, generations)
 
     evolution = zeros(typeof(initial_conditions[2]), generations, length(initial_conditions))
