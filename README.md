@@ -1,5 +1,8 @@
 [![Build Status](https://github.com/MartinuzziFrancesco/CellularAutomata.jl/workflows/CI/badge.svg)](https://github.com/MartinuzziFrancesco/CellularAutomata.jl/actions?query=workflow%3ACI)
 [![Codecov](https://codecov.io/gh/MartinuzziFrancesco/CellularAutomata.jl/coverage.svg?branch=master)](https://codecov.io/gh/MartinuzziFrancesco/CellularAutomata.jl?branch=master)
+[![DOI](https://zenodo.org/badge/244027385.svg)](https://zenodo.org/badge/latestdoi/244027385)
+
+
 
 # CellularAutomata
 Cellular automata creation and analysis tools
