@@ -1,0 +1,4 @@
+# General APIs
+```@docs
+    CellularAutomaton
+```

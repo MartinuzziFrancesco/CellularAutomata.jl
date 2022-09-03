@@ -10,8 +10,8 @@ end
 """ 
     TCA(code; states=2, radius=1)
 
-Returns a ```TCA``` object given a specific code, number of states and radius. The ruleset for the rule is computed and 
-stored in the struct as well.
+Returns a ```TCA``` object given a specific code, number of states and radius.
+The ruleset for the rule is computed and stored in the struct as well.
 """
 function TCA(code;
     states=2,

@@ -15,5 +15,4 @@ where ```rule``` is a function returning the next state of the Cellular Automata
 
 ## Contributions
 
-Contributions are more than welcomed! The package is in the early days, so expet things to change a lot. For everything 
-do contact me or open an issue about it.
+Contributions are more than welcomed! The package is in the early days, so expect things to change a lot. For everything do contact me or open an issue about it.
