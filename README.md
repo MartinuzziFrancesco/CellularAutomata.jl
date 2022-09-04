@@ -369,13 +369,3 @@ gif(anim, "glider.gif", fps = 15)
 ```
 ![glider](https://user-images.githubusercontent.com/10376688/137601901-97940211-f6e7-4ab1-9eee-325165000fd4.gif)
 
-
-## To do list
-- [x] Only radius possible is 1. Need to extend that
-- [ ] Extend neighborhood for Life Like automata
-- [x] Documentation. Bared bones added, need to actually host a website which means...
-- [ ] Documentation website
-- [ ] Entropy functions and such - Started on Lempel Ziv complexity, details needed and docs
-- [x] Async neighborhoods ~~(CCA is missing. can't find any xample of async cca atm)~~ added async also for cca. need to test against Wolfram's Mathematica
-- [ ] Better tests (adding tests for rulests, need to add tests for evolution)
-
