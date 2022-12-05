@@ -1,7 +1,4 @@
-
-abstract type AbstractLifeRule <: AbstractTDRule end
-
-struct Life{T,A,C} <: AbstractLifeRule
+struct Life{T,A,C}
     born::T
     survive::A
     radius::C
