@@ -18,6 +18,6 @@ const bstates = 2
 const brule = 110
 const bstarting_array = rand(Bool, ncells)
 
-bca = ca = CellularAutomaton(DCA(brule), bstarting_array, generations)
+bca = CellularAutomaton(DCA(brule), bstarting_array, generations)
 
 @test size(bca.evolution) == (generations, ncells)
