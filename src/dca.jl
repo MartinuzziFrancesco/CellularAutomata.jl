@@ -1,6 +1,4 @@
-abstract type AbstractDCARule <: AbstractODRule end 
-
-struct DCA{B,R,T} <: AbstractDCARule
+struct DCA{B,R,T}
     rule::B
     ruleset::R
     states::Int

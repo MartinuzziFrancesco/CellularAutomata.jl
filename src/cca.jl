@@ -1,6 +1,4 @@
-abstract type AbstractCCARule <: AbstractODRule end 
-
-struct CCA{T} <: AbstractCCARule
+struct CCA{T}
     rule::T
     radius::Int
 end

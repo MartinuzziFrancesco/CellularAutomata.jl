@@ -1,6 +1,4 @@
-abstract type AbstractTCARule <: AbstractDCARule end 
-
-struct TCA{B,R,T} <: AbstractTCARule
+struct TCA{B,R,T}
     code::B
     codeset::R
     states::Int
