@@ -1,4 +1,4 @@
-# CellularAutomata
+# CellularAutomata.jl
 
 <p align="center">
     <img width="400px" src="docs/src/assets/logo.png"/>
@@ -28,10 +28,6 @@
 
 [doi-img]: https://zenodo.org/badge/244027385.svg
 [doi-url]: https://zenodo.org/badge/latestdoi/244027385
-
-
-# CellularAutomata
-Cellular automata creation and analysis tools
 
 ## Installation
 CellularAutomata.jl is registered on the general registry. For the installation follow:
