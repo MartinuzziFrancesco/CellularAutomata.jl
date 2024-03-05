@@ -8,7 +8,5 @@ pages = [
         "General APIs" => "api/general.md"
         "One Dimensional CA" => "api/onedim.md"
         "Two Dimensial CA" => "api/twodim.md"
-        "Measures of Complexity" => "api/measures.md"
-
         ]
     ]
