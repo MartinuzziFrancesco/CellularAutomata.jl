@@ -1,17 +1,13 @@
  using Documenter, CellularAutomata
 
-makedocs(sitename="CellularAutomata.jl", 
-pages = [
-    "CellularAutomata.jl" => "index.md",
-    "Examples" => [
-        "One dimensional CA" => "onedim/onedimensionca.md"
-        "Two dimensional CA" => "twodim/twodimensionca.md"
-        ],
-    "API Documentation" => Any[
-        "General APIs" => "api/general.md"
-        "One Dimensional CA" => "api/onedim.md"
-        "Two Dimensial CA" => "api/twodim.md"
-        "Measures of Complexity" => "api/measures.md"
+makedocs(;sitename="CellularAutomata.jl",
+    modules=[CellularAutomata],
+    clean=true,
+    doctest=true,
+    linkcheck=true,
+    warnonly=[:missing_docs],
+    pages = pages)
 
-        ]
-    ])
+deploydocs(;
+    repo="github.com/MartinuzziFrancesco/CellularAutomata.jl.git", push_preview=true
+)
