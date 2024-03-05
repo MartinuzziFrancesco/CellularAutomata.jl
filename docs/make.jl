@@ -1,4 +1,5 @@
  using Documenter, CellularAutomata
+ include("pages.jl")
 
 makedocs(;sitename="CellularAutomata.jl",
     modules=[CellularAutomata],
