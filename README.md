@@ -1,7 +1,33 @@
-[![Build Status](https://github.com/MartinuzziFrancesco/CellularAutomata.jl/workflows/CI/badge.svg)](https://github.com/MartinuzziFrancesco/CellularAutomata.jl/actions?query=workflow%3ACI)
-[![Codecov](https://codecov.io/gh/MartinuzziFrancesco/CellularAutomata.jl/coverage.svg?branch=master)](https://codecov.io/gh/MartinuzziFrancesco/CellularAutomata.jl?branch=master)
-[![DOI](https://zenodo.org/badge/244027385.svg)](https://zenodo.org/badge/latestdoi/244027385)
+# CellularAutomata
 
+<p align="center">
+    <img width="400px" src="docs/src/assets/logo.png"/>
+</p>
+
+| **Documentation** | **Build Status** | **Julia** | **Testing** | **DOI** |
+|:-----------------:|:----------------:|:---------:|:-----------:|:-------:|
+| [![docs][docs-img]][docs-url] | [![CI][ci-img]][ci-url] [![codecov][cc-img]][cc-url] | [![Julia][julia-img]][julia-url] [![Code Style: Blue][style-img]][style-url] | [![Aqua QA][aqua-img]][aqua-url] | [![DOI][doi-img]][doi-url]
+
+[docs-img]: https://img.shields.io/badge/docs-stable-blue.svg
+[docs-url]: [https://awesome-spectral-indices.github.io/SpectralIndices.jl/dev/](https://martinuzzifrancesco.github.io/CellularAutomata.jl/dev/)
+
+[ci-img]: https://github.com/MartinuzziFrancesco/CellularAutomata.jl/actions/workflows/CI.yml/badge.svg
+[ci-url]: https://github.com/MartinuzziFrancesco/CellularAutomata.jl/actions/workflows/CI.yml
+
+[cc-img]: https://codecov.io/gh/MartinuzziFrancesco/CellularAutomata.jl/coverage.svg?branch=master
+[cc-url]: https://codecov.io/gh/MartinuzziFrancesco/CellularAutomata.jl?branch=master
+
+[julia-img]: https://img.shields.io/badge/julia-v1.9+-blue.svg
+[julia-url]: https://julialang.org/
+
+[style-img]: https://img.shields.io/badge/code%20style-blue-4495d1.svg
+[style-url]: https://github.com/invenia/BlueStyle
+
+[aqua-img]: https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg
+[aqua-url]: https://github.com/JuliaTesting/Aqua.jl
+
+[doi-img]: https://zenodo.org/badge/244027385.svg
+[doi-url]: https://zenodo.org/badge/latestdoi/244027385
 
 
 # CellularAutomata
