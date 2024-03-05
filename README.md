@@ -215,7 +215,7 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 1635
 
-ca = CellularAutomaton(DCA(rule, states=states), 
+ca = CellularAutomaton(TCA(rule, states=states), 
                        starting_val, generations)
 
 heatmap(ca.evolution, 
@@ -241,7 +241,7 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 107398
 
-ca = CellularAutomaton(DCA(rule, states=states), 
+ca = CellularAutomaton(TCA(rule, states=states), 
                        starting_val, generations)
 
 heatmap(ca.evolution, 
@@ -270,7 +270,7 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 53
 
-ca = CellularAutomaton(DCA(rule, radius=radius), 
+ca = CellularAutomaton(TCA(rule, radius=radius), 
                            starting_val, generations)
 
 heatmap(ca.evolution, 
