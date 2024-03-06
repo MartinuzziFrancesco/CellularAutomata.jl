@@ -8,7 +8,7 @@ function lempel_ziv_complexity(sequence)
         if ind + inc > n
             break
         end
-        sub_str = sequence[ind : ind + inc]
+        sub_str = sequence[ind:(ind + inc)]
         if sub_str in sub_strings
             inc += 1
         else
@@ -22,14 +22,15 @@ end
 
 """
     function lempel_ziv(ca::AbstractCA)
+
 Computes the lempel ziv complexity of a given Cellular Automaton.
 """
 function lempel_ziv(ca::AbstractCA)
     ca_size = size(ca.evolution, 1)
     lz_tot = 0
-    
-    for i=1:ca_size
-        lz_tot += lempel_ziv_complexity(ca.evolution[i,:])
+
+    for i in 1:ca_size
+        lz_tot += lempel_ziv_complexity(ca.evolution[i, :])
     end
-    lz_tot/ca_size
+    return lz_tot / ca_size
 end

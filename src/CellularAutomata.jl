@@ -11,7 +11,6 @@ struct CellularAutomaton{F,E} <: AbstractCA
     evolution::E
 end
 
-
 """
     CellularAutomaton(rule::AbstractODRule, initial_conditions, generations)
     CellularAutomaton(rule::AbstractTDRule, initial_conditions, generations)
@@ -21,35 +20,38 @@ with given initial conditions and number of generations. OD indicates one-diomen
 indicates two-dimensiona cellular automata rules.
 """
 function CellularAutomaton(rule::AbstractODRule, initial_conditions, generations)
+    evolution = zeros(
+        typeof(initial_conditions[2]), generations, length(initial_conditions)
+    )
+    evolution[1, :] = initial_conditions
 
-    evolution = zeros(typeof(initial_conditions[2]), generations, length(initial_conditions))
-    evolution[1,:] = initial_conditions
-
-    for i=2:generations
-        evolution[i,:] = rule(evolution[i-1,:])
+    for i in 2:generations
+        evolution[i, :] = rule(evolution[i - 1, :])
     end
 
-    CellularAutomaton(generations, rule, evolution)
-
+    return CellularAutomaton(generations, rule, evolution)
 end
 
 function CellularAutomaton(rule::AbstractTDRule, initial_conditions, generations)
-
-    evolution = zeros(typeof(initial_conditions[2]), size(initial_conditions, 1), size(initial_conditions, 2), generations)
+    evolution = zeros(
+        typeof(initial_conditions[2]),
+        size(initial_conditions, 1),
+        size(initial_conditions, 2),
+        generations,
+    )
     evolution[:, :, 1] = initial_conditions
 
-    for i=2:generations
-        evolution[:, :, i] = rule(evolution[:, :, i-1])
+    for i in 2:generations
+        evolution[:, :, i] = rule(evolution[:, :, i - 1])
     end
 
-    CellularAutomaton(generations, rule, evolution)
-
+    return CellularAutomaton(generations, rule, evolution)
 end
 
 export CellularAutomaton
 
 include("dca.jl")
-export DCA, ECA
+export DCA
 include("cca.jl")
 export CCA
 include("tca.jl")
