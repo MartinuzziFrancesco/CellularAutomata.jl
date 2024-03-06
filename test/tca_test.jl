@@ -5,11 +5,11 @@ const states = 4
 const radius = 1
 const generations = 10
 const ncells = 11
-const starting_array = rand(0:states-1, ncells)
+const starting_array = rand(0:(states - 1), ncells)
 const rule = 107396
 
 #testing states > 2
-ca = CellularAutomaton(DCA(rule, states=states), starting_array, generations)
+ca = CellularAutomaton(DCA(rule; states=states), starting_array, generations)
 
 @test size(ca.evolution) == (generations, ncells)
 

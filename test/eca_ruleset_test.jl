@@ -14,4 +14,3 @@ const rule3 = DCA(3)
 
 const rule30 = DCA(30)
 @test rule30.ruleset == [0, 1, 1, 1, 1, 0, 0, 0] #http://atlas.wolfram.com/01/01/30/
-

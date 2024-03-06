@@ -10,4 +10,4 @@ const rule = 0.05
 
 ca = ca = CellularAutomaton(CCA(rule), starting_val, generations)
 
-@test size(ca.evolution) == (generations, ncells) 
+@test size(ca.evolution) == (generations, ncells)
