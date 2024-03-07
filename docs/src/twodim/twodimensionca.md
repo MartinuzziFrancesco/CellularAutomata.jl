@@ -6,7 +6,7 @@ This package can also reproduce Conway's Game of Life, and any variation based o
 
 This script reproduces the famous glider:
 
-```julia
+```@example life
 using CellularAutomata, Plots
 
 glider = [[0, 0, 1, 0, 0] [0, 0, 0, 1, 0] [0, 1, 1, 1, 0]]
@@ -29,4 +29,3 @@ end
  
 gif(anim, "glider.gif", fps = 15)
 ```
-![glider](https://user-images.githubusercontent.com/10376688/137601901-97940211-f6e7-4ab1-9eee-325165000fd4.gif)
