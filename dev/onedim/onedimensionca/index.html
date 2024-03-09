@@ -17,7 +17,7 @@ heatmap(ca.evolution,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
-    ticks=false)</code></pre><img src="3ffc7c4c.svg" alt="Example block output"/><p><a href="http://atlas.wolfram.com/01/01/30/">Rule 30</a></p><pre><code class="language-julia hljs">states = 2
+    ticks=false)</code></pre><img src="48dbe6af.svg" alt="Example block output"/><p><a href="http://atlas.wolfram.com/01/01/30/">Rule 30</a></p><pre><code class="language-julia hljs">states = 2
 radius = 1
 generations = 50
 ncells = 111
@@ -33,7 +33,7 @@ heatmap(ca.evolution,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
-    ticks=false)</code></pre><img src="c8da82df.svg" alt="Example block output"/><h2 id="Multiple-States-Cellular-Automata"><a class="docs-heading-anchor" href="#Multiple-States-Cellular-Automata">Multiple States Cellular Automata</a><a id="Multiple-States-Cellular-Automata-1"></a><a class="docs-heading-anchor-permalink" href="#Multiple-States-Cellular-Automata" title="Permalink"></a></h2><p>General Cellular Automata have the same rule of ECA but they can have a radius larger than unity and/or a number of states greater than two. Here are provided examples for every possible permutation, starting with a Cellular Automaton with 3 states.</p><p><a href="https://www.wolframalpha.com/input/?i=rule+7%2C110%2C222%2C193%2C934+k%3D3&amp;lk=3">Rule 7110222193934</a></p><pre><code class="language-julia hljs">using CellularAutomata, Plots
+    ticks=false)</code></pre><img src="5a5f150f.svg" alt="Example block output"/><h2 id="Multiple-States-Cellular-Automata"><a class="docs-heading-anchor" href="#Multiple-States-Cellular-Automata">Multiple States Cellular Automata</a><a id="Multiple-States-Cellular-Automata-1"></a><a class="docs-heading-anchor-permalink" href="#Multiple-States-Cellular-Automata" title="Permalink"></a></h2><p>General Cellular Automata have the same rule of ECA but they can have a radius larger than unity and/or a number of states greater than two. Here are provided examples for every possible permutation, starting with a Cellular Automaton with 3 states.</p><p><a href="https://www.wolframalpha.com/input/?i=rule+7%2C110%2C222%2C193%2C934+k%3D3&amp;lk=3">Rule 7110222193934</a></p><pre><code class="language-julia hljs">using CellularAutomata, Plots
 
 states = 3
 radius = 1
@@ -53,7 +53,7 @@ heatmap(ca.evolution,
     legend = :none,
     axis=false,
     ticks=false,
-    size=(ncells*10, generations*10))</code></pre><img src="fbd6aeb7.svg" alt="Example block output"/><h2 id="Larger-Radius-Cellular-Automata"><a class="docs-heading-anchor" href="#Larger-Radius-Cellular-Automata">Larger Radius Cellular Automata</a><a id="Larger-Radius-Cellular-Automata-1"></a><a class="docs-heading-anchor-permalink" href="#Larger-Radius-Cellular-Automata" title="Permalink"></a></h2><p>The following examples shows a Cellular Automaton with radius=2, with two only possible states:</p><p><a href="https://www.wolframalpha.com/input/?i=rule+1%2C388%2C968%2C789+r%3D2&amp;lk=3">Rule 1388968789</a></p><pre><code class="language-julia hljs">using CellularAutomata, Plots
+    size=(ncells*10, generations*10))</code></pre><img src="d5828d90.svg" alt="Example block output"/><h2 id="Larger-Radius-Cellular-Automata"><a class="docs-heading-anchor" href="#Larger-Radius-Cellular-Automata">Larger Radius Cellular Automata</a><a id="Larger-Radius-Cellular-Automata-1"></a><a class="docs-heading-anchor-permalink" href="#Larger-Radius-Cellular-Automata" title="Permalink"></a></h2><p>The following examples shows a Cellular Automaton with radius=2, with two only possible states:</p><p><a href="https://www.wolframalpha.com/input/?i=rule+1%2C388%2C968%2C789+r%3D2&amp;lk=3">Rule 1388968789</a></p><pre><code class="language-julia hljs">using CellularAutomata, Plots
 
 states = 2
 radius = 2
@@ -73,7 +73,7 @@ heatmap(ca.evolution,
     legend = :none,
     axis=false,
     ticks=false,
-    size=(ncells*10, generations*10))</code></pre><img src="690567fe.svg" alt="Example block output"/><p>And finally, three states with a radius equal to two:</p><p><a href="https://www.wolframalpha.com/input/?i=CA+k%3D3+r%3D2+rule+914752986721674989234787899872473589234512347899&amp;lk=3">Rule 914752986721674989234787899872473589234512347899</a></p><pre><code class="language-julia hljs">states = 3
+    size=(ncells*10, generations*10))</code></pre><img src="ebd6ab96.svg" alt="Example block output"/><p>And finally, three states with a radius equal to two:</p><p><a href="https://www.wolframalpha.com/input/?i=CA+k%3D3+r%3D2+rule+914752986721674989234787899872473589234512347899&amp;lk=3">Rule 914752986721674989234787899872473589234512347899</a></p><pre><code class="language-julia hljs">states = 3
 radius = 2
 generations = 30
 ncells = 111
@@ -91,7 +91,7 @@ heatmap(ca.evolution,
     legend = :none,
     axis=false,
     ticks=false,
-    size=(ncells*10, generations*10))</code></pre><img src="1dbd1f2a.svg" alt="Example block output"/><p>It is also possible to specify asymmetric neighborhoods, giving a tuple to the kwarg detailing the number of neighbors to considerate at the left and right of the cell: <a href="https://www.wolframalpha.com/input/?i=radius+3%2F2+rule+1235&amp;lk=3">Rule 1235</a></p><pre><code class="language-julia hljs">states = 2
+    size=(ncells*10, generations*10))</code></pre><img src="b3a788ac.svg" alt="Example block output"/><p>It is also possible to specify asymmetric neighborhoods, giving a tuple to the kwarg detailing the number of neighbors to considerate at the left and right of the cell: <a href="https://www.wolframalpha.com/input/?i=radius+3%2F2+rule+1235&amp;lk=3">Rule 1235</a></p><pre><code class="language-julia hljs">states = 2
 radius = (2,1)
 generations = 30
 ncells = 111
@@ -109,7 +109,7 @@ heatmap(ca.evolution,
     legend = :none,
     axis=false,
     ticks=false,
-    size=(ncells*10, generations*10))</code></pre><img src="96957e57.svg" alt="Example block output"/><h2 id="Totalistic-Cellular-Automata"><a class="docs-heading-anchor" href="#Totalistic-Cellular-Automata">Totalistic Cellular Automata</a><a id="Totalistic-Cellular-Automata-1"></a><a class="docs-heading-anchor-permalink" href="#Totalistic-Cellular-Automata" title="Permalink"></a></h2><p>Totalistic Cellular Automata takes the sum of the neighborhood to calculate the value of the next step.</p><p><a href="http://atlas.wolfram.com/01/02/1635/">Rule 1635</a></p><pre><code class="language-julia hljs">using CellularAutomata, Plots
+    size=(ncells*10, generations*10))</code></pre><img src="60933a16.svg" alt="Example block output"/><h2 id="Totalistic-Cellular-Automata"><a class="docs-heading-anchor" href="#Totalistic-Cellular-Automata">Totalistic Cellular Automata</a><a id="Totalistic-Cellular-Automata-1"></a><a class="docs-heading-anchor-permalink" href="#Totalistic-Cellular-Automata" title="Permalink"></a></h2><p>Totalistic Cellular Automata takes the sum of the neighborhood to calculate the value of the next step.</p><p><a href="http://atlas.wolfram.com/01/02/1635/">Rule 1635</a></p><pre><code class="language-julia hljs">using CellularAutomata, Plots
 states = 3
 radius = 1
 generations = 50
@@ -127,7 +127,7 @@ heatmap(ca.evolution,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
-    ticks=false)</code></pre><img src="3ace1f37.svg" alt="Example block output"/><p><a href="http://atlas.wolfram.com/01/03/107398/">Rule 107398</a></p><pre><code class="language-julia hljs">states = 4
+    ticks=false)</code></pre><img src="c5f2db2a.svg" alt="Example block output"/><p><a href="http://atlas.wolfram.com/01/03/107398/">Rule 107398</a></p><pre><code class="language-julia hljs">states = 4
 radius = 1
 generations = 50
 ncells = 111
@@ -144,7 +144,7 @@ heatmap(ca.evolution,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
-    ticks=false)</code></pre><img src="538761ff.svg" alt="Example block output"/><p>Here are some results for a bigger radius, using a radius of 2 as an example.</p><p><a href="http://atlas.wolfram.com/01/06/Rules/53/index.html#01_06_9_53">Rule 53</a></p><pre><code class="language-julia hljs">states = 2
+    ticks=false)</code></pre><img src="08fdeb83.svg" alt="Example block output"/><p>Here are some results for a bigger radius, using a radius of 2 as an example.</p><p><a href="http://atlas.wolfram.com/01/06/Rules/53/index.html#01_06_9_53">Rule 53</a></p><pre><code class="language-julia hljs">states = 2
 radius = 2
 generations = 50
 ncells = 111
@@ -177,7 +177,7 @@ heatmap(ca.evolution,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
-    ticks=false)</code></pre><img src="1c3a35ea.svg" alt="Example block output"/><p>Rule 0.2</p><pre><code class="language-julia hljs">radius = 1
+    ticks=false)</code></pre><img src="5e3d1572.svg" alt="Example block output"/><p>Rule 0.2</p><pre><code class="language-julia hljs">radius = 1
 generations = 50
 ncells = 111
 starting_val = zeros(Float64, ncells)
@@ -193,4 +193,4 @@ heatmap(ca.evolution,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
-    ticks=false)</code></pre><img src="064f61fe.svg" alt="Example block output"/></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« CellularAutomata.jl</a><a class="docs-footer-nextpage" href="../../twodim/twodimensionca/">Two dimensional CA »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.3.0 on <span class="colophon-date" title="Thursday 7 March 2024 09:44">Thursday 7 March 2024</span>. Using Julia version 1.10.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+    ticks=false)</code></pre><img src="3d4895bb.svg" alt="Example block output"/></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« CellularAutomata.jl</a><a class="docs-footer-nextpage" href="../../twodim/twodimensionca/">Two dimensional CA »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.3.0 on <span class="colophon-date" title="Saturday 9 March 2024 16:44">Saturday 9 March 2024</span>. Using Julia version 1.10.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
