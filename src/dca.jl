@@ -14,17 +14,21 @@ Creates a `DCA` object given a specific rule. It automatically computes the rule
 the provided rule, number of states, and radius.
 
 # Arguments
-- `rule`: The rule identifier used for the cellular automaton's evolution.
-- `states` (optional): The number of possible states for each cell. Defaults to 2.
-- `radius` (optional): The neighborhood radius around each cell considered during the
-evolution. Defaults to 1.
+
+  - `rule`: The rule identifier used for the cellular automaton's evolution.
+  - `states` (optional): The number of possible states for each cell. Defaults to 2.
+  - `radius` (optional): The neighborhood radius around each cell considered during the
+    evolution. Defaults to 1.
 
 # Usage
+
 ```julia
 dca = DCA(30; states=2, radius=1)  # Creates a DCA with rule 30, 2 states, and radius 1.
 ```
+
 Once instantiated, the `DCA` object can evolve a given starting array of cell states
 through its callable interface:
+
 ```julia
 dca = DCA(110; states=2, radius=1)  # Initialize with rule 110, 2 states, and a radius of 1
 starting_array = [0, 1, 0, 1, 1, 0]  # Initial state

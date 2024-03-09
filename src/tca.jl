@@ -15,17 +15,21 @@ and neighborhood radius. It automatically computes the codeset for the provided 
 and configuration, which is used for the automaton's evolution.
 
 # Arguments
-- `code`: An integer or string representing the rule code for the automaton's evolution.
-- `states` (optional): The number of possible states for each cell. Defaults to 2.
-- `radius` (optional): The neighborhood radius around each cell considered during the
-evolution. Defaults to 1.
+
+  - `code`: An integer or string representing the rule code for the automaton's evolution.
+  - `states` (optional): The number of possible states for each cell. Defaults to 2.
+  - `radius` (optional): The neighborhood radius around each cell considered during the
+    evolution. Defaults to 1.
 
 # Usage
+
 ```julia
 tca = TCA(30; states=2, radius=1)  # Creates a TCA with rule code 30, 2 states, and radius 1.
 ```
+
 After instantiation, the `TCA` object can be used to evolve a given starting array of
 cell states:
+
 ```julia
 # Initialize TCA with a specific code, default states, and radius
 tca = TCA(102; states=3, radius=1)

@@ -15,21 +15,27 @@ the Conway's Game of Life, using custom rules for cell birth and survival.
 The rules are defined using the Golly notation.
 
 # Arguments
-- `life_description`: A tuple of two tuples (`(b, s)`) specifying the birth (`b`)
-and survival (`s`) rules.
-    - `b`: A tuple containing the numbers of neighbouring cells that cause a dead
-    cell to become alive in the next generation.
-    - `s`: A tuple containing the numbers of neighbouring cells that allow a live
-    cell to remain alive in the next generation.
-- `radius` (optional): The radius of the neighborhood considered for determining
-cell fate. Defaults to 1.
+
+  - `life_description`: A tuple of two tuples (`(b, s)`) specifying the birth (`b`)
+    and survival (`s`) rules.
+
+      + `b`: A tuple containing the numbers of neighbouring cells that cause a dead
+        cell to become alive in the next generation.
+      + `s`: A tuple containing the numbers of neighbouring cells that allow a live
+        cell to remain alive in the next generation.
+
+  - `radius` (optional): The radius of the neighborhood considered for determining
+    cell fate. Defaults to 1.
 
 # Usage
+
 ```julia
 life = Life(((3,), (2, 3)); radius=1)  # Initializes Life
 ```
+
 After instantiation, the `Life` object can be used to evolve a given starting
 array representing the initial state of the cellular automaton:
+
 ```julia
 # Initialize Life with custom rules: birth if 3 neighbors, survive if 2 or 3 neighbors
 life = Life(((3,), (2, 3)); radius=1)
