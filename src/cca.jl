@@ -45,7 +45,7 @@ function (cca::CCA)(starting_array::AbstractArray)
     return nextgen = evolution(starting_array, cca.rule, cca.radius)
 end
 
-function c_state_reader(neighborhood::AbstractArray, radius::Int)
+function c_state_reader(neighborhood::AbstractArray, radius)
     return sum(neighborhood) / length(neighborhood)
 end
 

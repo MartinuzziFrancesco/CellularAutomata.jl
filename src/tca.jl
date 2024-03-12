@@ -46,7 +46,7 @@ function TCA(code; states=2, radius=1)
     return TCA(code, codeset, states, radius)
 end
 
-function (tca::TCA)(starting_array)
+function (tca::TCA)(starting_array::AbstractArray)
     return nextgen = tca_evolution(starting_array, tca.codeset, tca.states, tca.radius)
 end
 
@@ -64,11 +64,11 @@ function tca_conversion(code, states, radius::Tuple)
     return reverse!(code_bin)
 end
 
-function tca_state_reader(neighborhood, codeset_len)
+function tca_state_reader(neighborhood::AbstractArray, codeset_len)
     return mod1(sum(neighborhood) + 1, codeset_len)
 end
 
-function tca_evolution(cell, codeset, states, radius::Number)
+function tca_evolution(cell::AbstractArray, codeset, states, radius::Number)
     neighborhood_size = radius * 2 + 1
     output = zeros(length(cell))
     cell = vcat(
@@ -84,7 +84,7 @@ function tca_evolution(cell, codeset, states, radius::Number)
     return output
 end
 
-function tca_evolution(cell, codeset, states, radius::Tuple)
+function tca_evolution(cell::AbstractArray, codeset, states, radius::Tuple)
     neighborhood_size = sum(radius) + 1
     output = zeros(length(cell))
     cell = vcat(cell[(end - radius[1] + 1):end], cell, cell[1:radius[2]])
