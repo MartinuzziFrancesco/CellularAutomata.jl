@@ -35,7 +35,7 @@ starting_array = [0, 1, 0, 1, 1, 0]  # Initial state
 next_generation = dca(starting_array)  # Evolve to the next generation
 ```
 """
-function DCA(rule::Int; states::Int=2, radius=1)
+function DCA(rule::T; states::Int=2, radius=1) where {T<:Integer}
     ruleset = conversion(rule, states, radius)
     return DCA(rule, ruleset, states, radius)
 end
@@ -44,14 +44,14 @@ function (dca::DCA)(starting_array::AbstractArray)
     return evolution(starting_array, dca.ruleset, dca.states, dca.radius)
 end
 
-function conversion(rule::Int, states::Int, radius::Int)
+function conversion(rule::T, states::Int, radius::Int) where {T<:Integer}
     rule_len = states^(2 * radius + 1)
     rule_bin = parse.(Int, split(string(rule; base=states), ""))
     rule_bin = vcat(zeros(typeof(rule_bin[1]), rule_len - length(rule_bin)), rule_bin)
     return reverse!(rule_bin)
 end
 
-function conversion(rule::Int, states::Int, radius::Tuple)
+function conversion(rule::T, states::Int, radius::Tuple) where {T<:Integer}
     rule_len = states^(sum(radius) + 1)
     rule_bin = parse.(Int, split(string(rule; base=states), ""))
     rule_bin = vcat(zeros(typeof(rule_bin[1]), rule_len - length(rule_bin)), rule_bin)
