@@ -35,7 +35,7 @@ starting_array = [0, 1, 0, 1, 1, 0]  # Initial state
 next_generation = dca(starting_array)  # Evolve to the next generation
 ```
 """
-function DCA(rule::T; states::Int=2, radius=1) where {T<:Integer}
+function DCA(rule::Number; states::Int=2, radius=1)
     ruleset = conversion(rule, states, radius)
     return DCA(rule, ruleset, states, radius)
 end
