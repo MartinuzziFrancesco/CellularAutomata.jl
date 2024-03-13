@@ -1,6 +1,6 @@
 abstract type AbstractCCARule <: AbstractODRule end
 
-struct CCA{T} <: AbstractCCARule
+struct CCA{T<:Real} <: AbstractCCARule
     rule::T
     radius::Int
 end
@@ -37,19 +37,19 @@ next_generation = cca(starting_array)  # Evolve to next generation
 The evolution is determined by the rule applied to the sum of the neighborhood states,
 normalized by their count, for each cell in the array.
 """
-function CCA(rule; radius=1)
+function CCA(rule::T; radius=1) where {T<:Real}
     return CCA(rule, radius)
 end
 
-function (cca::CCA)(starting_array)
+function (cca::CCA)(starting_array::AbstractArray)
     return nextgen = evolution(starting_array, cca.rule, cca.radius)
 end
 
-function c_state_reader(neighborhood, radius)
+function c_state_reader(neighborhood::AbstractArray, radius)
     return sum(neighborhood) / length(neighborhood)
 end
 
-function evolution(cell, rule, radius::Number)
+function evolution(cell::AbstractArray, rule::T, radius::Number) where {T<:Real}
     neighborhood_size = radius * 2 + 1
     output = zeros(length(cell))
     cell = vcat(
@@ -65,7 +65,7 @@ function evolution(cell, rule, radius::Number)
     return output
 end
 
-function evolution(cell, rule, radius::Tuple)
+function evolution(cell::AbstractArray, rule::T, radius::Tuple) where {T<:Real}
     neighborhood_size = sum(radius) + 1
     output = zeros(length(cell))
     cell = vcat(

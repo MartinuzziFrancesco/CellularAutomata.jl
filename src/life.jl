@@ -1,10 +1,10 @@
 
 abstract type AbstractLifeRule <: AbstractTDRule end
 
-struct Life{T,A,C} <: AbstractLifeRule
+struct Life{T,A} <: AbstractLifeRule
     born::T
     survive::A
-    radius::C
+    radius::Int
 end
 
 """
@@ -50,16 +50,16 @@ starting_array[4, 2:4] = 1
 next_generation = life(starting_array)
 ```
 """
-function Life(life_description; radius=1)
+function Life(life_description::Tuple; radius=1)
     born, survive = life_description[1], life_description[2]
     return Life(born, survive, radius)
 end
 
-function (life::Life)(starting_array)
-    return nextgen = life_evolution(starting_array, life.born, life.survive, life.radius)
+function (life::Life)(starting_array::AbstractMatrix)
+    return life_evolution(starting_array, life.born, life.survive, life.radius)
 end
 
-function virtual_expansion(starting_array, radius)
+function virtual_expansion(starting_array::AbstractMatrix, radius::Int)
     height, width = size(starting_array)
     nh, nw = height - radius + 1, width - radius + 1
     left = vcat(
@@ -91,7 +91,7 @@ function life_application(state, born, survive)
     end
 end
 
-function life_evolution(starting_array, born, survive, radius)
+function life_evolution(starting_array::AbstractMatrix, born, survive, radius)
     height, width = size(starting_array)
     output = zeros(typeof(starting_array[2]), height, width)
     virtual_output = virtual_expansion(starting_array, radius)
