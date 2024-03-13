@@ -1,7 +1,7 @@
 abstract type AbstractDCARule <: AbstractODRule end
 
-struct DCA{R,P} <: AbstractDCARule
-    rule::Int
+struct DCA{T<:Integer,R,P} <: AbstractDCARule
+    rule::T
     ruleset::R
     states::Int
     radius::P
@@ -35,7 +35,7 @@ starting_array = [0, 1, 0, 1, 1, 0]  # Initial state
 next_generation = dca(starting_array)  # Evolve to the next generation
 ```
 """
-function DCA(rule::Number; states::Int=2, radius=1)
+function DCA(rule::T; states::Int=2, radius=1) where {T<:Integer}
     ruleset = conversion(rule, states, radius)
     return DCA(rule, ruleset, states, radius)
 end
