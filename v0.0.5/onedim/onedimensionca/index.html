@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>One dimensional CA · CellularAutomata.jl</title><meta name="title" content="One dimensional CA · CellularAutomata.jl"/><meta property="og:title" content="One dimensional CA · CellularAutomata.jl"/><meta property="twitter:title" content="One dimensional CA · CellularAutomata.jl"/><meta name="description" content="Documentation for CellularAutomata.jl."/><meta property="og:description" content="Documentation for CellularAutomata.jl."/><meta property="twitter:description" content="Documentation for CellularAutomata.jl."/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../../"><img src="../../assets/logo.png" alt="CellularAutomata.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../../">CellularAutomata.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">CellularAutomata.jl</a></li><li><span class="tocitem">Examples</span><ul><li class="is-active"><a class="tocitem" href>One dimensional CA</a><ul class="internal"><li><a class="tocitem" href="#Elementary-Cellular-Automata"><span>Elementary Cellular Automata</span></a></li><li><a class="tocitem" href="#Multiple-States-Cellular-Automata"><span>Multiple States Cellular Automata</span></a></li><li><a class="tocitem" href="#Larger-Radius-Cellular-Automata"><span>Larger Radius Cellular Automata</span></a></li><li><a class="tocitem" href="#Totalistic-Cellular-Automata"><span>Totalistic Cellular Automata</span></a></li><li><a class="tocitem" href="#Continuous-Cellular-Automata"><span>Continuous Cellular Automata</span></a></li></ul></li><li><a class="tocitem" href="../../twodim/twodimensionca/">Two dimensional CA</a></li></ul></li><li><span class="tocitem">API Documentation</span><ul><li><a class="tocitem" href="../../api/general/">General APIs</a></li><li><a class="tocitem" href="../../api/onedim/">One Dimensional CA</a></li><li><a class="tocitem" href="../../api/twodim/">Two Dimensial CA</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>One dimensional CA</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>One dimensional CA</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/MartinuzziFrancesco/CellularAutomata.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/MartinuzziFrancesco/CellularAutomata.jl/blob/master/docs/src/onedim/onedimensionca.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="One-Dimensional-Cellular-Automata"><a class="docs-heading-anchor" href="#One-Dimensional-Cellular-Automata">One Dimensional Cellular Automata</a><a id="One-Dimensional-Cellular-Automata-1"></a><a class="docs-heading-anchor-permalink" href="#One-Dimensional-Cellular-Automata" title="Permalink"></a></h1><h2 id="Elementary-Cellular-Automata"><a class="docs-heading-anchor" href="#Elementary-Cellular-Automata">Elementary Cellular Automata</a><a id="Elementary-Cellular-Automata-1"></a><a class="docs-heading-anchor-permalink" href="#Elementary-Cellular-Automata" title="Permalink"></a></h2><p>Elementary Cellular Automata (ECA) have a radius of one and can be in only two possible states. Here we show a couple of examples:</p><p><a href="http://atlas.wolfram.com/01/01/18/">Rule 18</a></p><pre><code class="language-julia hljs">using CellularAutomata, Plots
+
+states = 2
+radius = 1
+generations = 50
+ncells = 111
+starting_val = zeros(Bool, ncells)
+starting_val[Int(floor(ncells/2)+1)] = 1
+
+rule = 18
+
+ca = CellularAutomaton(DCA(rule), starting_val, generations)
+
+heatmap(ca.evolution,
+    yflip=true,
+    c=cgrad([:white, :black]),
+    legend = :none,
+    axis=false,
+    ticks=false)</code></pre><img src="ffacc305.svg" alt="Example block output"/><p><a href="http://atlas.wolfram.com/01/01/30/">Rule 30</a></p><pre><code class="language-julia hljs">states = 2
+radius = 1
+generations = 50
+ncells = 111
+starting_val = zeros(Bool, ncells)
+starting_val[Int(floor(ncells/2)+1)] = 1
+
+rule = 30
+
+ca = CellularAutomaton(DCA(rule), starting_val, generations)
+
+heatmap(ca.evolution,
+    yflip=true,
+    c=cgrad([:white, :black]),
+    legend = :none,
+    axis=false,
+    ticks=false)</code></pre><img src="beb2b213.svg" alt="Example block output"/><h2 id="Multiple-States-Cellular-Automata"><a class="docs-heading-anchor" href="#Multiple-States-Cellular-Automata">Multiple States Cellular Automata</a><a id="Multiple-States-Cellular-Automata-1"></a><a class="docs-heading-anchor-permalink" href="#Multiple-States-Cellular-Automata" title="Permalink"></a></h2><p>General Cellular Automata have the same rule of ECA but they can have a radius larger than unity and/or a number of states greater than two. Here are provided examples for every possible permutation, starting with a Cellular Automaton with 3 states.</p><p><a href="https://www.wolframalpha.com/input/?i=rule+7%2C110%2C222%2C193%2C934+k%3D3&amp;lk=3">Rule 7110222193934</a></p><pre><code class="language-julia hljs">using CellularAutomata, Plots
+
+states = 3
+radius = 1
+generations = 50
+ncells = 111
+starting_val = zeros(ncells)
+starting_val[Int(floor(ncells/2)+1)] = 2
+
+rule = 7110222193934
+
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius),
+                       starting_val, generations)
+
+heatmap(ca.evolution,
+    yflip=true,
+    c=cgrad([:white, :black]),
+    legend = :none,
+    axis=false,
+    ticks=false,
+    size=(ncells*10, generations*10))</code></pre><img src="1133fd15.svg" alt="Example block output"/><h2 id="Larger-Radius-Cellular-Automata"><a class="docs-heading-anchor" href="#Larger-Radius-Cellular-Automata">Larger Radius Cellular Automata</a><a id="Larger-Radius-Cellular-Automata-1"></a><a class="docs-heading-anchor-permalink" href="#Larger-Radius-Cellular-Automata" title="Permalink"></a></h2><p>The following examples shows a Cellular Automaton with radius=2, with two only possible states:</p><p><a href="https://www.wolframalpha.com/input/?i=rule+1%2C388%2C968%2C789+r%3D2&amp;lk=3">Rule 1388968789</a></p><pre><code class="language-julia hljs">using CellularAutomata, Plots
+
+states = 2
+radius = 2
+generations = 30
+ncells = 111
+starting_val = zeros(ncells)
+starting_val[Int(floor(ncells/2)+1)] = 1
+
+rule = 1388968789
+
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius),
+                           starting_val, generations)
+
+heatmap(ca.evolution,
+    yflip=true,
+    c=cgrad([:white, :black]),
+    legend = :none,
+    axis=false,
+    ticks=false,
+    size=(ncells*10, generations*10))</code></pre><img src="f3f7cb18.svg" alt="Example block output"/><p>And finally, three states with a radius equal to two:</p><p><a href="https://www.wolframalpha.com/input/?i=CA+k%3D3+r%3D2+rule+914752986721674989234787899872473589234512347899&amp;lk=3">Rule 914752986721674989234787899872473589234512347899</a></p><pre><code class="language-julia hljs">states = 3
+radius = 2
+generations = 30
+ncells = 111
+starting_val = zeros(ncells)
+starting_val[Int(floor(ncells/2)+1)] = 2
+
+rule = 914752986721674989234787899872473589234512347899
+
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius),
+                       starting_val, generations)
+
+heatmap(ca.evolution,
+    yflip=true,
+    c=cgrad([:white, :black]),
+    legend = :none,
+    axis=false,
+    ticks=false,
+    size=(ncells*10, generations*10))</code></pre><img src="07692354.svg" alt="Example block output"/><p>It is also possible to specify asymmetric neighborhoods, giving a tuple to the kwarg detailing the number of neighbors to considerate at the left and right of the cell: <a href="https://www.wolframalpha.com/input/?i=radius+3%2F2+rule+1235&amp;lk=3">Rule 1235</a></p><pre><code class="language-julia hljs">states = 2
+radius = (2,1)
+generations = 30
+ncells = 111
+starting_val = zeros(ncells)
+starting_val[Int(floor(ncells/2)+1)] = 1
+
+rule = 1235
+
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius),
+                       starting_val, generations)
+
+heatmap(ca.evolution,
+    yflip=true,
+    c=cgrad([:white, :black]),
+    legend = :none,
+    axis=false,
+    ticks=false,
+    size=(ncells*10, generations*10))</code></pre><img src="cd3f7ebd.svg" alt="Example block output"/><h2 id="Totalistic-Cellular-Automata"><a class="docs-heading-anchor" href="#Totalistic-Cellular-Automata">Totalistic Cellular Automata</a><a id="Totalistic-Cellular-Automata-1"></a><a class="docs-heading-anchor-permalink" href="#Totalistic-Cellular-Automata" title="Permalink"></a></h2><p>Totalistic Cellular Automata takes the sum of the neighborhood to calculate the value of the next step.</p><p><a href="http://atlas.wolfram.com/01/02/1635/">Rule 1635</a></p><pre><code class="language-julia hljs">using CellularAutomata, Plots
+states = 3
+radius = 1
+generations = 50
+ncells = 111
+starting_val = zeros(Integer, ncells)
+starting_val[Int(floor(ncells/2)+1)] = 1
+
+rule = 1635
+
+ca = CellularAutomaton(DCA(rule, states=states),
+                       starting_val, generations)
+
+heatmap(ca.evolution,
+    yflip=true,
+    c=cgrad([:white, :black]),
+    legend = :none,
+    axis=false,
+    ticks=false)</code></pre><img src="ca3f445e.svg" alt="Example block output"/><p><a href="http://atlas.wolfram.com/01/03/107398/">Rule 107398</a></p><pre><code class="language-julia hljs">states = 4
+radius = 1
+generations = 50
+ncells = 111
+starting_val = zeros(Integer, ncells)
+starting_val[Int(floor(ncells/2)+1)] = 1
+
+rule = 107398
+
+ca = CellularAutomaton(DCA(rule, states=states),
+                       starting_val, generations)
+
+heatmap(ca.evolution,
+    yflip=true,
+    c=cgrad([:white, :black]),
+    legend = :none,
+    axis=false,
+    ticks=false)</code></pre><img src="52d9c91f.svg" alt="Example block output"/><p>Here are some results for a bigger radius, using a radius of 2 as an example.</p><p><a href="http://atlas.wolfram.com/01/06/Rules/53/index.html#01_06_9_53">Rule 53</a></p><pre><code class="language-julia hljs">states = 2
+radius = 2
+generations = 50
+ncells = 111
+starting_val = zeros(Integer, ncells)
+starting_val[Int(floor(ncells/2)+1)] = 1
+
+rule = 53
+
+ca = CellularAutomaton(DCA(rule, radius=radius), 
+                           starting_val, generations)
+
+heatmap(ca.evolution, 
+    yflip=true, 
+    c=cgrad([:white, :black]),
+    legend = :none,
+    axis=false,
+    ticks=false)</code></pre><h2 id="Continuous-Cellular-Automata"><a class="docs-heading-anchor" href="#Continuous-Cellular-Automata">Continuous Cellular Automata</a><a id="Continuous-Cellular-Automata-1"></a><a class="docs-heading-anchor-permalink" href="#Continuous-Cellular-Automata" title="Permalink"></a></h2><p>Continuous Cellular Automata work in the same way as the totalistic but with real values. The examples are taken from the already mentioned book <a href="https://www.wolframscience.com/nks/p159--continuous-cellular-automata/">NKS</a>.</p><p>Rule 0.025</p><pre><code class="language-julia hljs">using CellularAutomata, Plots
+
+generations = 50
+ncells = 111
+starting_val = zeros(Float64, ncells)
+starting_val[Int(floor(ncells/2)+1)] = 1.0
+
+rule = 0.025
+
+ca = CellularAutomaton(CCA(rule), starting_val, generations)
+
+heatmap(ca.evolution,
+    yflip=true,
+    c=cgrad([:white, :black]),
+    legend = :none,
+    axis=false,
+    ticks=false)</code></pre><img src="34ee94a4.svg" alt="Example block output"/><p>Rule 0.2</p><pre><code class="language-julia hljs">radius = 1
+generations = 50
+ncells = 111
+starting_val = zeros(Float64, ncells)
+starting_val[Int(floor(ncells/2)+1)] = 1.0
+
+rule = 0.2
+
+ca = CellularAutomaton(CCA(rule, radius=radius),
+                       starting_val, generations)
+
+heatmap(ca.evolution,
+    yflip=true,
+    c=cgrad([:white, :black]),
+    legend = :none,
+    axis=false,
+    ticks=false)</code></pre><img src="10264eaa.svg" alt="Example block output"/></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« CellularAutomata.jl</a><a class="docs-footer-nextpage" href="../../twodim/twodimensionca/">Two dimensional CA »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.3.0 on <span class="colophon-date" title="Saturday 16 March 2024 01:12">Saturday 16 March 2024</span>. Using Julia version 1.10.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
