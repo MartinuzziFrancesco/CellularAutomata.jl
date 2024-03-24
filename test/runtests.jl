@@ -2,7 +2,7 @@ using Test
 using SafeTestsets
 
 @testset "Quality Assurance" begin
-    @safetestset include("qa.jl")
+    @safetestset "Quality Assurance" include("qa.jl")
 end
 
 @testset "DCA" begin
