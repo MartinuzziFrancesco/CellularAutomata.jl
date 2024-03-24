@@ -1,36 +1,24 @@
 using Test
 using SafeTestsets
 
-@safetestset "Quality Assurance" begin
-    include("qa.jl")
+@testset "Quality Assurance" begin
+    @safetestset "Quality Assurance" include("qa.jl")
 end
 
 @testset "DCA" begin
-    @safetestset "Size tests" begin
-        include("dca_test.jl")
-    end
-    @safetestset "ECA ruleset tests" begin
-        include("eca_ruleset_test.jl")
-    end
+    @safetestset "Size tests" include("dca_test.jl")
+    @safetestset "ECA ruleset tests" include("eca_ruleset_test.jl")
 end
 
 @testset "TCA" begin
-    @safetestset "Size tests" begin
-        include("tca_test.jl")
-    end
+    @safetestset "Size tests" include("tca_test.jl")
 end
 
 @testset "CCA" begin
-    @safetestset "Size tests" begin
-        include("cca_test.jl")
-    end
+    @safetestset "Size tests" include("cca_test.jl")
 end
 
 @testset "Life-like" begin
-    @safetestset "Life glider" begin
-        include("glider_test.jl")
-    end
-    @safetestset "Life blinker" begin
-        include("blinker_test.jl")
-    end
+    @safetestset "Life glider" include("glider_test.jl")
+    @safetestset "Life blinker" include("blinker_test.jl")
 end
