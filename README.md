@@ -6,7 +6,7 @@
 
 | **Documentation** | **Build Status** | **Julia** | **Testing** | **DOI** |
 |:-----------------:|:----------------:|:---------:|:-----------:|:-------:|
-| [![docs][docs-img]][docs-url] | [![CI][ci-img]][ci-url] [![codecov][cc-img]][cc-url] | [![Julia][julia-img]][julia-url] [![Code Style: Blue][style-img]][style-url] | [![Aqua QA][aqua-img]][aqua-url] | [![DOI][doi-img]][doi-url]
+| [![docs][docs-img]][docs-url] | [![CI][ci-img]][ci-url] [![codecov][cc-img]][cc-url] | [![Julia][julia-img]][julia-url] [![Code Style: Blue][style-img]][style-url] | [![Aqua QA][aqua-img]][aqua-url] [![JET][jet-img]][jet-url] | [![DOI][doi-img]][doi-url]
 
 [docs-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [docs-url]: [https://awesome-spectral-indices.github.io/SpectralIndices.jl/dev/](https://martinuzzifrancesco.github.io/CellularAutomata.jl/dev/)
@@ -28,6 +28,9 @@
 
 [doi-img]: https://zenodo.org/badge/244027385.svg
 [doi-url]: https://zenodo.org/badge/latestdoi/244027385
+
+[jet-img]: https://img.shields.io/badge/%E2%9C%88%EF%B8%8F%20tested%20with%20-%20JET.jl%20-%20red
+[jet-url]: https://github.com/aviatesk/JET.jl
 
 ## Installation
 CellularAutomata.jl is registered on the general registry. For the installation follow:
