@@ -16,8 +16,6 @@ jobs:
       matrix:
         version:
           - '1'
-          - 'lts'
-          - 'pre'
         os:
           - ubuntu-latest
           - windows-latest
@@ -43,7 +41,7 @@ jobs:
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
       - uses: julia-actions/julia-processcoverage@v1
-      - uses: codecov/codecov-action@v1
+      - uses: codecov/codecov-action@v4.2.0
         with:
           file: lcov.info
   docs:
