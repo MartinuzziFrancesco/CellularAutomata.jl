@@ -17,7 +17,7 @@
 [cc-img]: https://codecov.io/gh/MartinuzziFrancesco/CellularAutomata.jl/coverage.svg?branch=master
 [cc-url]: https://codecov.io/gh/MartinuzziFrancesco/CellularAutomata.jl?branch=master
 
-[julia-img]: https://img.shields.io/badge/julia-v1.9+-blue.svg
+[julia-img]: https://img.shields.io/badge/julia-v1.10+-blue.svg
 [julia-url]: https://julialang.org/
 
 [style-img]: https://img.shields.io/badge/code%20style-blue-4495d1.svg
