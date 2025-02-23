@@ -58,8 +58,10 @@ function conversion(rule::T, states::Int, radius::Tuple) where {T<:Integer}
     return reverse!(rule_bin)
 end
 
+#still ugly
 function state_reader(neighborhood::AbstractArray, states::Int)
-    return parse(Int, join(convert(Array{Int}, neighborhood)); base=states) + 1 #ugly
+    joined = join(convert(Array{Int}, neighborhood))
+    return parse(Int, String(joined); base=states) + 1
 end
 
 function evolution(cell::AbstractArray, ruleset, states::Int, radius::Int)
