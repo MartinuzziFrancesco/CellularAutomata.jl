@@ -1,7 +1,7 @@
 # CellularAutomata.jl
 
 <p align="center">
-    <img width="400px" src="docs/src/assets/logo.png"/>
+    <img width="400px" src="docs/src/assets/logo.svg"/>
 </p>
 
 | **Documentation** | **Build Status** | **Julia** | **Testing** | **DOI** |

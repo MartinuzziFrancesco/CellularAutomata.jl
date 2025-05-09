@@ -1,7 +1,7 @@
 # CellularAutomata.jl
 
 This package is meant to be a complete Open source reference for everything regarding Cellular Automata.
-In it you will find wayd to create one and two dimensional Cellular Automata models and functions 
+In it you will find ways to create one and two dimensional Cellular Automata models and functions 
 to analyze them
 
 ## General usage

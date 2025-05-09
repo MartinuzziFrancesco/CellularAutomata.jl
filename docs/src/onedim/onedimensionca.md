@@ -52,7 +52,7 @@ heatmap(ca.evolution,
 ## Multiple States Cellular Automata
 General Cellular Automata have the same rule of ECA but they can have a radius larger than unity and/or a number of states greater than two. Here are provided examples for every possible permutation, starting with a Cellular Automaton with 3 states.
 
-[Rule 7110222193934](https://www.wolframalpha.com/input/?i=rule+7%2C110%2C222%2C193%2C934+k%3D3&lk=3)
+Rule 7110222193934
 ```@example msca
 using CellularAutomata, Plots
 
@@ -80,7 +80,7 @@ heatmap(ca.evolution,
 ## Larger Radius Cellular Automata
 The following examples shows a Cellular Automaton with radius=2, with two only possible states:
 
-[Rule 1388968789](https://www.wolframalpha.com/input/?i=rule+1%2C388%2C968%2C789+r%3D2&lk=3)
+Rule 1388968789
 
 ```@example lrca
 using CellularAutomata, Plots
@@ -108,7 +108,7 @@ heatmap(ca.evolution,
 
 And finally, three states with a radius equal to two:
 
-[Rule 914752986721674989234787899872473589234512347899](https://www.wolframalpha.com/input/?i=CA+k%3D3+r%3D2+rule+914752986721674989234787899872473589234512347899&lk=3)
+Rule 914752986721674989234787899872473589234512347899
 
 ```@example lrca
 states = 3
@@ -133,7 +133,7 @@ heatmap(ca.evolution,
 ```
 
 It is also possible to specify asymmetric neighborhoods, giving a tuple to the kwarg detailing the number of neighbors to considerate at the left and right of the cell:
-[Rule 1235](https://www.wolframalpha.com/input/?i=radius+3%2F2+rule+1235&lk=3)
+Rule 1235
 
 ```@example lrca
 states = 2
