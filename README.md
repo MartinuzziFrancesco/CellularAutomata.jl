@@ -1,8 +1,8 @@
-# CellularAutomata.jl
-
 <p align="center">
     <img width="400px" src="docs/src/assets/logo.svg"/>
 </p>
+
+<div align="center">
 
 | **Documentation** | **Build Status** | **Julia** | **Testing** | **DOI** |
 |:-----------------:|:----------------:|:---------:|:-----------:|:-------:|
@@ -32,18 +32,27 @@
 [jet-img]: https://img.shields.io/badge/%E2%9C%88%EF%B8%8F%20tested%20with%20-%20JET.jl%20-%20red
 [jet-url]: https://github.com/aviatesk/JET.jl
 
+</div>
+
+<div align="center">
+    <h2>CellularAutomata.jl</h2>
+</div>
+
+CellularAutomata.jl offers lightweight and ready to use implementations of
+cellular automata, one and two dimensional.
+
 ## Installation
-CellularAutomata.jl is registered on the general registry. For the installation follow:
+CellularAutomata.jl is registered on the general registry. For the installation use either of:
 
 ```julia
 julia> using Pkg
 julia> Pkg.add("CellularAutomata")
 ```
-or, if you prefer:
+or, on the REPL:
  
-```julia
-julia> using Pkg
-julia> Pkg.add("https://github.com/MartinuzziFrancesco/CellularAutomata.jl")
+```julia_repl
+julia> ] # actually press closed square brackets 
+pkg> add CellularAutomata
 ```
 
 ## Discrete Cellular Automata
