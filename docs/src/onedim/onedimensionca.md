@@ -3,7 +3,7 @@
 ## Elementary Cellular Automata
 Elementary Cellular Automata (ECA) have a radius of one and can be in only two possible states. Here we show a couple of examples:
 
-[Rule 18](http://atlas.wolfram.com/01/01/18/)
+[Rule 18](https://atlas.wolfram.com/01/01/18/)
 
 ```@example eca
 using CellularAutomata, Plots
@@ -27,7 +27,7 @@ heatmap(ca.evolution,
     ticks=false)
 ```
 
-[Rule 30](http://atlas.wolfram.com/01/01/30/)
+[Rule 30](https://atlas.wolfram.com/01/01/30/)
 
 ```@example eca
 states = 2
@@ -161,7 +161,7 @@ heatmap(ca.evolution,
 
 Totalistic Cellular Automata takes the sum of the neighborhood to calculate the value of the next step.
 
-[Rule 1635](http://atlas.wolfram.com/01/02/1635/)
+[Rule 1635](https://atlas.wolfram.com/01/02/1635/)
 
 ```@example tca
 using CellularAutomata, Plots
@@ -185,7 +185,7 @@ heatmap(ca.evolution,
     ticks=false)
 ```
 
-[Rule 107398](http://atlas.wolfram.com/01/03/107398/)
+[Rule 107398](https://atlas.wolfram.com/01/03/107398/)
 
 ```@example tca
 states = 4
@@ -210,7 +210,7 @@ heatmap(ca.evolution,
 
 Here are some results for a bigger radius, using a radius of 2 as an example.
 
-[Rule 53](http://atlas.wolfram.com/01/06/Rules/53/index.html#01_06_9_53)
+[Rule 53](https://atlas.wolfram.com/01/06/Rules/53/index.html#01_06_9_53)
 
 ```julia
 states = 2

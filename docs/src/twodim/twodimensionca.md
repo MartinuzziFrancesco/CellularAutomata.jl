@@ -2,7 +2,7 @@
 
 ## Game of Life
 
-This package can also reproduce Conway's Game of Life, and any variation based on it. The ```Life()``` function takes in a tuple containing the number of neighbors that will gave birth to a new cell, or that will make an existing cell survive. (For example in the Conways's Life the tuple (3, (2,3)) indicates having 3 live neighbors will give birth to an otherwise dead cell, and having either 2 or 3 lie neighbors will make an alive cell continue living.) The implementation follows the [Golly](http://golly.sourceforge.net/Help/changes.html) notation.
+This package can also reproduce Conway's Game of Life, and any variation based on it. The ```Life()``` function takes in a tuple containing the number of neighbors that will gave birth to a new cell, or that will make an existing cell survive. (For example in the Conways's Life the tuple (3, (2,3)) indicates having 3 live neighbors will give birth to an otherwise dead cell, and having either 2 or 3 lie neighbors will make an alive cell continue living.) The implementation follows the [Golly](https://golly.sourceforge.net/Help/changes.html) notation.
 
 This script reproduces the famous glider:
 
