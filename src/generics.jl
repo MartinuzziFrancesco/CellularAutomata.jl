@@ -18,6 +18,18 @@ abstract type AbstractBoundaryCondition end
     Periodic()
 
 Wrap indices around the opposite edge of the state array.
+
+# Examples
+
+```jldoctest
+julia> using CellularAutomata
+
+julia> next_state(CCA(0 // 1), [0 // 1, 0 // 1, 3 // 10]; boundary=Periodic())
+3-element Vector{Rational{Int64}}:
+ 1//10
+ 1//10
+ 1//10
+```
 """
 struct Periodic <: AbstractBoundaryCondition end
 
@@ -25,6 +37,18 @@ struct Periodic <: AbstractBoundaryCondition end
     Reflecting()
 
 Mirror indices at the edge of the state array.
+
+# Examples
+
+```jldoctest
+julia> using CellularAutomata
+
+julia> next_state(CCA(0 // 1), [0 // 1, 0 // 1, 3 // 10]; boundary=Reflecting())
+3-element Vector{Rational{Int64}}:
+  0
+ 1//10
+ 1//10
+```
 """
 struct Reflecting <: AbstractBoundaryCondition end
 
@@ -32,6 +56,18 @@ struct Reflecting <: AbstractBoundaryCondition end
     ConstantBoundary([value = 0])
 
 Use `value` for indices outside the state array.
+
+# Examples
+
+```jldoctest
+julia> using CellularAutomata
+
+julia> next_state(CCA(0 // 1), [0 // 1, 0 // 1, 3 // 10]; boundary=ConstantBoundary())
+3-element Vector{Rational{Int64}}:
+  0
+ 1//10
+ 1//10
+```
 """
 @concrete struct ConstantBoundary <: AbstractBoundaryCondition
     value
@@ -92,5 +128,17 @@ end
 
 Return the number of spatial dimensions used by a cellular-automaton rule. State arrays
 may have additional channel or batch dimensions.
+
+# Examples
+
+```jldoctest
+julia> using CellularAutomata
+
+julia> spatial_dimensions(DCA(30))
+1
+
+julia> spatial_dimensions(Life(((3,), (2, 3))))
+2
+```
 """
 function spatial_dimensions end

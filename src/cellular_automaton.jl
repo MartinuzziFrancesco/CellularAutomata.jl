@@ -23,7 +23,9 @@ Rules may specialize this function to define differentiable transitions.
 
 # Examples
 
-```julia
+```jldoctest
+julia> using CellularAutomata
+
 julia> next_state(DCA(30), [0, 0, 1, 0, 0])
 5-element Vector{Int64}:
  0
@@ -39,6 +41,15 @@ function next_state(
     boundary::AbstractBoundaryCondition=Periodic(),
 )
     return _step(rule, state, boundary)
+end
+
+@concrete struct Transition
+    rule
+    boundary
+end
+
+function (transition::Transition)(state, _)
+    return next_state(transition.rule, state; boundary=transition.boundary)
 end
 
 """
@@ -62,11 +73,21 @@ on the last axis.
 
 # Examples
 
-```julia
+```jldoctest
+julia> using CellularAutomata
+
 julia> history = rollout(DCA(30), [0, 0, 1, 0, 0], 2; save=true);
 
 julia> size(history)
 (5, 3)
+
+julia> history[:, end]
+5-element Vector{Int64}:
+ 1
+ 1
+ 0
+ 0
+ 1
 ```
 """
 function rollout(
@@ -78,7 +99,7 @@ function rollout(
 )
     steps >= 0 || throw(ArgumentError("steps must be nonnegative"))
     isempty(initial_state) && throw(ArgumentError("initial_state cannot be empty"))
-    transition = (state, _) -> next_state(rule, state; boundary=boundary)
+    transition = Transition(rule, boundary)
     if save
         states = accumulate(transition, 1:steps; init=initial_state)
         return stack(Iterators.flatten(((initial_state,), states)))
@@ -101,7 +122,9 @@ time is stored on the last axis.
 
 # Examples
 
-```julia
+```jldoctest
+julia> using CellularAutomata
+
 julia> automaton = CellularAutomaton(DCA(30), [0, 1, 0], 3);
 
 julia> automaton.evolution

@@ -28,17 +28,16 @@ of the neighborhood mean plus `rule`.
 
 # Examples
 
-```julia
-julia> cca = CCA(0.45; radius=1);
+```jldoctest
+julia> using CellularAutomata
 
-julia> next_state(cca, [0.0, 1.0, 0.0, 1.0, 0.5, 1.0])
-6-element Vector{Float64}:
- 0.7833333333333333
- 0.7833333333333333
- 0.11666666666666664
- 0.95
- 0.2833333333333333
- 0.95
+julia> cca = CCA(1 // 10);
+
+julia> next_state(cca, [0 // 1, 0 // 1, 3 // 10])
+3-element Vector{Rational{Int64}}:
+ 1//5
+ 1//5
+ 1//5
 ```
 """
 function CCA(rule::Real; radius=1)
@@ -56,13 +55,23 @@ end
 
 fractional_part(value) = value - floor(value)
 
+@concrete struct CCAUpdate
+    cell
+    rule
+    boundary
+    left
+    right
+end
+
+function (update::CCAUpdate)(index)
+    indices = (index - update.left):(index + update.right)
+    neighborhood = Neighborhood1D(update.cell, update.boundary, indices)
+    return fractional_part(sum(neighborhood) / length(neighborhood) + update.rule)
+end
+
 function cca_evolution(
     cell::AbstractVector, rule::Real, radius, boundary::AbstractBoundaryCondition=Periodic()
 )
     left, right = _radius_extent(radius)
-    neighborhood_size = left + right + 1
-    return map(eachindex(cell)) do i
-        neighborhood = Neighborhood1D(cell, boundary, (i - left):(i + right))
-        return fractional_part(sum(neighborhood) / neighborhood_size + rule)
-    end
+    return map(CCAUpdate(cell, rule, boundary, left, right), eachindex(cell))
 end

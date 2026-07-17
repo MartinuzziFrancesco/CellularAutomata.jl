@@ -29,7 +29,9 @@ Construct a Life-like cellular-automaton rule using Golly birth/survival notatio
 
 # Examples
 
-```julia
+```jldoctest
+julia> using CellularAutomata
+
 julia> life = Life(((3,), (2, 3)); radius=1);
 
 julia> blinker = [0 0 0 0 0; 0 0 1 0 0; 0 0 1 0 0; 0 0 1 0 0; 0 0 0 0 0];
@@ -57,6 +59,34 @@ function _step(life::Life, state::AbstractMatrix, boundary::AbstractBoundaryCond
     return life_evolution(state, life.born, life.survive, life.radius, boundary)
 end
 
+@concrete struct LifeUpdate
+    state
+    born
+    survive
+    radius
+    boundary
+end
+
+function (update::LifeUpdate)(index::CartesianIndex{2})
+    row, column = Tuple(index)
+    radius = update.radius
+    alive = 0
+    for column_offset in (-radius):radius, row_offset in (-radius):radius
+        if !iszero(row_offset) || !iszero(column_offset)
+            alive += Int(
+                _boundary_get(
+                    update.state, update.boundary, row + row_offset, column + column_offset
+                ),
+            )
+        end
+    end
+    current = update.state[index]
+    lives =
+        (isone(current) && alive in update.survive) ||
+        (iszero(current) && alive in update.born)
+    return convert(eltype(update.state), lives)
+end
+
 function life_evolution(
     starting_array::AbstractMatrix,
     born,
@@ -64,20 +94,6 @@ function life_evolution(
     radius::Int,
     boundary::AbstractBoundaryCondition=Periodic(),
 )
-    return map(CartesianIndices(starting_array)) do index
-        row, column = Tuple(index)
-        alive = 0
-        for column_offset in (-radius):radius, row_offset in (-radius):radius
-            if !iszero(row_offset) || !iszero(column_offset)
-                alive += Int(
-                    _boundary_get(
-                        starting_array, boundary, row + row_offset, column + column_offset
-                    ),
-                )
-            end
-        end
-        current = starting_array[index]
-        lives = (isone(current) && alive in survive) || (iszero(current) && alive in born)
-        return convert(eltype(starting_array), lives)
-    end
+    update = LifeUpdate(starting_array, born, survive, radius, boundary)
+    return map(update, CartesianIndices(starting_array))
 end

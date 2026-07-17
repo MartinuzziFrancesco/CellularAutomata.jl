@@ -30,13 +30,25 @@ Construct a discrete cellular-automaton rule and its neighborhood lookup table.
 
 # Examples
 
-```julia
-julia> dca = DCA(110; states=2, radius=1);
+```jldoctest
+julia> using CellularAutomata
 
-julia> next_state(dca, [0, 1, 0, 1, 1, 0])
-6-element Vector{Int64}:
+julia> dca = DCA(30);
+
+julia> dca.ruleset
+8-element Vector{Int64}:
+ 0
  1
  1
+ 1
+ 1
+ 0
+ 0
+ 0
+
+julia> next_state(dca, [0, 0, 1, 0, 0])
+5-element Vector{Int64}:
+ 0
  1
  1
  1
@@ -79,6 +91,22 @@ function state_reader(neighborhood, states::Int)
     return index + 1
 end
 
+@concrete struct DCAUpdate
+    cell
+    ruleset
+    states
+    boundary
+    left
+    right
+end
+
+function (update::DCAUpdate)(index)
+    indices = (index - update.left):(index + update.right)
+    neighborhood = Neighborhood1D(update.cell, update.boundary, indices)
+    new_state = update.ruleset[state_reader(neighborhood, update.states)]
+    return convert(eltype(update.cell), new_state)
+end
+
 function dca_evolution(
     cell::AbstractVector,
     ruleset,
@@ -87,8 +115,5 @@ function dca_evolution(
     boundary::AbstractBoundaryCondition=Periodic(),
 )
     left, right = _radius_extent(radius)
-    return map(eachindex(cell)) do i
-        neighborhood = Neighborhood1D(cell, boundary, (i - left):(i + right))
-        return convert(eltype(cell), ruleset[state_reader(neighborhood, states)])
-    end
+    return map(DCAUpdate(cell, ruleset, states, boundary, left, right), eachindex(cell))
 end

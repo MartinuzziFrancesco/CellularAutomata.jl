@@ -24,6 +24,17 @@ end
     lempel_ziv(ca::AbstractCellularAutomaton)
 
 Compute the mean Lempel-Ziv complexity across rows of an automaton's retained evolution.
+
+# Examples
+
+```jldoctest
+julia> using CellularAutomata
+
+julia> automaton = CellularAutomaton(DCA(30), [0, 1, 0], 3);
+
+julia> lempel_ziv(automaton)
+1.3333333333333333
+```
 """
 function lempel_ziv(ca::AbstractCellularAutomaton)
     ca_size = size(ca.evolution, 1)

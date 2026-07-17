@@ -31,17 +31,25 @@ Construct a totalistic cellular-automaton rule and its lookup table.
 
 # Examples
 
-```julia
-julia> tca = TCA(102; states=3, radius=1);
+```jldoctest
+julia> using CellularAutomata
 
-julia> next_state(tca, [0, 2, 1, 0, 1, 2])
-6-element Vector{Int64}:
+julia> tca = TCA(3);
+
+julia> tca.codeset
+4-element Vector{Int64}:
+ 1
  1
  0
  0
+
+julia> next_state(tca, [0, 0, 1, 0, 0])
+5-element Vector{Int64}:
  1
- 0
- 0
+ 1
+ 1
+ 1
+ 1
 ```
 """
 function TCA(code::Integer; states::Int=2, radius=1)
@@ -66,12 +74,24 @@ end
 
 tca_state_reader(neighborhood) = Int(sum(neighborhood)) + 1
 
+@concrete struct TCAUpdate
+    cell
+    codeset
+    boundary
+    left
+    right
+end
+
+function (update::TCAUpdate)(index)
+    indices = (index - update.left):(index + update.right)
+    neighborhood = Neighborhood1D(update.cell, update.boundary, indices)
+    new_state = update.codeset[tca_state_reader(neighborhood)]
+    return convert(eltype(update.cell), new_state)
+end
+
 function tca_evolution(
     cell::AbstractVector, codeset, radius, boundary::AbstractBoundaryCondition=Periodic()
 )
     left, right = _radius_extent(radius)
-    return map(eachindex(cell)) do i
-        neighborhood = Neighborhood1D(cell, boundary, (i - left):(i + right))
-        return convert(eltype(cell), codeset[tca_state_reader(neighborhood)])
-    end
+    return map(TCAUpdate(cell, codeset, boundary, left, right), eachindex(cell))
 end
