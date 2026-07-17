@@ -125,7 +125,10 @@ time is stored on the last axis.
 ```jldoctest
 julia> using CellularAutomata
 
-julia> automaton = CellularAutomaton(DCA(30), [0, 1, 0], 3);
+julia> automaton = CellularAutomaton(DCA(30), [0, 1, 0], 3)
+CellularAutomaton with 3 generations
+  rule: DCA(30; states=2, radius=1)
+  evolution: 3×3 Matrix{Int64}
 
 julia> automaton.evolution
 3×3 Matrix{Int64}:
@@ -158,4 +161,17 @@ function CellularAutomaton(
     generations >= 1 || throw(ArgumentError("generations must be at least 1"))
     evolution = rollout(rule, initial_conditions, generations - 1; save=true)
     return CellularAutomaton(Int(generations), rule, evolution)
+end
+
+function Base.show(io::IO, automaton::CellularAutomaton)
+    return print(
+        io, "CellularAutomaton(", automaton.rule, "; generations=",
+        automaton.generations, ")"
+    )
+end
+
+function Base.show(io::IO, ::MIME"text/plain", automaton::CellularAutomaton)
+    println(io, "CellularAutomaton with ", automaton.generations, " generations")
+    println(io, "  rule: ", automaton.rule)
+    return print(io, "  evolution: ", summary(automaton.evolution))
 end

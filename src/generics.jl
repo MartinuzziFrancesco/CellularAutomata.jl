@@ -75,6 +75,10 @@ end
 
 ConstantBoundary() = ConstantBoundary(0)
 
+function Base.show(io::IO, boundary::ConstantBoundary)
+    return print(io, "ConstantBoundary(", boundary.value, ")")
+end
+
 @inline _boundary_index(i, n, ::Periodic) = mod1(i, n)
 @inline function _boundary_index(i, n, ::Reflecting)
     n == 1 && return 1

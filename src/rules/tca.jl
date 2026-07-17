@@ -95,3 +95,8 @@ function tca_evolution(
     left, right = _radius_extent(radius)
     return map(TCAUpdate(cell, codeset, boundary, left, right), eachindex(cell))
 end
+
+function Base.show(io::IO, tca::TCA)
+    return print(
+        io, "TCA(", tca.code, "; states=", tca.states, ", radius=", tca.radius, ")")
+end

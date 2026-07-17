@@ -117,3 +117,8 @@ function dca_evolution(
     left, right = _radius_extent(radius)
     return map(DCAUpdate(cell, ruleset, states, boundary, left, right), eachindex(cell))
 end
+
+function Base.show(io::IO, dca::DCA)
+    return print(
+        io, "DCA(", dca.rule, "; states=", dca.states, ", radius=", dca.radius, ")")
+end

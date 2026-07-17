@@ -75,3 +75,7 @@ function cca_evolution(
     left, right = _radius_extent(radius)
     return map(CCAUpdate(cell, rule, boundary, left, right), eachindex(cell))
 end
+
+function Base.show(io::IO, cca::CCA)
+    return print(io, "CCA(", cca.rule, "; radius=", cca.radius, ")")
+end

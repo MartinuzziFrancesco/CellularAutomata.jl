@@ -97,3 +97,7 @@ function life_evolution(
     update = LifeUpdate(starting_array, born, survive, radius, boundary)
     return map(update, CartesianIndices(starting_array))
 end
+
+function Base.show(io::IO, life::Life)
+    return print(io, "Life(", (life.born, life.survive), "; radius=", life.radius, ")")
+end

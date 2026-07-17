@@ -42,6 +42,21 @@ end
     @test eltype(CCA(0.0f0)(Float32[0, 1])) == Float32
 end
 
+@testset "show methods" begin
+    @test repr(DCA(30)) == "DCA(30; states=2, radius=1)"
+    @test repr(TCA(3)) == "TCA(3; states=2, radius=1)"
+    @test repr(CCA(0.1)) == "CCA(0.1; radius=1)"
+    @test repr(Life(((3,), (2, 3)))) == "Life(((3,), (2, 3)); radius=1)"
+    @test repr(ConstantBoundary(0.5)) == "ConstantBoundary(0.5)"
+
+    automaton = CellularAutomaton(DCA(30), [0, 1, 0], 3)
+    @test repr(automaton) == "CellularAutomaton(DCA(30; states=2, radius=1); generations=3)"
+    @test repr(MIME"text/plain"(), automaton) ==
+          "CellularAutomaton with 3 generations\n" *
+          "  rule: DCA(30; states=2, radius=1)\n" *
+          "  evolution: 3×3 Matrix{Int64}"
+end
+
 @testset "Life is synchronous and supports larger radii" begin
     input = Bool[1 1 0; 0 1 0; 0 0 0]
     copy_before = copy(input)
