@@ -72,27 +72,27 @@ function (update::LifeUpdate)(index::CartesianIndex{2})
     radius = update.radius
     alive = 0
     for column_offset in (-radius):radius, row_offset in (-radius):radius
+
         if !iszero(row_offset) || !iszero(column_offset)
             alive += Int(
                 _boundary_get(
-                    update.state, update.boundary, row + row_offset, column + column_offset
-                ),
+                update.state, update.boundary, row + row_offset, column + column_offset
+            ),
             )
         end
     end
     current = update.state[index]
-    lives =
-        (isone(current) && alive in update.survive) ||
-        (iszero(current) && alive in update.born)
+    lives = (isone(current) && alive in update.survive) ||
+            (iszero(current) && alive in update.born)
     return convert(eltype(update.state), lives)
 end
 
 function life_evolution(
-    starting_array::AbstractMatrix,
-    born,
-    survive,
-    radius::Int,
-    boundary::AbstractBoundaryCondition=Periodic(),
+        starting_array::AbstractMatrix,
+        born,
+        survive,
+        radius::Int,
+        boundary::AbstractBoundaryCondition=Periodic()
 )
     update = LifeUpdate(starting_array, born, survive, radius, boundary)
     return map(update, CartesianIndices(starting_array))

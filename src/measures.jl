@@ -37,6 +37,8 @@ julia> lempel_ziv(automaton)
 ```
 """
 function lempel_ziv(ca::AbstractCellularAutomaton)
+    ca.evolution isa AbstractMatrix ||
+        throw(ArgumentError("lempel_ziv only supports one-dimensional automata"))
     ca_size = size(ca.evolution, 1)
     lz_tot = 0
 

@@ -6,10 +6,10 @@
 
 | **Documentation** | **Build Status** | **Julia** | **Testing** | **DOI** |
 |:-----------------:|:----------------:|:---------:|:-----------:|:-------:|
-| [![docs][docs-img]][docs-url] | [![CI][ci-img]][ci-url] [![codecov][cc-img]][cc-url] | [![Julia][julia-img]][julia-url] [![Code Style: Blue][style-img]][style-url] | [![Aqua QA][aqua-img]][aqua-url] [![JET][jet-img]][jet-url] | [![DOI][doi-img]][doi-url]
+| [![docs][docs-img]][docs-url] | [![CI][ci-img]][ci-url] [![codecov][cc-img]][cc-url] | [![Julia][julia-img]][julia-url] [![SciML Code Style][style-img]][style-url] | [![Aqua QA][aqua-img]][aqua-url] [![JET][jet-img]][jet-url] | [![DOI][doi-img]][doi-url]
 
 [docs-img]: https://img.shields.io/badge/docs-stable-blue.svg
-[docs-url]: [https://awesome-spectral-indices.github.io/SpectralIndices.jl/dev/](https://martinuzzifrancesco.github.io/CellularAutomata.jl/dev/)
+[docs-url]: https://martinuzzifrancesco.github.io/CellularAutomata.jl/dev/
 
 [ci-img]: https://github.com/MartinuzziFrancesco/CellularAutomata.jl/actions/workflows/CI.yml/badge.svg
 [ci-url]: https://github.com/MartinuzziFrancesco/CellularAutomata.jl/actions/workflows/CI.yml
@@ -20,8 +20,8 @@
 [julia-img]: https://img.shields.io/badge/julia-v1.10+-blue.svg
 [julia-url]: https://julialang.org/
 
-[style-img]: https://img.shields.io/badge/code%20style-blue-4495d1.svg
-[style-url]: https://github.com/invenia/BlueStyle
+[style-img]: https://img.shields.io/static/v1?label=code%20style&message=SciML&color=9558b2&labelColor=389826
+[style-url]: https://github.com/SciML/SciMLStyle
 
 [aqua-img]: https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg
 [aqua-url]: https://github.com/JuliaTesting/Aqua.jl
@@ -57,13 +57,13 @@ pkg> add CellularAutomata
 
 ## Discrete Cellular Automata
 The package offers creation of all the cellular automata described in A New Kind of Science by Wolfram, and the rules for the creation are labelled as in the book.
-We will recreate some of the examples that can be found in the [wolfram atlas](http://atlas.wolfram.com/TOC/TOC_200.html) both for elementary and totalistic cellular automata.
+We will recreate some of the examples that can be found in the [wolfram atlas](https://atlas.wolfram.com/TOC/TOC_200.html) both for elementary and totalistic cellular automata.
 
 ### Elementary Cellular Automata
 
 Elementary Cellular Automata (ECA) have a radius of one and can be in only two possible states. Here we show a couple of examples:
 
-[Rule 18](http://atlas.wolfram.com/01/01/18/)
+[Rule 18](https://atlas.wolfram.com/01/01/18/)
 
 ```julia
 using CellularAutomata, Plots
@@ -88,7 +88,7 @@ heatmap(ca.evolution,
 ```
 ![dca18](https://user-images.githubusercontent.com/10376688/75625854-4a816b00-5bc2-11ea-8337-9132553cd38b.png)
 
-[Rule 30](http://atlas.wolfram.com/01/01/30/)
+[Rule 30](https://atlas.wolfram.com/01/01/30/)
 
 ```julia
 using CellularAutomata, Plots
@@ -235,7 +235,7 @@ heatmap(ca.evolution,
 
 Totalistic Cellular Automata takes the sum of the neighborhood to calculate the value of the next step.
 
-[Rule 1635](http://atlas.wolfram.com/01/02/1635/)
+[Rule 1635](https://atlas.wolfram.com/01/02/1635/)
 
 ```julia
 using CellularAutomata, Plots
@@ -261,7 +261,7 @@ heatmap(ca.evolution,
 ```
 ![dca1635](https://user-images.githubusercontent.com/10376688/75628258-7eb35680-5bd7-11ea-81c5-b95b25f1369d.png)
 
-[Rule 107398](http://atlas.wolfram.com/01/03/107398/)
+[Rule 107398](https://atlas.wolfram.com/01/03/107398/)
 
 ```julia
 using CellularAutomata, Plots
@@ -290,7 +290,7 @@ heatmap(ca.evolution,
 
 Here are some results for a bigger radius, using a radius of 2 as an example.
 
-[Rule 53](http://atlas.wolfram.com/01/06/Rules/53/index.html#01_06_9_53)
+[Rule 53](https://atlas.wolfram.com/01/06/Rules/53/index.html#01_06_9_53)
 
 ```julia
 using CellularAutomata, Plots
@@ -374,7 +374,7 @@ heatmap(ca.evolution,
 
 ## Game of Life
 
-This package can also reproduce Conway's Game of Life, and any variation based on it. The ```Life()``` function takes in a tuple containing the number of neighbors that will gave birth to a new cell, or that will make an existing cell survive. (For example in the Conways's Life the tuple (3, (2,3)) indicates having 3 live neighbors will give birth to an otherwise dead cell, and having either 2 or 3 lie neighbors will make an alive cell continue living.) The implementation follows the [Golly](http://golly.sourceforge.net/Help/changes.html) notation.
+This package can also reproduce Conway's Game of Life, and any variation based on it. The ```Life()``` function takes in a tuple containing the number of neighbors that will gave birth to a new cell, or that will make an existing cell survive. (For example in the Conways's Life the tuple (3, (2,3)) indicates having 3 live neighbors will give birth to an otherwise dead cell, and having either 2 or 3 lie neighbors will make an alive cell continue living.) The implementation follows the [Golly](https://golly.sourceforge.net/Help/changes.html) notation.
 
 This script reproduces the famous glider:
 

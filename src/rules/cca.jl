@@ -70,7 +70,7 @@ function (update::CCAUpdate)(index)
 end
 
 function cca_evolution(
-    cell::AbstractVector, rule::Real, radius, boundary::AbstractBoundaryCondition=Periodic()
+        cell::AbstractVector, rule::Real, radius, boundary::AbstractBoundaryCondition=Periodic()
 )
     left, right = _radius_extent(radius)
     return map(CCAUpdate(cell, rule, boundary, left, right), eachindex(cell))

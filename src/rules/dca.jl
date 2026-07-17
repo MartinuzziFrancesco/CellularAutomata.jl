@@ -108,11 +108,11 @@ function (update::DCAUpdate)(index)
 end
 
 function dca_evolution(
-    cell::AbstractVector,
-    ruleset,
-    states::Int,
-    radius,
-    boundary::AbstractBoundaryCondition=Periodic(),
+        cell::AbstractVector,
+        ruleset,
+        states::Int,
+        radius,
+        boundary::AbstractBoundaryCondition=Periodic()
 )
     left, right = _radius_extent(radius)
     return map(DCAUpdate(cell, ruleset, states, boundary, left, right), eachindex(cell))

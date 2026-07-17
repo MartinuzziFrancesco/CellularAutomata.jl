@@ -82,10 +82,10 @@ ConstantBoundary() = ConstantBoundary(0)
     return reflected <= n ? reflected : 2n - reflected
 end
 
-@inline function _boundary_get(array, boundary::Union{Periodic,Reflecting}, i)
+@inline function _boundary_get(array, boundary::Union{Periodic, Reflecting}, i)
     return array[_boundary_index(i, length(array), boundary)]
 end
-@inline function _boundary_get(array, boundary::Union{Periodic,Reflecting}, i, j)
+@inline function _boundary_get(array, boundary::Union{Periodic, Reflecting}, i, j)
     row = _boundary_index(i, size(array, 1), boundary)
     column = _boundary_index(j, size(array, 2), boundary)
     return array[row, column]
@@ -113,7 +113,7 @@ function Base.iterate(neighborhood::Neighborhood1D, state...)
 end
 
 _radius_extent(radius::Integer) = (radius, radius)
-_radius_extent(radius::Tuple{<:Integer,<:Integer}) = radius
+_radius_extent(radius::Tuple{<:Integer, <:Integer}) = radius
 
 function _validate_radius(radius)
     left, right = _radius_extent(radius)

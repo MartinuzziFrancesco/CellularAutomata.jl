@@ -9,10 +9,10 @@ makedocs(;
     linkcheck=true,
     format=Documenter.HTML(;
         assets=["assets/favicon.ico"],
-        canonical="https://MartinuzziFrancesco.github.io/CellularAutomata.jl",
+        canonical="https://MartinuzziFrancesco.github.io/CellularAutomata.jl"
     ),
     warnonly=[:missing_docs],
-    pages=pages,
+    pages=pages
 )
 
 deploydocs(;

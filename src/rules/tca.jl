@@ -90,7 +90,7 @@ function (update::TCAUpdate)(index)
 end
 
 function tca_evolution(
-    cell::AbstractVector, codeset, radius, boundary::AbstractBoundaryCondition=Periodic()
+        cell::AbstractVector, codeset, radius, boundary::AbstractBoundaryCondition=Periodic()
 )
     left, right = _radius_extent(radius)
     return map(TCAUpdate(cell, codeset, boundary, left, right), eachindex(cell))

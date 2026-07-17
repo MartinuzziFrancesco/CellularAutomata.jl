@@ -36,9 +36,9 @@ julia> next_state(DCA(30), [0, 0, 1, 0, 0])
 ```
 """
 function next_state(
-    rule::AbstractCellularAutomatonRule,
-    state;
-    boundary::AbstractBoundaryCondition=Periodic(),
+        rule::AbstractCellularAutomatonRule,
+        state;
+        boundary::AbstractBoundaryCondition=Periodic()
 )
     return _step(rule, state, boundary)
 end
@@ -91,11 +91,11 @@ julia> history[:, end]
 ```
 """
 function rollout(
-    rule::AbstractCellularAutomatonRule,
-    initial_state,
-    steps::Integer;
-    boundary::AbstractBoundaryCondition=Periodic(),
-    save::Bool=false,
+        rule::AbstractCellularAutomatonRule,
+        initial_state,
+        steps::Integer;
+        boundary::AbstractBoundaryCondition=Periodic(),
+        save::Bool=false
 )
     steps >= 0 || throw(ArgumentError("steps must be nonnegative"))
     isempty(initial_state) && throw(ArgumentError("initial_state cannot be empty"))
@@ -136,14 +136,14 @@ julia> automaton.evolution
 """
 @concrete struct CellularAutomaton <: AbstractCellularAutomaton
     generations::Int
-    generation_fun
+    rule
     evolution
 end
 
 function CellularAutomaton(
-    rule::AbstractCellularAutomatonRule,
-    initial_conditions::AbstractVector,
-    generations::Integer,
+        rule::AbstractCellularAutomatonRule,
+        initial_conditions::AbstractVector,
+        generations::Integer
 )
     generations >= 1 || throw(ArgumentError("generations must be at least 1"))
     history = rollout(rule, initial_conditions, generations - 1; save=true)
@@ -151,9 +151,9 @@ function CellularAutomaton(
 end
 
 function CellularAutomaton(
-    rule::AbstractCellularAutomatonRule,
-    initial_conditions::AbstractArray,
-    generations::Integer,
+        rule::AbstractCellularAutomatonRule,
+        initial_conditions::AbstractArray,
+        generations::Integer
 )
     generations >= 1 || throw(ArgumentError("generations must be at least 1"))
     evolution = rollout(rule, initial_conditions, generations - 1; save=true)

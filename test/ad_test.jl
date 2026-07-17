@@ -28,7 +28,7 @@ end
     objective(rule_value) = sum(rollout(CCA(rule_value; radius=0), initial, 3))
     @test ForwardDiff.derivative(objective, 0.01) ≈ 12.0
     @test ForwardDiff.jacobian(x -> rollout(CCA(0.01; radius=0), x, 3), initial) ≈
-        [i == j ? 1.0 : 0.0 for i in 1:4, j in 1:4]
+          [i == j ? 1.0 : 0.0 for i in 1:4, j in 1:4]
 
     function final_state_loss(x)
         ca = CellularAutomaton(CCA(0.45), x, 5)

@@ -18,7 +18,7 @@ end
         TCA(3),
         CCA(0.1),
         Life(((3,), (2, 3))),
-        ConstantBoundary(0.0),
+        ConstantBoundary(0.0)
     )
     for object in objects
         @test all(isconcretetype, fieldtypes(typeof(object)))
