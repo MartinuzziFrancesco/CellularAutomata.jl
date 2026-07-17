@@ -10,7 +10,14 @@ include("rules/tca.jl")
 include("rules/life.jl")
 include("measures.jl")
 
+export AbstractCellularAutomaton, AbstractCellularAutomatonRule
+export AbstractBoundaryCondition, Periodic, Reflecting, ConstantBoundary
+export AbstractDiscreteCellularAutomatonRule
+export AbstractContinuousCellularAutomatonRule
+export AbstractTotalisticCellularAutomatonRule
+export AbstractLifeLikeCellularAutomatonRule
 export CellularAutomaton
+export next_state, rollout, spatial_dimensions
 export DCA
 export CCA
 export TCA

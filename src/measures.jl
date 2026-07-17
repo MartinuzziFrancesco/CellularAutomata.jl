@@ -21,11 +21,11 @@ function lempel_ziv_complexity(sequence)
 end
 
 """
-    function lempel_ziv(ca::AbstractCA)
+    lempel_ziv(ca::AbstractCellularAutomaton)
 
-Computes the lempel ziv complexity of a given Cellular Automaton.
+Compute the mean Lempel-Ziv complexity across rows of an automaton's retained evolution.
 """
-function lempel_ziv(ca::AbstractCA)
+function lempel_ziv(ca::AbstractCellularAutomaton)
     ca_size = size(ca.evolution, 1)
     lz_tot = 0
 

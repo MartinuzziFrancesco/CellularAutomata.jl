@@ -1,60 +1,77 @@
-abstract type AbstractDCARule <: AbstractODRule end
+"""
+    AbstractDiscreteCellularAutomatonRule
 
-@concrete struct DCA <: AbstractDCARule
+Supertype for cellular-automaton rules based on discrete neighborhood lookup tables.
+"""
+abstract type AbstractDiscreteCellularAutomatonRule <: AbstractCellularAutomatonRule end
+
+@concrete struct DCA <: AbstractDiscreteCellularAutomatonRule
     rule
     ruleset
     states::Int
     radius
 end
 
+spatial_dimensions(::DCA) = 1
+
 """
     DCA(rule; states=2, radius=1)
 
-Creates a `DCA` object given a specific rule. It automatically computes the ruleset for
-the provided rule, number of states, and radius.
+Construct a discrete cellular-automaton rule and its neighborhood lookup table.
 
 # Arguments
 
-  - `rule`: The rule identifier used for the cellular automaton's evolution.
-  - `states` (optional): The number of possible states for each cell. Defaults to 2.
-  - `radius` (optional): The neighborhood radius around each cell considered during the
-    evolution. Defaults to 1.
+  - `rule`: Nonnegative Wolfram rule identifier.
 
-# Usage
+# Keyword arguments
 
-```julia
-dca = DCA(30; states=2, radius=1)  # Creates a DCA with rule 30, 2 states, and radius 1.
-```
+  - `states`: Number of possible cell states. Defaults to 2.
+  - `radius`: Symmetric radius or `(left, right)` asymmetric radius. Defaults to 1.
 
-Once instantiated, the `DCA` object can evolve a given starting array of cell states
-through its callable interface:
+# Examples
 
 ```julia
-dca = DCA(110; states=2, radius=1)  # Initialize with rule 110, 2 states, and a radius of 1
-starting_array = [0, 1, 0, 1, 1, 0]  # Initial state
-next_generation = dca(starting_array)  # Evolve to the next generation
+julia> dca = DCA(110; states=2, radius=1);
+
+julia> next_state(dca, [0, 1, 0, 1, 1, 0])
+6-element Vector{Int64}:
+ 1
+ 1
+ 1
+ 1
+ 1
+ 0
 ```
 """
 function DCA(rule::Integer; states::Int=2, radius=1)
+    states >= 2 || throw(ArgumentError("states must be at least 2"))
+    _validate_radius(radius)
     ruleset = conversion(rule, states, radius)
     return DCA(rule, ruleset, states, radius)
 end
 
 function (dca::DCA)(starting_array::AbstractArray)
-    return evolution(starting_array, dca.ruleset, dca.states, dca.radius)
+    return next_state(dca, starting_array)
 end
 
-function conversion(rule::Integer, states::Int, radius::Int)
-    return digits_ruleset(rule, states, states^(2 * radius + 1))
+function _step(dca::DCA, cell::AbstractVector, boundary::AbstractBoundaryCondition)
+    return dca_evolution(cell, dca.ruleset, dca.states, dca.radius, boundary)
 end
 
-function conversion(rule::Integer, states::Int, radius::Tuple)
-    return digits_ruleset(rule, states, states^(sum(radius) + 1))
+function conversion(rule::Integer, states::Int, radius)
+    left, right = _radius_extent(radius)
+    return digits_ruleset(rule, states, states^(left + right + 1))
 end
 
-digits_ruleset(rule::Integer, states::Int, len::Int) = digits(rule; base=states, pad=len)
+function digits_ruleset(rule::Integer, states::Int, len::Int)
+    rule >= 0 || throw(ArgumentError("rule must be nonnegative"))
+    ruleset = digits(rule; base=states, pad=len)
+    length(ruleset) <= len ||
+        throw(ArgumentError("rule does not fit the requested states and radius"))
+    return ruleset
+end
 
-function state_reader(neighborhood::AbstractArray, states::Int)
+function state_reader(neighborhood, states::Int)
     index = 0
     for cell in neighborhood
         index = index * states + Int(cell)
@@ -62,16 +79,16 @@ function state_reader(neighborhood::AbstractArray, states::Int)
     return index + 1
 end
 
-function evolution(cell::AbstractArray, ruleset, states::Int, radius::Int)
-    return evolution(cell, ruleset, states, (radius, radius))
-end
-
-function evolution(cell::AbstractArray, ruleset, states::Int, radius::Tuple)
-    left, right = radius
-    neighborhood_size = left + right + 1
-    padded = vcat(cell[(end - left + 1):end], cell, cell[1:right])
-    return eltype(cell)[
-        ruleset[state_reader(view(padded, i:(i + neighborhood_size - 1)), states)] for
-        i in eachindex(cell)
-    ]
+function dca_evolution(
+    cell::AbstractVector,
+    ruleset,
+    states::Int,
+    radius,
+    boundary::AbstractBoundaryCondition=Periodic(),
+)
+    left, right = _radius_extent(radius)
+    return map(eachindex(cell)) do i
+        neighborhood = Neighborhood1D(cell, boundary, (i - left):(i + right))
+        return convert(eltype(cell), ruleset[state_reader(neighborhood, states)])
+    end
 end

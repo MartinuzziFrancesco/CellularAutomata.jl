@@ -1,5 +1,6 @@
 pages = [
     "CellularAutomata.jl" => "index.md",
+    "Differentiable cellular automata" => "ad_design.md",
     "Examples" => [
         "One dimensional CA" => "onedim/onedimensionca.md"
         "Two dimensional CA" => "twodim/twodimensionca.md"

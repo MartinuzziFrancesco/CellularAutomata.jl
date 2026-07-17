@@ -1,103 +1,83 @@
-abstract type AbstractLifeRule <: AbstractTDRule end
+"""
+    AbstractLifeLikeCellularAutomatonRule
 
-@concrete struct Life <: AbstractLifeRule
+Supertype for Life-like cellular-automaton rules.
+"""
+abstract type AbstractLifeLikeCellularAutomatonRule <: AbstractCellularAutomatonRule end
+
+@concrete struct Life <: AbstractLifeLikeCellularAutomatonRule
     born
     survive
     radius::Int
 end
 
+spatial_dimensions(::Life) = 2
+
 """
     Life(life_description; radius=1)
 
-Create a `Life` object to simulate a cellular automaton based on a variation of
-the Conway's Game of Life, using custom rules for cell birth and survival.
-The rules are defined using the Golly notation.
+Construct a Life-like cellular-automaton rule using Golly birth/survival notation.
 
 # Arguments
 
-  - `life_description`: A tuple of two tuples (`(b, s)`) specifying the birth (`b`)
-    and survival (`s`) rules.
+  - `life_description`: `(born, survive)` neighbor counts. `born` contains counts that
+    activate a dead cell; `survive` contains counts that preserve a live cell.
 
-      + `b`: A tuple containing the numbers of neighbouring cells that cause a dead
-        cell to become alive in the next generation.
-      + `s`: A tuple containing the numbers of neighbouring cells that allow a live
-        cell to remain alive in the next generation.
+# Keyword arguments
 
-  - `radius` (optional): The radius of the neighborhood considered for determining
-    cell fate. Defaults to 1.
+  - `radius`: Radius of the square neighborhood. Defaults to 1.
 
-# Usage
+# Examples
 
 ```julia
-life = Life(((3,), (2, 3)); radius=1)  # Initializes Life
-```
+julia> life = Life(((3,), (2, 3)); radius=1);
 
-After instantiation, the `Life` object can be used to evolve a given starting
-array representing the initial state of the cellular automaton:
+julia> blinker = [0 0 0 0 0; 0 0 1 0 0; 0 0 1 0 0; 0 0 1 0 0; 0 0 0 0 0];
 
-```julia
-# Initialize Life with custom rules: birth if 3 neighbors, survive if 2 or 3 neighbors
-life = Life(((3,), (2, 3)); radius=1)
-
-# Example starting state: a 5x5 grid with a "glider" pattern
-starting_array = zeros(Int, 5, 5)
-starting_array[2, 3] = 1
-starting_array[3, 4] = 1
-starting_array[4, 2:4] .= 1
-
-# Compute the next generation
-next_generation = life(starting_array)
+julia> next_state(life, blinker)
+5×5 Matrix{Int64}:
+ 0  0  0  0  0
+ 0  0  0  0  0
+ 0  1  1  1  0
+ 0  0  0  0  0
+ 0  0  0  0  0
 ```
 """
 function Life(life_description::Tuple; radius::Int=1)
+    radius >= 1 || throw(ArgumentError("radius must be at least 1"))
     born, survive = life_description
     return Life(born, survive, radius)
 end
 
 function (life::Life)(starting_array::AbstractMatrix)
-    return life_evolution(starting_array, life.born, life.survive, life.radius)
+    return next_state(life, starting_array)
 end
 
-function virtual_expansion(starting_array::AbstractMatrix, radius::Int)
-    height, width = size(starting_array)
-    nh, nw = height - radius + 1, width - radius + 1
-    left = vcat(
-        starting_array[nh:end, nw:end],
-        starting_array[:, nw:end],
-        starting_array[1:radius, nw:end],
-    )
-    right = vcat(
-        starting_array[nh:end, 1:radius],
-        starting_array[:, 1:radius],
-        starting_array[1:radius, 1:radius],
-    )
-    middle = vcat(starting_array[nh:end, :], starting_array, starting_array[1:radius, :])
-
-    return hcat(left, middle, right)
+function _step(life::Life, state::AbstractMatrix, boundary::AbstractBoundaryCondition)
+    return life_evolution(state, life.born, life.survive, life.radius, boundary)
 end
 
-function life_application(neighborhood::AbstractMatrix, born, survive)
-    center_i = size(neighborhood, 1) ÷ 2 + 1
-    center_j = size(neighborhood, 2) ÷ 2 + 1
-    past_value = neighborhood[center_i, center_j]
-    alive = sum(neighborhood) - past_value
-
-    if past_value == 1
-        return eltype(neighborhood)(alive in survive)
-    else
-        return eltype(neighborhood)(alive in born)
+function life_evolution(
+    starting_array::AbstractMatrix,
+    born,
+    survive,
+    radius::Int,
+    boundary::AbstractBoundaryCondition=Periodic(),
+)
+    return map(CartesianIndices(starting_array)) do index
+        row, column = Tuple(index)
+        alive = 0
+        for column_offset in (-radius):radius, row_offset in (-radius):radius
+            if !iszero(row_offset) || !iszero(column_offset)
+                alive += Int(
+                    _boundary_get(
+                        starting_array, boundary, row + row_offset, column + column_offset
+                    ),
+                )
+            end
+        end
+        current = starting_array[index]
+        lives = (isone(current) && alive in survive) || (iszero(current) && alive in born)
+        return convert(eltype(starting_array), lives)
     end
-end
-
-function life_evolution(starting_array::AbstractMatrix, born, survive, radius::Int)
-    height, width = size(starting_array)
-    output = similar(starting_array)
-    expanded = virtual_expansion(starting_array, radius)
-
-    for j in 1:width, i in 1:height
-        output[i, j] = life_application(
-            expanded[i:(i + 2 * radius), j:(j + 2 * radius)], born, survive
-        )
-    end
-    return output
 end
