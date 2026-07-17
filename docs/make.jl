@@ -7,6 +7,7 @@ makedocs(;
     clean=true,
     doctest=true,
     linkcheck=true,
+    linkcheck_ignore=[r"https://golly\.sourceforge\.net"],
     format=Documenter.HTML(;
         assets=["assets/favicon.ico"],
         canonical="https://MartinuzziFrancesco.github.io/CellularAutomata.jl"
