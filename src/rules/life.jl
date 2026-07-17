@@ -1,9 +1,8 @@
-
 abstract type AbstractLifeRule <: AbstractTDRule end
 
-struct Life{T,A} <: AbstractLifeRule
-    born::T
-    survive::A
+@concrete struct Life <: AbstractLifeRule
+    born
+    survive
     radius::Int
 end
 
@@ -44,14 +43,14 @@ life = Life(((3,), (2, 3)); radius=1)
 starting_array = zeros(Int, 5, 5)
 starting_array[2, 3] = 1
 starting_array[3, 4] = 1
-starting_array[4, 2:4] = 1
+starting_array[4, 2:4] .= 1
 
 # Compute the next generation
 next_generation = life(starting_array)
 ```
 """
-function Life(life_description::Tuple; radius=1)
-    born, survive = life_description[1], life_description[2]
+function Life(life_description::Tuple; radius::Int=1)
+    born, survive = life_description
     return Life(born, survive, radius)
 end
 
@@ -77,28 +76,27 @@ function virtual_expansion(starting_array::AbstractMatrix, radius::Int)
     return hcat(left, middle, right)
 end
 
-function life_application(state, born, survive)
-    past_value = state[size(state, 1) ÷ 2 + 1, size(state, 2) ÷ 2 + 1] #save past cell value
-    state[size(state, 1) ÷ 2 + 1, size(state, 2) ÷ 2 + 1] = 0 #past cell value set to zero
-    alive = sum(state) #the sum is the number of cell alive in the neighborhood since the central value is equal to zero
+function life_application(neighborhood::AbstractMatrix, born, survive)
+    center_i = size(neighborhood, 1) ÷ 2 + 1
+    center_j = size(neighborhood, 2) ÷ 2 + 1
+    past_value = neighborhood[center_i, center_j]
+    alive = sum(neighborhood) - past_value
 
-    if past_value == 1 && alive in survive
-        return 1
-    elseif past_value == 0 && alive in born
-        return 1
+    if past_value == 1
+        return eltype(neighborhood)(alive in survive)
     else
-        return 0
+        return eltype(neighborhood)(alive in born)
     end
 end
 
-function life_evolution(starting_array::AbstractMatrix, born, survive, radius)
+function life_evolution(starting_array::AbstractMatrix, born, survive, radius::Int)
     height, width = size(starting_array)
-    output = zeros(typeof(starting_array[2]), height, width)
-    virtual_output = virtual_expansion(starting_array, radius)
+    output = similar(starting_array)
+    expanded = virtual_expansion(starting_array, radius)
 
-    for i in 1:(height - radius + 1), j in 1:(width - radius + 1)
+    for j in 1:width, i in 1:height
         output[i, j] = life_application(
-            virtual_output[i:(i + radius + 1), j:(j + radius + 1)], born, survive
+            expanded[i:(i + 2 * radius), j:(j + 2 * radius)], born, survive
         )
     end
     return output

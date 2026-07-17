@@ -1,5 +1,7 @@
 module CellularAutomata
 
+using ConcreteStructs: @concrete
+
 include("generics.jl")
 include("cellular_automaton.jl")
 include("rules/dca.jl")

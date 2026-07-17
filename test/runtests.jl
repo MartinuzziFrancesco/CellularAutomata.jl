@@ -18,6 +18,10 @@ end
     @safetestset "Size tests" include("cca_test.jl")
 end
 
+@testset "AD" begin
+    @safetestset "ForwardDiff through CCA" include("ad_test.jl")
+end
+
 @testset "Life-like" begin
     @safetestset "Life glider" include("glider_test.jl")
     @safetestset "Life blinker" include("blinker_test.jl")

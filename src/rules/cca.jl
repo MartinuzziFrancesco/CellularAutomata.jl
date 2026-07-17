@@ -1,8 +1,8 @@
 abstract type AbstractCCARule <: AbstractODRule end
 
-struct CCA{T<:Real} <: AbstractCCARule
-    rule::T
-    radius::Int
+@concrete struct CCA <: AbstractCCARule
+    rule
+    radius
 end
 
 """
@@ -37,46 +37,27 @@ next_generation = cca(starting_array)  # Evolve to next generation
 The evolution is determined by the rule applied to the sum of the neighborhood states,
 normalized by their count, for each cell in the array.
 """
-function CCA(rule::T; radius=1) where {T<:Real}
+function CCA(rule::Real; radius=1)
     return CCA(rule, radius)
 end
 
 function (cca::CCA)(starting_array::AbstractArray)
-    return nextgen = evolution(starting_array, cca.rule, cca.radius)
+    return evolution(starting_array, cca.rule, cca.radius)
 end
 
-function c_state_reader(neighborhood::AbstractArray, radius)
-    return sum(neighborhood) / length(neighborhood)
+fractional_part(value) = value - floor(value)
+
+function evolution(cell::AbstractArray, rule::Real, radius::Int)
+    return evolution(cell, rule, (radius, radius))
 end
 
-function evolution(cell::AbstractArray, rule::T, radius::Number) where {T<:Real}
-    neighborhood_size = radius * 2 + 1
-    output = zeros(length(cell))
-    cell = vcat(
-        cell[(end - neighborhood_size ÷ 2 + 1):end], cell, cell[1:(neighborhood_size ÷ 2)]
-    )
-
-    for i in 1:(length(cell) - neighborhood_size + 1)
-        output[i] = modf(
-            c_state_reader(cell[i:(i + neighborhood_size - 1)], radius) + rule
-        )[1]
-    end
-
-    return output
-end
-
-function evolution(cell::AbstractArray, rule::T, radius::Tuple) where {T<:Real}
-    neighborhood_size = sum(radius) + 1
-    output = zeros(length(cell))
-    cell = vcat(
-        cell[(end - neighborhood_size ÷ 2 + 1):end], cell, cell[1:(neighborhood_size ÷ 2)]
-    )
-
-    for i in 1:(length(cell) - neighborhood_size + 1)
-        output[i] = modf(
-            c_state_reader(cell[i:(i + neighborhood_size - 1)], radius) + rule
-        )[1]
-    end
-
-    return output
+function evolution(cell::AbstractArray, rule::Real, radius::Tuple)
+    left, right = radius
+    neighborhood_size = left + right + 1
+    padded = vcat(cell[(end - left + 1):end], cell, cell[1:right])
+    return [
+        fractional_part(
+            sum(view(padded, i:(i + neighborhood_size - 1))) / neighborhood_size + rule
+        ) for i in eachindex(cell)
+    ]
 end

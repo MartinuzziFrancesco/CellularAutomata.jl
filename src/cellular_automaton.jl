@@ -35,9 +35,9 @@ For a two-dimensional cellular automaton:
 ```julia
 rule = Life(((3,), (2, 3)))  # Define or instantiate a two-dimensional rule
 initial_conditions = [  # Initial state matrix
-    [0, 1, 0],
-    [1, 0, 1],
-    [0, 1, 0],
+    0 1 0
+    1 0 1
+    0 1 0
 ]
 generations = 50  # Number of generations to simulate
 automaton_td = CellularAutomaton(rule, initial_conditions, generations)
@@ -60,16 +60,16 @@ automaton_td.evolution
   - The `rule` parameter determines the dimensionality of the cellular automaton.
     Ensure that your `initial_conditions` and `rule` are compatible in terms of dimensions.
 """
-struct CellularAutomaton{F,E} <: AbstractCA
+@concrete struct CellularAutomaton <: AbstractCA
     generations::Int
-    generation_fun::F
-    evolution::E
+    generation_fun
+    evolution
 end
 
-function CellularAutomaton(rule::AbstractODRule, initial_conditions, generations)
-    evolution = zeros(
-        typeof(initial_conditions[2]), generations, length(initial_conditions)
-    )
+function CellularAutomaton(
+    rule::AbstractODRule, initial_conditions::AbstractVector, generations::Int
+)
+    evolution = zeros(eltype(initial_conditions), generations, length(initial_conditions))
     evolution[1, :] = initial_conditions
 
     for i in 2:generations
@@ -79,9 +79,11 @@ function CellularAutomaton(rule::AbstractODRule, initial_conditions, generations
     return CellularAutomaton(generations, rule, evolution)
 end
 
-function CellularAutomaton(rule::AbstractTDRule, initial_conditions, generations)
+function CellularAutomaton(
+    rule::AbstractTDRule, initial_conditions::AbstractMatrix, generations::Int
+)
     evolution = zeros(
-        typeof(initial_conditions[2]),
+        eltype(initial_conditions),
         size(initial_conditions, 1),
         size(initial_conditions, 2),
         generations,

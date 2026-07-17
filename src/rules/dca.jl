@@ -1,10 +1,10 @@
 abstract type AbstractDCARule <: AbstractODRule end
 
-struct DCA{T<:Integer,R,P} <: AbstractDCARule
-    rule::T
-    ruleset::R
+@concrete struct DCA <: AbstractDCARule
+    rule
+    ruleset
     states::Int
-    radius::P
+    radius
 end
 
 """
@@ -35,7 +35,7 @@ starting_array = [0, 1, 0, 1, 1, 0]  # Initial state
 next_generation = dca(starting_array)  # Evolve to the next generation
 ```
 """
-function DCA(rule::T; states::Int=2, radius=1) where {T<:Integer}
+function DCA(rule::Integer; states::Int=2, radius=1)
     ruleset = conversion(rule, states, radius)
     return DCA(rule, ruleset, states, radius)
 end
@@ -44,48 +44,34 @@ function (dca::DCA)(starting_array::AbstractArray)
     return evolution(starting_array, dca.ruleset, dca.states, dca.radius)
 end
 
-function conversion(rule::T, states::Int, radius::Int) where {T<:Integer}
-    rule_len = states^(2 * radius + 1)
-    rule_bin = parse.(Int, split(string(rule; base=states), ""))
-    rule_bin = vcat(zeros(typeof(rule_bin[1]), rule_len - length(rule_bin)), rule_bin)
-    return reverse!(rule_bin)
+function conversion(rule::Integer, states::Int, radius::Int)
+    return digits_ruleset(rule, states, states^(2 * radius + 1))
 end
 
-function conversion(rule::T, states::Int, radius::Tuple) where {T<:Integer}
-    rule_len = states^(sum(radius) + 1)
-    rule_bin = parse.(Int, split(string(rule; base=states), ""))
-    rule_bin = vcat(zeros(typeof(rule_bin[1]), rule_len - length(rule_bin)), rule_bin)
-    return reverse!(rule_bin)
+function conversion(rule::Integer, states::Int, radius::Tuple)
+    return digits_ruleset(rule, states, states^(sum(radius) + 1))
 end
 
-#still ugly
+digits_ruleset(rule::Integer, states::Int, len::Int) = digits(rule; base=states, pad=len)
+
 function state_reader(neighborhood::AbstractArray, states::Int)
-    joined = join(convert(Array{Int}, neighborhood))
-    return parse(Int, String(joined); base=states) + 1
+    index = 0
+    for cell in neighborhood
+        index = index * states + Int(cell)
+    end
+    return index + 1
 end
 
 function evolution(cell::AbstractArray, ruleset, states::Int, radius::Int)
-    neighborhood_size = radius * 2 + 1
-    output = zeros(length(cell))
-    cell = vcat(
-        cell[(end - neighborhood_size ÷ 2 + 1):end], cell, cell[1:(neighborhood_size ÷ 2)]
-    )
-
-    for i in 1:(length(cell) - neighborhood_size + 1)
-        output[i] = ruleset[state_reader(cell[i:(i + neighborhood_size - 1)], states)]
-    end
-
-    return output
+    return evolution(cell, ruleset, states, (radius, radius))
 end
 
 function evolution(cell::AbstractArray, ruleset, states::Int, radius::Tuple)
-    neighborhood_size = sum(radius) + 1
-    output = zeros(length(cell))#da qui in poi da modificare
-    cell = vcat(cell[(end - radius[1] + 1):end], cell, cell[1:radius[2]])
-
-    for i in 1:(length(cell) - neighborhood_size + 1)
-        output[i] = ruleset[state_reader(cell[i:(i + neighborhood_size - 1)], states)]
-    end
-
-    return output
+    left, right = radius
+    neighborhood_size = left + right + 1
+    padded = vcat(cell[(end - left + 1):end], cell, cell[1:right])
+    return eltype(cell)[
+        ruleset[state_reader(view(padded, i:(i + neighborhood_size - 1)), states)] for
+        i in eachindex(cell)
+    ]
 end
