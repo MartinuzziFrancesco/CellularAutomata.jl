@@ -3,7 +3,7 @@
 ## Elementary Cellular Automata
 Elementary Cellular Automata (ECA) have a radius of one and can be in only two possible states. Here we show a couple of examples:
 
-[Rule 18](http://atlas.wolfram.com/01/01/18/)
+[Rule 18](https://atlas.wolfram.com/01/01/18/)
 
 ```@example eca
 using CellularAutomata, Plots
@@ -19,15 +19,15 @@ rule = 18
 
 ca = CellularAutomaton(DCA(rule), starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
     ticks=false)
 ```
 
-[Rule 30](http://atlas.wolfram.com/01/01/30/)
+[Rule 30](https://atlas.wolfram.com/01/01/30/)
 
 ```@example eca
 states = 2
@@ -41,8 +41,8 @@ rule = 30
 
 ca = CellularAutomaton(DCA(rule), starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -60,16 +60,16 @@ states = 3
 radius = 1
 generations = 50
 ncells = 111
-starting_val = zeros(ncells)
+starting_val = zeros(Int, ncells)
 starting_val[Int(floor(ncells/2)+1)] = 2
 
-rule = 7110222193934 
+rule = 7110222193934
 
-ca = CellularAutomaton(DCA(rule,states=states,radius=radius), 
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -89,16 +89,16 @@ states = 2
 radius = 2
 generations = 30
 ncells = 111
-starting_val = zeros(ncells)
+starting_val = zeros(Int, ncells)
 starting_val[Int(floor(ncells/2)+1)] = 1
 
-rule = 1388968789 
+rule = 1388968789
 
-ca = CellularAutomaton(DCA(rule,states=states,radius=radius), 
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius),
                            starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -115,16 +115,16 @@ states = 3
 radius = 2
 generations = 30
 ncells = 111
-starting_val = zeros(ncells)
+starting_val = zeros(Int, ncells)
 starting_val[Int(floor(ncells/2)+1)] = 2
 
-rule = 914752986721674989234787899872473589234512347899 
+rule = 914752986721674989234787899872473589234512347899
 
-ca = CellularAutomaton(DCA(rule,states=states,radius=radius), 
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -140,16 +140,16 @@ states = 2
 radius = (2,1)
 generations = 30
 ncells = 111
-starting_val = zeros(ncells)
+starting_val = zeros(Int, ncells)
 starting_val[Int(floor(ncells/2)+1)] = 1
 
-rule = 1235 
+rule = 1235
 
-ca = CellularAutomaton(DCA(rule,states=states,radius=radius), 
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -161,7 +161,7 @@ heatmap(ca.evolution,
 
 Totalistic Cellular Automata takes the sum of the neighborhood to calculate the value of the next step.
 
-[Rule 1635](http://atlas.wolfram.com/01/02/1635/)
+[Rule 1635](https://atlas.wolfram.com/01/02/1635/)
 
 ```@example tca
 using CellularAutomata, Plots
@@ -174,18 +174,18 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 1635
 
-ca = CellularAutomaton(DCA(rule, states=states), 
+ca = CellularAutomaton(DCA(rule, states=states),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
     ticks=false)
 ```
 
-[Rule 107398](http://atlas.wolfram.com/01/03/107398/)
+[Rule 107398](https://atlas.wolfram.com/01/03/107398/)
 
 ```@example tca
 states = 4
@@ -197,11 +197,11 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 107398
 
-ca = CellularAutomaton(DCA(rule, states=states), 
+ca = CellularAutomaton(DCA(rule, states=states),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -210,7 +210,7 @@ heatmap(ca.evolution,
 
 Here are some results for a bigger radius, using a radius of 2 as an example.
 
-[Rule 53](http://atlas.wolfram.com/01/06/Rules/53/index.html#01_06_9_53)
+[Rule 53](https://atlas.wolfram.com/01/06/Rules/53/index.html#01_06_9_53)
 
 ```julia
 states = 2
@@ -222,11 +222,11 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 53
 
-ca = CellularAutomaton(DCA(rule, radius=radius), 
+ca = CellularAutomaton(DCA(rule, radius=radius),
                            starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -251,8 +251,8 @@ rule = 0.025
 
 ca = CellularAutomaton(CCA(rule), starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -270,11 +270,11 @@ starting_val[Int(floor(ncells/2)+1)] = 1.0
 
 rule = 0.2
 
-ca = CellularAutomaton(CCA(rule, radius=radius), 
+ca = CellularAutomaton(CCA(rule, radius=radius),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,

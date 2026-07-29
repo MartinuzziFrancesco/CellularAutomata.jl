@@ -1,82 +1,88 @@
-abstract type AbstractCCARule <: AbstractODRule end
+"""
+    AbstractContinuousCellularAutomatonRule
 
-struct CCA{T<:Real} <: AbstractCCARule
-    rule::T
-    radius::Int
+Supertype for cellular-automaton rules with continuous cell states.
+"""
+abstract type AbstractContinuousCellularAutomatonRule <: AbstractCellularAutomatonRule end
+
+@concrete struct CCA <: AbstractContinuousCellularAutomatonRule
+    rule
+    radius
 end
+
+spatial_dimensions(::CCA) = 1
 
 """
     CCA(rule; radius=1)
 
-Create a Continuous Cellular Automaton (CCA) object.
+Construct a continuous cellular-automaton rule. Each output is the fractional part
+of the neighborhood mean plus `rule`.
 
 # Arguments
 
-  - `rule`: A numeric code defining the evolution rule for the cellular automaton.
-  - `radius` (optional): The radius of the neighborhood around each cell considered
-    for its update at each step. Defaults to `1`.
+  - `rule`: Value added to each neighborhood mean.
 
-# Returns
+# Keyword arguments
 
-`CCA`: A `CCA` object initialized with the given rule and radius.
+  - `radius`: Symmetric radius or `(left, right)` asymmetric radius. Defaults to 1.
 
 # Examples
 
-```julia
-cca = CCA(0.5)
+```jldoctest
+julia> using CellularAutomata
+
+julia> cca = CCA(1 // 10);
+
+julia> next_state(cca, [0 // 1, 0 // 1, 3 // 10])
+3-element Vector{Rational{Int64}}:
+ 1//5
+ 1//5
+ 1//5
 ```
-
-Once created, the `CCA` object can be used to evolve a given starting array of cell states:
-
-```julia
-cca = CCA(0.45; radius=1)  # Initialize with rule 0.45 and default radius
-starting_array = [0, 1, 0, 1, 0.5, 1]  # Initial state
-next_generation = cca(starting_array)  # Evolve to next generation
-```
-
-The evolution is determined by the rule applied to the sum of the neighborhood states,
-normalized by their count, for each cell in the array.
 """
-function CCA(rule::T; radius=1) where {T<:Real}
+function CCA(rule::Real; radius = 1)
+    __validate_radius(radius)
     return CCA(rule, radius)
 end
 
 function (cca::CCA)(starting_array::AbstractArray)
-    return nextgen = evolution(starting_array, cca.rule, cca.radius)
+    return next_state(cca, starting_array)
 end
 
-function c_state_reader(neighborhood::AbstractArray, radius)
-    return sum(neighborhood) / length(neighborhood)
+function __step(cca::CCA, cell::AbstractVector, boundary::AbstractBoundaryCondition)
+    return __cca_evolution(cell, cca.rule, cca.radius, boundary)
 end
 
-function evolution(cell::AbstractArray, rule::T, radius::Number) where {T<:Real}
-    neighborhood_size = radius * 2 + 1
-    output = zeros(length(cell))
-    cell = vcat(
-        cell[(end - neighborhood_size ÷ 2 + 1):end], cell, cell[1:(neighborhood_size ÷ 2)]
+__fractional_part(value) = value - floor(value)
+
+@concrete struct __CCAUpdate
+    cell
+    rule
+    boundary
+    left
+    right
+end
+
+function (update::__CCAUpdate)(index)
+    indices = (index - update.left):(index + update.right)
+    neighborhood = __Neighborhood1D(update.cell, update.boundary, indices)
+    return __fractional_part(sum(neighborhood) / length(neighborhood) + update.rule)
+end
+
+function __cca_evolution(
+        cell::AbstractVector, rule::Real, radius, boundary::AbstractBoundaryCondition = Periodic()
     )
-
-    for i in 1:(length(cell) - neighborhood_size + 1)
-        output[i] = modf(
-            c_state_reader(cell[i:(i + neighborhood_size - 1)], radius) + rule
-        )[1]
-    end
-
-    return output
+    left, right = __radius_extent(radius)
+    return map(__CCAUpdate(cell, rule, boundary, left, right), eachindex(cell))
 end
 
-function evolution(cell::AbstractArray, rule::T, radius::Tuple) where {T<:Real}
-    neighborhood_size = sum(radius) + 1
-    output = zeros(length(cell))
-    cell = vcat(
-        cell[(end - neighborhood_size ÷ 2 + 1):end], cell, cell[1:(neighborhood_size ÷ 2)]
-    )
+"""
+    neighborhood_radius(rule::AbstractCellularAutomatonRule)
 
-    for i in 1:(length(cell) - neighborhood_size + 1)
-        output[i] = modf(
-            c_state_reader(cell[i:(i + neighborhood_size - 1)], radius) + rule
-        )[1]
-    end
+Return the spatial neighborhood radius used by `rule`.
+"""
+neighborhood_radius(cca::CCA) = cca.radius
 
-    return output
+function Base.show(io::IO, cca::CCA)
+    return print(io, "CCA(", cca.rule, "; radius=", cca.radius, ")")
 end

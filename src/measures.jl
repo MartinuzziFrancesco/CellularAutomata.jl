@@ -1,4 +1,4 @@
-function lempel_ziv_complexity(sequence)
+function __lempel_ziv_complexity(sequence)
     sub_strings = Set()
     n = length(sequence)
 
@@ -21,16 +21,30 @@ function lempel_ziv_complexity(sequence)
 end
 
 """
-    function lempel_ziv(ca::AbstractCA)
+    lempel_ziv(ca::AbstractCellularAutomaton)
 
-Computes the lempel ziv complexity of a given Cellular Automaton.
+Compute the mean Lempel-Ziv complexity across rows of an automaton's retained evolution.
+
+# Examples
+
+```jldoctest
+julia> using CellularAutomata
+
+julia> automaton = CellularAutomaton(DCA(30), [0, 1, 0], 3);
+
+julia> lempel_ziv(automaton)
+1.3333333333333333
+```
 """
-function lempel_ziv(ca::AbstractCA)
-    ca_size = size(ca.evolution, 1)
+function lempel_ziv(ca::AbstractCellularAutomaton)
+    history = evolution_history(ca)
+    history isa AbstractMatrix ||
+        throw(ArgumentError("lempel_ziv only supports one-dimensional automata"))
+    ca_size = size(history, 1)
     lz_tot = 0
 
     for i in 1:ca_size
-        lz_tot += lempel_ziv_complexity(ca.evolution[i, :])
+        lz_tot += __lempel_ziv_complexity(history[i, :])
     end
     return lz_tot / ca_size
 end

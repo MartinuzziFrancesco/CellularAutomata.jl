@@ -1,99 +1,114 @@
-abstract type AbstractTCARule <: AbstractDCARule end
+"""
+    AbstractTotalisticCellularAutomatonRule
 
-struct TCA{B,R,T} <: AbstractTCARule
-    code::B
-    codeset::R
+Supertype for rules whose transitions depend on the total neighborhood state.
+"""
+abstract type AbstractTotalisticCellularAutomatonRule <:
+AbstractDiscreteCellularAutomatonRule end
+
+@concrete struct TCA <: AbstractTotalisticCellularAutomatonRule
+    code
+    codeset
     states::Int
-    radius::T
+    radius
 end
+
+spatial_dimensions(::TCA) = 1
 
 """
     TCA(code; states=2, radius=1)
 
-Constructs a Totalistic Cellular Automaton (TCA) with a specified code, number of states,
-and neighborhood radius. It automatically computes the codeset for the provided code
-and configuration, which is used for the automaton's evolution.
+Construct a totalistic cellular-automaton rule and its lookup table.
 
 # Arguments
 
-  - `code`: An integer or string representing the rule code for the automaton's evolution.
-  - `states` (optional): The number of possible states for each cell. Defaults to 2.
-  - `radius` (optional): The neighborhood radius around each cell considered during the
-    evolution. Defaults to 1.
+  - `code`: Nonnegative totalistic rule identifier.
 
-# Usage
+# Keyword arguments
 
-```julia
-tca = TCA(30; states=2, radius=1)  # Creates a TCA with rule code 30, 2 states, and radius 1.
-```
+  - `states`: Number of possible cell states. Defaults to 2.
+  - `radius`: Symmetric radius or `(left, right)` asymmetric radius. Defaults to 1.
 
-After instantiation, the `TCA` object can be used to evolve a given starting array of
-cell states:
+# Throws
 
-```julia
-# Initialize TCA with a specific code, default states, and radius
-tca = TCA(102; states=3, radius=1)
+  - `ArgumentError`: If the rule configuration or a transitioned state is outside its
+    declared discrete domain.
 
-# Example starting state: a 1D array of cells
-starting_array = [0, 2, 1, 0, 1, 2]
+# Examples
 
-# Compute the next generation
-next_generation = tca(starting_array)
+```jldoctest
+julia> using CellularAutomata
+
+julia> tca = TCA(3);
+
+julia> rule_lookup_table(tca)
+4-element Vector{Int64}:
+ 1
+ 1
+ 0
+ 0
+
+julia> next_state(tca, [0, 0, 1, 0, 0])
+5-element Vector{Int64}:
+ 1
+ 1
+ 1
+ 1
+ 1
 ```
 """
-function TCA(code; states=2, radius=1)
-    codeset = tca_conversion(code, states, radius)
+function TCA(code::Integer; states::Int = 2, radius = 1)
+    states >= 2 || throw(ArgumentError("states must be at least 2"))
+    __validate_radius(radius)
+    codeset = __tca_conversion(code, states, radius)
     return TCA(code, codeset, states, radius)
 end
 
 function (tca::TCA)(starting_array::AbstractArray)
-    return nextgen = tca_evolution(starting_array, tca.codeset, tca.states, tca.radius)
+    return next_state(tca, starting_array)
 end
 
-function tca_conversion(code, states, radius::Number)
-    code_len = (2 * radius + 1) * states - 2
-    code_bin = parse.(Int, split(string(code; base=states), ""))
-    code_bin = vcat(zeros(typeof(code_bin[1]), code_len - length(code_bin)), code_bin)
-    return reverse!(code_bin)
+__validate_state(tca::TCA, state) = __validate_discrete_state(state, tca.states)
+
+function __step(tca::TCA, cell::AbstractVector, boundary::AbstractBoundaryCondition)
+    return __tca_evolution(cell, tca.codeset, tca.radius, boundary)
 end
 
-function tca_conversion(code, states, radius::Tuple)
-    code_len = (sum(radius) + 1) * states - 2
-    code_bin = parse.(Int, split(string(code; base=states), ""))
-    code_bin = vcat(zeros(typeof(code_bin[1]), code_len - length(code_bin)), code_bin)
-    return reverse!(code_bin)
+function __tca_conversion(code::Integer, states::Int, radius)
+    left, right = __radius_extent(radius)
+    return __digits_ruleset(code, states, (states - 1) * (left + right + 1) + 1)
 end
 
-function tca_state_reader(neighborhood::AbstractArray, codeset_len)
-    return mod1(sum(neighborhood) + 1, codeset_len)
+__tca_state_reader(neighborhood) = Int(sum(neighborhood)) + 1
+
+@concrete struct __TCAUpdate
+    cell
+    codeset
+    boundary
+    left
+    right
 end
 
-function tca_evolution(cell::AbstractArray, codeset, states, radius::Number)
-    neighborhood_size = radius * 2 + 1
-    output = zeros(length(cell))
-    cell = vcat(
-        cell[(end - neighborhood_size ÷ 2 + 1):end], cell, cell[1:(neighborhood_size ÷ 2)]
+function (update::__TCAUpdate)(index)
+    indices = (index - update.left):(index + update.right)
+    neighborhood = __Neighborhood1D(update.cell, update.boundary, indices)
+    new_state = update.codeset[__tca_state_reader(neighborhood)]
+    return convert(eltype(update.cell), new_state)
+end
+
+function __tca_evolution(
+        cell::AbstractVector, codeset, radius, boundary::AbstractBoundaryCondition = Periodic()
     )
-
-    for i in 1:(length(cell) - neighborhood_size + 1)
-        output[i] = codeset[tca_state_reader(
-            cell[i:(i + neighborhood_size - 1)], length(codeset)
-        )]
-    end
-
-    return output
+    left, right = __radius_extent(radius)
+    return map(__TCAUpdate(cell, codeset, boundary, left, right), eachindex(cell))
 end
 
-function tca_evolution(cell::AbstractArray, codeset, states, radius::Tuple)
-    neighborhood_size = sum(radius) + 1
-    output = zeros(length(cell))
-    cell = vcat(cell[(end - radius[1] + 1):end], cell, cell[1:radius[2]])
+rule_lookup_table(tca::TCA) = tca.codeset
+cell_state_count(tca::TCA) = tca.states
+neighborhood_radius(tca::TCA) = tca.radius
 
-    for i in 1:(length(cell) - neighborhood_size + 1)
-        output[i] = codeset[tca_state_reader(
-            cell[i:(i + neighborhood_size - 1)], length(codeset)
-        )]
-    end
-
-    return output
+function Base.show(io::IO, tca::TCA)
+    return print(
+        io, "TCA(", tca.code, "; states=", tca.states, ", radius=", tca.radius, ")"
+    )
 end
