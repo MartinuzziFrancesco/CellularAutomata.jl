@@ -19,8 +19,8 @@ rule = 18
 
 ca = CellularAutomaton(DCA(rule), starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -41,8 +41,8 @@ rule = 30
 
 ca = CellularAutomaton(DCA(rule), starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -60,16 +60,16 @@ states = 3
 radius = 1
 generations = 50
 ncells = 111
-starting_val = zeros(ncells)
+starting_val = zeros(Int, ncells)
 starting_val[Int(floor(ncells/2)+1)] = 2
 
-rule = 7110222193934 
+rule = 7110222193934
 
-ca = CellularAutomaton(DCA(rule,states=states,radius=radius), 
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -89,16 +89,16 @@ states = 2
 radius = 2
 generations = 30
 ncells = 111
-starting_val = zeros(ncells)
+starting_val = zeros(Int, ncells)
 starting_val[Int(floor(ncells/2)+1)] = 1
 
-rule = 1388968789 
+rule = 1388968789
 
-ca = CellularAutomaton(DCA(rule,states=states,radius=radius), 
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius),
                            starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -115,16 +115,16 @@ states = 3
 radius = 2
 generations = 30
 ncells = 111
-starting_val = zeros(ncells)
+starting_val = zeros(Int, ncells)
 starting_val[Int(floor(ncells/2)+1)] = 2
 
-rule = 914752986721674989234787899872473589234512347899 
+rule = 914752986721674989234787899872473589234512347899
 
-ca = CellularAutomaton(DCA(rule,states=states,radius=radius), 
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -140,16 +140,16 @@ states = 2
 radius = (2,1)
 generations = 30
 ncells = 111
-starting_val = zeros(ncells)
+starting_val = zeros(Int, ncells)
 starting_val[Int(floor(ncells/2)+1)] = 1
 
-rule = 1235 
+rule = 1235
 
-ca = CellularAutomaton(DCA(rule,states=states,radius=radius), 
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -174,11 +174,11 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 1635
 
-ca = CellularAutomaton(DCA(rule, states=states), 
+ca = CellularAutomaton(DCA(rule, states=states),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -197,11 +197,11 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 107398
 
-ca = CellularAutomaton(DCA(rule, states=states), 
+ca = CellularAutomaton(DCA(rule, states=states),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -222,11 +222,11 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 53
 
-ca = CellularAutomaton(DCA(rule, radius=radius), 
+ca = CellularAutomaton(DCA(rule, radius=radius),
                            starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -251,8 +251,8 @@ rule = 0.025
 
 ca = CellularAutomaton(CCA(rule), starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -270,11 +270,11 @@ starting_val[Int(floor(ncells/2)+1)] = 1.0
 
 rule = 0.2
 
-ca = CellularAutomaton(CCA(rule, radius=radius), 
+ca = CellularAutomaton(CCA(rule, radius=radius),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,

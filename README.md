@@ -49,9 +49,9 @@ julia> using Pkg
 julia> Pkg.add("CellularAutomata")
 ```
 or, on the REPL:
- 
+
 ```julia_repl
-julia> ] # actually press closed square brackets 
+julia> ] # actually press closed square brackets
 pkg> add CellularAutomata
 ```
 
@@ -79,8 +79,8 @@ rule = 18
 
 ca = CellularAutomaton(DCA(rule), starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -104,8 +104,8 @@ rule = 30
 
 ca = CellularAutomaton(DCA(rule), starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -128,13 +128,13 @@ ncells = 111
 starting_val = zeros(ncells)
 starting_val[Int(floor(ncells/2)+1)] = 2
 
-rule = 7110222193934 
+rule = 7110222193934
 
-ca = CellularAutomaton(DCA(rule,states=states,radius=radius), 
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -157,13 +157,13 @@ ncells = 111
 starting_val = zeros(ncells)
 starting_val[Int(floor(ncells/2)+1)] = 1
 
-rule = 1388968789 
+rule = 1388968789
 
-ca = CellularAutomaton(DCA(rule,states=states,radius=radius), 
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius),
                            starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -187,13 +187,13 @@ ncells = 111
 starting_val = zeros(ncells)
 starting_val[Int(floor(ncells/2)+1)] = 2
 
-rule = 914752986721674989234787899872473589234512347899 
+rule = 914752986721674989234787899872473589234512347899
 
-ca = CellularAutomaton(DCA(rule,states=states,radius=radius), 
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -215,13 +215,13 @@ ncells = 111
 starting_val = zeros(ncells)
 starting_val[Int(floor(ncells/2)+1)] = 1
 
-rule = 1235 
+rule = 1235
 
-ca = CellularAutomaton(DCA(rule,states=states,radius=radius), 
+ca = CellularAutomaton(DCA(rule,states=states,radius=radius),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -249,11 +249,11 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 1635
 
-ca = CellularAutomaton(TCA(rule, states=states), 
+ca = CellularAutomaton(TCA(rule, states=states),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -275,11 +275,11 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 107398
 
-ca = CellularAutomaton(TCA(rule, states=states), 
+ca = CellularAutomaton(TCA(rule, states=states),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -304,11 +304,11 @@ starting_val[Int(floor(ncells/2)+1)] = 1
 
 rule = 53
 
-ca = CellularAutomaton(TCA(rule, radius=radius), 
+ca = CellularAutomaton(TCA(rule, radius=radius),
                            starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -335,8 +335,8 @@ rule = 0.025
 
 ca = CellularAutomaton(CCA(rule), starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -359,11 +359,11 @@ starting_val[Int(floor(ncells/2)+1)] = 1.0
 
 rule = 0.2
 
-ca = CellularAutomaton(CCA(rule, radius=radius), 
+ca = CellularAutomaton(CCA(rule, radius=radius),
                        starting_val, generations)
 
-heatmap(ca.evolution, 
-    yflip=true, 
+heatmap(evolution_history(ca),
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     axis=false,
@@ -390,16 +390,15 @@ gens = 100
 space_gliding = CellularAutomaton(Life((3, (2,3))), space, gens)
 
 anim = @animate for i = 1:gens
-    heatmap(space_gliding.evolution[:,:,i], 
-    yflip=true, 
+    heatmap(evolution_history(space_gliding)[:, :, i],
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     size=(1080,1080),
     axis=false,
     ticks=false)
 end
- 
+
 gif(anim, "glider.gif", fps = 15)
 ```
 ![glider](https://user-images.githubusercontent.com/10376688/137601901-97940211-f6e7-4ab1-9eee-325165000fd4.gif)
-

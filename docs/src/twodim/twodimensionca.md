@@ -18,14 +18,14 @@ gens = 100
 space_gliding = CellularAutomaton(Life((3, (2,3))), space, gens)
 
 anim = @animate for i = 1:gens
-    heatmap(space_gliding.evolution[:,:,i], 
-    yflip=true, 
+    heatmap(evolution_history(space_gliding)[:, :, i],
+    yflip=true,
     c=cgrad([:white, :black]),
     legend = :none,
     size=(1080,1080),
     axis=false,
     ticks=false)
 end
- 
+
 gif(anim, "glider.gif", fps = 15)
 ```

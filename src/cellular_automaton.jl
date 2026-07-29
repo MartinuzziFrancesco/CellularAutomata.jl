@@ -38,18 +38,19 @@ julia> next_state(DCA(30), [0, 0, 1, 0, 0])
 function next_state(
         rule::AbstractCellularAutomatonRule,
         state;
-        boundary::AbstractBoundaryCondition=Periodic()
-)
-    return _step(rule, state, boundary)
+        boundary::AbstractBoundaryCondition = Periodic()
+    )
+    __validate_state(rule, state)
+    return __step(rule, state, boundary)
 end
 
-@concrete struct Transition
+@concrete struct __Transition
     rule
     boundary
 end
 
-function (transition::Transition)(state, _)
-    return next_state(transition.rule, state; boundary=transition.boundary)
+function (transition::__Transition)(state, _)
+    return next_state(transition.rule, state; boundary = transition.boundary)
 end
 
 """
@@ -94,25 +95,25 @@ function rollout(
         rule::AbstractCellularAutomatonRule,
         initial_state,
         steps::Integer;
-        boundary::AbstractBoundaryCondition=Periodic(),
-        save::Bool=false
-)
+        boundary::AbstractBoundaryCondition = Periodic(),
+        save::Bool = false
+    )
     steps >= 0 || throw(ArgumentError("steps must be nonnegative"))
     isempty(initial_state) && throw(ArgumentError("initial_state cannot be empty"))
-    transition = Transition(rule, boundary)
+    transition = __Transition(rule, boundary)
     if save
-        states = accumulate(transition, 1:steps; init=initial_state)
+        states = accumulate(transition, 1:steps; init = initial_state)
         return stack(Iterators.flatten(((initial_state,), states)))
     end
-    return foldl(transition, 1:steps; init=initial_state)
+    return foldl(transition, 1:steps; init = initial_state)
 end
 
 """
     CellularAutomaton(rule, initial_conditions, generations)
 
 Construct a cellular automaton and retain its complete evolution history. For vector
-states, `evolution` stores time on the first axis. For higher-dimensional states,
-time is stored on the last axis.
+states, `evolution_history(automaton)` stores time on the first axis. For
+higher-dimensional states, time is stored on the last axis.
 
 # Arguments
 
@@ -130,7 +131,7 @@ CellularAutomaton with 3 generations
   rule: DCA(30; states=2, radius=1)
   evolution: 3×3 Matrix{Int64}
 
-julia> automaton.evolution
+julia> evolution_history(automaton)
 3×3 Matrix{Int64}:
  0  1  0
  1  1  1
@@ -147,9 +148,9 @@ function CellularAutomaton(
         rule::AbstractCellularAutomatonRule,
         initial_conditions::AbstractVector,
         generations::Integer
-)
+    )
     generations >= 1 || throw(ArgumentError("generations must be at least 1"))
-    history = rollout(rule, initial_conditions, generations - 1; save=true)
+    history = rollout(rule, initial_conditions, generations - 1; save = true)
     return CellularAutomaton(Int(generations), rule, permutedims(history))
 end
 
@@ -157,11 +158,32 @@ function CellularAutomaton(
         rule::AbstractCellularAutomatonRule,
         initial_conditions::AbstractArray,
         generations::Integer
-)
+    )
     generations >= 1 || throw(ArgumentError("generations must be at least 1"))
-    evolution = rollout(rule, initial_conditions, generations - 1; save=true)
+    evolution = rollout(rule, initial_conditions, generations - 1; save = true)
     return CellularAutomaton(Int(generations), rule, evolution)
 end
+
+"""
+    cellular_automaton_rule(automaton::AbstractCellularAutomaton)
+
+Return the transition rule used by `automaton`.
+"""
+cellular_automaton_rule(automaton::CellularAutomaton) = automaton.rule
+
+"""
+    evolution_history(automaton::AbstractCellularAutomaton)
+
+Return the retained cellular-automaton evolution.
+"""
+evolution_history(automaton::CellularAutomaton) = automaton.evolution
+
+"""
+    generation_count(automaton::AbstractCellularAutomaton) -> Int
+
+Return the number of generations retained by `automaton`.
+"""
+generation_count(automaton::CellularAutomaton) = automaton.generations
 
 function Base.show(io::IO, automaton::CellularAutomaton)
     return print(

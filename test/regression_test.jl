@@ -7,8 +7,23 @@ using Test
     @test_throws ArgumentError CellularAutomaton(DCA(0), [1], 0)
     @test_throws ArgumentError DCA(-1)
     @test_throws ArgumentError DCA(256)
-    @test length(TCA(0; states=2, radius=2).codeset) == 6
-    @test length(TCA(0; states=3, radius=(1, 2)).codeset) == 9
+    @test_throws ArgumentError next_state(DCA(30), [0, 2, 0])
+    @test_throws ArgumentError next_state(DCA(30), [0.0, 1.0, 0.0])
+    @test_throws ArgumentError next_state(TCA(3), [0, -1, 0])
+    @test length(TCA(0; states = 2, radius = 2).codeset) == 6
+    @test length(TCA(0; states = 3, radius = (1, 2)).codeset) == 9
+end
+
+@testset "public accessors" begin
+    automaton = CellularAutomaton(DCA(30), [0, 1, 0], 3)
+    @test cellular_automaton_rule(automaton) === automaton.rule
+    @test evolution_history(automaton) === automaton.evolution
+    @test generation_count(automaton) == 3
+    @test rule_lookup_table(automaton.rule) === automaton.rule.ruleset
+    @test cell_state_count(automaton.rule) == 2
+    @test neighborhood_radius(automaton.rule) == 1
+    @test neighborhood_radius(CCA(0.1; radius = (1, 2))) == (1, 2)
+    @test neighborhood_radius(Life(((3,), (2, 3)); radius = 2)) == 2
 end
 
 @testset "concrete fields" begin
@@ -18,7 +33,7 @@ end
         TCA(3),
         CCA(0.1),
         Life(((3,), (2, 3))),
-        ConstantBoundary(0.0)
+        ConstantBoundary(0.0),
     )
     for object in objects
         @test all(isconcretetype, fieldtypes(typeof(object)))
@@ -37,7 +52,7 @@ end
 end
 
 @testset "asymmetric continuous neighborhoods" begin
-    rule = CCA(0.0; radius=(0, 1))
+    rule = CCA(0.0; radius = (0, 1))
     @test rule([0.0, 0.0, 1.0]) ≈ [0.0, 0.5, 0.5]
     @test eltype(CCA(0.0f0)(Float32[0, 1])) == Float32
 end
@@ -52,9 +67,9 @@ end
     automaton = CellularAutomaton(DCA(30), [0, 1, 0], 3)
     @test repr(automaton) == "CellularAutomaton(DCA(30; states=2, radius=1); generations=3)"
     @test repr(MIME"text/plain"(), automaton) ==
-          "CellularAutomaton with 3 generations\n" *
-          "  rule: DCA(30; states=2, radius=1)\n" *
-          "  evolution: 3×3 Matrix{Int64}"
+        "CellularAutomaton with 3 generations\n" *
+        "  rule: DCA(30; states=2, radius=1)\n" *
+        "  evolution: 3×3 Matrix{Int64}"
 end
 
 @testset "Life is synchronous and supports larger radii" begin
@@ -64,7 +79,7 @@ end
     @test input == copy_before
 
     all_alive = trues(3, 4)
-    result = Life(((), ()); radius=2)(all_alive)
+    result = Life(((), ()); radius = 2)(all_alive)
     @test size(result) == size(all_alive)
     @test !any(result)
 end

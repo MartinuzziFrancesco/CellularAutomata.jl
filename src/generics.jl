@@ -2,7 +2,7 @@
     AbstractCellularAutomatonRule
 
 Supertype for cellular-automaton transition rules. Subtypes must implement
-`_step(rule, state, boundary)` returning the next state without mutating `state`,
+`__step(rule, state, boundary)` returning the next state without mutating `state`,
 or specialize [`next_state`](@ref) directly.
 """
 abstract type AbstractCellularAutomatonRule end
@@ -79,50 +79,66 @@ function Base.show(io::IO, boundary::ConstantBoundary)
     return print(io, "ConstantBoundary(", boundary.value, ")")
 end
 
-@inline _boundary_index(i, n, ::Periodic) = mod1(i, n)
-@inline function _boundary_index(i, n, ::Reflecting)
+@inline __boundary_index(i, n, ::Periodic) = mod1(i, n)
+@inline function __boundary_index(i, n, ::Reflecting)
     n == 1 && return 1
     reflected = mod(i - 1, 2n - 2) + 1
     return reflected <= n ? reflected : 2n - reflected
 end
 
-@inline function _boundary_get(array, boundary::Union{Periodic, Reflecting}, i)
-    return array[_boundary_index(i, length(array), boundary)]
+@inline function __boundary_get(array, boundary::Union{Periodic, Reflecting}, i)
+    return array[__boundary_index(i, length(array), boundary)]
 end
-@inline function _boundary_get(array, boundary::Union{Periodic, Reflecting}, i, j)
-    row = _boundary_index(i, size(array, 1), boundary)
-    column = _boundary_index(j, size(array, 2), boundary)
+@inline function __boundary_get(array, boundary::Union{Periodic, Reflecting}, i, j)
+    row = __boundary_index(i, size(array, 1), boundary)
+    column = __boundary_index(j, size(array, 2), boundary)
     return array[row, column]
 end
-@inline function _boundary_get(array, boundary::ConstantBoundary, i)
+@inline function __boundary_get(array, boundary::ConstantBoundary, i)
     return checkbounds(Bool, array, i) ? array[i] : boundary.value
 end
-@inline function _boundary_get(array, boundary::ConstantBoundary, i, j)
+@inline function __boundary_get(array, boundary::ConstantBoundary, i, j)
     return checkbounds(Bool, array, i, j) ? array[i, j] : boundary.value
 end
 
-@concrete struct Neighborhood1D
+@concrete struct __Neighborhood1D
     array
     boundary
     indices
 end
 
-Base.length(neighborhood::Neighborhood1D) = length(neighborhood.indices)
-Base.IteratorSize(::Type{<:Neighborhood1D}) = Base.HasLength()
-function Base.iterate(neighborhood::Neighborhood1D, state...)
+Base.length(neighborhood::__Neighborhood1D) = length(neighborhood.indices)
+Base.IteratorSize(::Type{<:__Neighborhood1D}) = Base.HasLength()
+function Base.iterate(neighborhood::__Neighborhood1D, state...)
     iteration = iterate(neighborhood.indices, state...)
     isnothing(iteration) && return nothing
     index, next_iteration = iteration
-    return _boundary_get(neighborhood.array, neighborhood.boundary, index), next_iteration
+    return __boundary_get(neighborhood.array, neighborhood.boundary, index), next_iteration
 end
 
-_radius_extent(radius::Integer) = (radius, radius)
-_radius_extent(radius::Tuple{<:Integer, <:Integer}) = radius
+__radius_extent(radius::Integer) = (radius, radius)
+__radius_extent(radius::Tuple{<:Integer, <:Integer}) = radius
 
-function _validate_radius(radius)
-    left, right = _radius_extent(radius)
+function __validate_radius(radius)
+    left, right = __radius_extent(radius)
     if left < 0 || right < 0
         throw(ArgumentError("radius must be nonnegative"))
+    end
+    return nothing
+end
+
+__validate_state(::AbstractCellularAutomatonRule, state) = nothing
+
+function __validate_discrete_state(state, states)
+    for value in state
+        if !(value isa Integer && 0 <= value < states)
+            throw(
+                ArgumentError(
+                    "state values must be integers between 0 and $(states - 1), " *
+                        "but found $(repr(value))"
+                )
+            )
+        end
     end
     return nothing
 end

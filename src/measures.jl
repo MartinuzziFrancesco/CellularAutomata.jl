@@ -1,4 +1,4 @@
-function lempel_ziv_complexity(sequence)
+function __lempel_ziv_complexity(sequence)
     sub_strings = Set()
     n = length(sequence)
 
@@ -37,13 +37,14 @@ julia> lempel_ziv(automaton)
 ```
 """
 function lempel_ziv(ca::AbstractCellularAutomaton)
-    ca.evolution isa AbstractMatrix ||
+    history = evolution_history(ca)
+    history isa AbstractMatrix ||
         throw(ArgumentError("lempel_ziv only supports one-dimensional automata"))
-    ca_size = size(ca.evolution, 1)
+    ca_size = size(history, 1)
     lz_tot = 0
 
     for i in 1:ca_size
-        lz_tot += lempel_ziv_complexity(ca.evolution[i, :])
+        lz_tot += __lempel_ziv_complexity(history[i, :])
     end
     return lz_tot / ca_size
 end

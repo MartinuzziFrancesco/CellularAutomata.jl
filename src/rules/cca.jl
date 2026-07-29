@@ -40,8 +40,8 @@ julia> next_state(cca, [0 // 1, 0 // 1, 3 // 10])
  1//5
 ```
 """
-function CCA(rule::Real; radius=1)
-    _validate_radius(radius)
+function CCA(rule::Real; radius = 1)
+    __validate_radius(radius)
     return CCA(rule, radius)
 end
 
@@ -49,13 +49,13 @@ function (cca::CCA)(starting_array::AbstractArray)
     return next_state(cca, starting_array)
 end
 
-function _step(cca::CCA, cell::AbstractVector, boundary::AbstractBoundaryCondition)
-    return cca_evolution(cell, cca.rule, cca.radius, boundary)
+function __step(cca::CCA, cell::AbstractVector, boundary::AbstractBoundaryCondition)
+    return __cca_evolution(cell, cca.rule, cca.radius, boundary)
 end
 
-fractional_part(value) = value - floor(value)
+__fractional_part(value) = value - floor(value)
 
-@concrete struct CCAUpdate
+@concrete struct __CCAUpdate
     cell
     rule
     boundary
@@ -63,18 +63,25 @@ fractional_part(value) = value - floor(value)
     right
 end
 
-function (update::CCAUpdate)(index)
+function (update::__CCAUpdate)(index)
     indices = (index - update.left):(index + update.right)
-    neighborhood = Neighborhood1D(update.cell, update.boundary, indices)
-    return fractional_part(sum(neighborhood) / length(neighborhood) + update.rule)
+    neighborhood = __Neighborhood1D(update.cell, update.boundary, indices)
+    return __fractional_part(sum(neighborhood) / length(neighborhood) + update.rule)
 end
 
-function cca_evolution(
-        cell::AbstractVector, rule::Real, radius, boundary::AbstractBoundaryCondition=Periodic()
-)
-    left, right = _radius_extent(radius)
-    return map(CCAUpdate(cell, rule, boundary, left, right), eachindex(cell))
+function __cca_evolution(
+        cell::AbstractVector, rule::Real, radius, boundary::AbstractBoundaryCondition = Periodic()
+    )
+    left, right = __radius_extent(radius)
+    return map(__CCAUpdate(cell, rule, boundary, left, right), eachindex(cell))
 end
+
+"""
+    neighborhood_radius(rule::AbstractCellularAutomatonRule)
+
+Return the spatial neighborhood radius used by `rule`.
+"""
+neighborhood_radius(cca::CCA) = cca.radius
 
 function Base.show(io::IO, cca::CCA)
     return print(io, "CCA(", cca.rule, "; radius=", cca.radius, ")")
