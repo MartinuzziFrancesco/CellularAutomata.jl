@@ -1,6 +1,7 @@
 module CellularAutomata
 
 using ConcreteStructs: @concrete
+using Random: AbstractRNG
 
 include("generics.jl")
 include("cellular_automaton.jl")
@@ -12,6 +13,7 @@ include("measures.jl")
 
 export AbstractCellularAutomaton, AbstractCellularAutomatonRule
 export AbstractBoundaryCondition, Periodic, Reflecting, ConstantBoundary
+export AbstractUpdateScheme, Synchronous, Stochastic
 export AbstractDiscreteCellularAutomatonRule
 export AbstractContinuousCellularAutomatonRule
 export AbstractTotalisticCellularAutomatonRule

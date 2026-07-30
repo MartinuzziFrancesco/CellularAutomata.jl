@@ -6,10 +6,12 @@ Supertype for cellular automata that retain an evolution history.
 abstract type AbstractCellularAutomaton end
 
 """
-    next_state(rule, state; boundary=Periodic())
+    next_state(rule, state; boundary=Periodic(), scheme=Synchronous(), rng=nothing)
 
-Apply one synchronous cellular-automaton transition without mutating `state`.
-Rules may specialize this function to define differentiable transitions.
+Apply one cellular-automaton transition without mutating `state`. Rule subtypes
+define their transition by implementing
+`CellularAutomata.__step(rule, state, boundary)`; this wrapper then applies the
+selected update scheme.
 
 # Arguments
 
@@ -20,6 +22,11 @@ Rules may specialize this function to define differentiable transitions.
 
   - `boundary`: Boundary condition used outside the state array.
     Defaults to `Periodic()`.
+  - `scheme`: Update scheme controlling which cells apply the transition.
+    Defaults to `Synchronous()`; use `Stochastic(rate)` for a per-cell random mask.
+  - `rng`: Random number generator used by stochastic schemes. It must be supplied
+    explicitly with `Stochastic` and its state advances when the mask is drawn.
+    It is not consulted by `Synchronous`.
 
 # Examples
 
@@ -38,23 +45,33 @@ julia> next_state(DCA(30), [0, 0, 1, 0, 0])
 function next_state(
         rule::AbstractCellularAutomatonRule,
         state;
-        boundary::AbstractBoundaryCondition = Periodic()
+        boundary::AbstractBoundaryCondition = Periodic(),
+        scheme::AbstractUpdateScheme = Synchronous(),
+        rng::Union{Nothing, AbstractRNG} = nothing
     )
     __validate_state(rule, state)
-    return __step(rule, state, boundary)
+    __validate_scheme_rng(scheme, rng)
+    new_state = __step(rule, state, boundary)
+    return __apply_scheme(scheme, rng, state, new_state)
 end
 
 @concrete struct __Transition
     rule
     boundary
+    scheme
+    rng
 end
 
 function (transition::__Transition)(state, _)
-    return next_state(transition.rule, state; boundary = transition.boundary)
+    return next_state(
+        transition.rule, state;
+        boundary = transition.boundary, scheme = transition.scheme, rng = transition.rng
+    )
 end
 
 """
-    rollout(rule, initial_state, steps; boundary=Periodic(), save=false)
+    rollout(rule, initial_state, steps; boundary=Periodic(), scheme=Synchronous(),
+        rng=nothing, save=false)
 
 Apply `steps` transitions of `rule` to `initial_state`. By default only the final
 state is returned, which is the preferred path inside a loss function. With
@@ -70,6 +87,10 @@ on the last axis.
 # Keyword arguments
 
   - `boundary`: Boundary condition used by each transition. Defaults to `Periodic()`.
+  - `scheme`: Update scheme applied at every step. Defaults to `Synchronous()`.
+  - `rng`: Random number generator passed to every step. It must be supplied
+    explicitly with `Stochastic`; the same object is reused and its state advances
+    across steps. It is not consulted by `Synchronous`.
   - `save`: Retain the initial state and every subsequent state. Defaults to `false`.
 
 # Examples
@@ -96,11 +117,14 @@ function rollout(
         initial_state,
         steps::Integer;
         boundary::AbstractBoundaryCondition = Periodic(),
+        scheme::AbstractUpdateScheme = Synchronous(),
+        rng::Union{Nothing, AbstractRNG} = nothing,
         save::Bool = false
     )
     steps >= 0 || throw(ArgumentError("steps must be nonnegative"))
     isempty(initial_state) && throw(ArgumentError("initial_state cannot be empty"))
-    transition = __Transition(rule, boundary)
+    __validate_scheme_rng(scheme, rng)
+    transition = __Transition(rule, boundary, scheme, rng)
     if save
         states = accumulate(transition, 1:steps; init = initial_state)
         return stack(Iterators.flatten(((initial_state,), states)))

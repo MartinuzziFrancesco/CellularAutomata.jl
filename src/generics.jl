@@ -2,8 +2,9 @@
     AbstractCellularAutomatonRule
 
 Supertype for cellular-automaton transition rules. Subtypes must implement
-`__step(rule, state, boundary)` returning the next state without mutating `state`,
-or specialize [`next_state`](@ref) directly.
+`CellularAutomata.__step(rule, state, boundary)` returning the proposed next state
+without mutating `state`. [`next_state`](@ref) applies validation and the selected
+update scheme around that transition.
 """
 abstract type AbstractCellularAutomatonRule end
 
@@ -77,6 +78,71 @@ ConstantBoundary() = ConstantBoundary(0)
 
 function Base.show(io::IO, boundary::ConstantBoundary)
     return print(io, "ConstantBoundary(", boundary.value, ")")
+end
+
+"""
+    AbstractUpdateScheme
+
+Supertype for cellular-automaton update schemes, controlling which cells apply a
+transition each generation.
+"""
+abstract type AbstractUpdateScheme end
+
+"""
+    Synchronous()
+
+Apply the transition to every cell each generation. This is the default update
+scheme and matches classical (non-stochastic) cellular automata.
+"""
+struct Synchronous <: AbstractUpdateScheme end
+
+"""
+    Stochastic(rate)
+
+Apply the transition to each cell independently with probability `rate`; cells
+that are not selected keep their previous value. An explicit `rng` must be passed
+to [`next_state`](@ref) or [`rollout`](@ref). Drawing the per-cell mask advances
+the state of that random number generator.
+
+# Examples
+
+```jldoctest
+julia> using CellularAutomata, Random
+
+julia> next_state(DCA(30), [0, 0, 1, 0, 0]; scheme=Stochastic(0.5), rng=Xoshiro(1))
+5-element Vector{Int64}:
+ 0
+ 1
+ 1
+ 0
+ 0
+```
+"""
+struct Stochastic{T <: Real} <: AbstractUpdateScheme
+    rate::T
+    function Stochastic{T}(rate::T) where {T <: Real}
+        0 <= rate <= 1 || throw(ArgumentError("rate must be between 0 and 1"))
+        return new{T}(rate)
+    end
+end
+
+Stochastic(rate::T) where {T <: Real} = Stochastic{T}(rate)
+
+__validate_scheme_rng(::Synchronous, rng) = nothing
+__validate_scheme_rng(::Stochastic, ::AbstractRNG) = nothing
+function __validate_scheme_rng(::Stochastic, ::Nothing)
+    throw(ArgumentError("an explicit rng is required when using Stochastic"))
+end
+
+__apply_scheme(::Synchronous, rng, state, new_state) = new_state
+
+function __apply_scheme(::Stochastic, ::Nothing, state, new_state)
+    throw(ArgumentError("an explicit rng is required when using Stochastic"))
+end
+
+function __apply_scheme(scheme::Stochastic, rng::AbstractRNG, state, new_state)
+    mask = rand(rng, size(state)...) .< scheme.rate
+    return ifelse.(mask, new_state, state)
 end
 
 @inline __boundary_index(i, n, ::Periodic) = mod1(i, n)
