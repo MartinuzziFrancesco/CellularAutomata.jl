@@ -10,6 +10,7 @@ include("rules/cca.jl")
 include("rules/tca.jl")
 include("rules/life.jl")
 include("measures.jl")
+include("extensions.jl")
 
 export AbstractCellularAutomaton, AbstractCellularAutomatonRule
 export AbstractBoundaryCondition, Periodic, Reflecting, ConstantBoundary
@@ -28,5 +29,6 @@ export CCA
 export TCA
 export Life
 export lempel_ziv
+export cellular_automaton_abm, cellular_automaton_state
 
 end # module

@@ -26,3 +26,13 @@
     spatial_dimensions
     lempel_ziv
 ```
+
+## Extensions
+
+```@docs
+    cellular_automaton_abm
+    cellular_automaton_state
+```
+
+`cellular_automaton_abm`/`cellular_automaton_state` are implemented in a package
+extension and require `Agents` to be loaded.
