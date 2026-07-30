@@ -9,4 +9,5 @@
     AbstractNeighborhood
     Moore
     VonNeumann
+    neighborhood_offsets
 ```

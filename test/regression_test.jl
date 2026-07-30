@@ -36,6 +36,8 @@ end
         ConstantBoundary(0.0),
         Synchronous(),
         Stochastic(0.5),
+        Moore(),
+        VonNeumann(),
     )
     for object in objects
         @test all(isconcretetype, fieldtypes(typeof(object)))

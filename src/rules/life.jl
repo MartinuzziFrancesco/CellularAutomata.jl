@@ -52,7 +52,8 @@ function Life(
         life_description::Tuple; radius::Int = 1,
         neighborhood::AbstractNeighborhood = Moore(radius)
     )
-    neighborhood.radius >= 1 || throw(ArgumentError("radius must be at least 1"))
+    neighborhood_radius(neighborhood) >= 1 ||
+        throw(ArgumentError("neighborhood radius must be at least 1"))
     born, survive = life_description
     return Life(born, survive, neighborhood)
 end
@@ -76,7 +77,7 @@ end
 function (update::__LifeUpdate)(index::CartesianIndex{2})
     row, column = Tuple(index)
     alive = 0
-    for (row_offset, column_offset) in __offsets(update.neighborhood)
+    for (row_offset, column_offset) in neighborhood_offsets(update.neighborhood)
         alive += Int(
             __boundary_get(
                 update.state, update.boundary, row + row_offset, column + column_offset
@@ -100,13 +101,13 @@ function __life_evolution(
     return map(update, CartesianIndices(starting_array))
 end
 
-neighborhood_radius(life::Life) = life.neighborhood.radius
+neighborhood_radius(life::Life) = neighborhood_radius(life.neighborhood)
 
 function Base.show(io::IO, life::Life)
     if life.neighborhood isa Moore
         return print(
             io, "Life(", (life.born, life.survive), "; radius=",
-            life.neighborhood.radius, ")"
+            neighborhood_radius(life.neighborhood), ")"
         )
     end
     return print(

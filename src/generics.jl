@@ -85,17 +85,20 @@ end
 
 Supertype for two-dimensional neighborhood shapes, used to enumerate the cells
 around a given cell (excluding the cell itself).
+
+Subtypes must implement [`neighborhood_offsets`](@ref) and
+[`neighborhood_radius`](@ref).
 """
 abstract type AbstractNeighborhood end
 
 """
-    Moore(radius=1)
+    Moore([radius = 1])
 
 Square neighborhood: every cell within Chebyshev distance `radius`, excluding the
 center. This is the classic Game-of-Life neighborhood and the default for
 [`Life`](@ref).
 """
-struct Moore <: AbstractNeighborhood
+@concrete struct Moore <: AbstractNeighborhood
     radius::Int
     function Moore(radius::Int)
         radius >= 0 || throw(ArgumentError("radius must be nonnegative"))
@@ -105,12 +108,12 @@ end
 Moore(; radius::Int = 1) = Moore(radius)
 
 """
-    VonNeumann(radius=1)
+    VonNeumann([radius = 1])
 
 Diamond neighborhood: every cell within Manhattan distance `radius`, excluding the
 center.
 """
-struct VonNeumann <: AbstractNeighborhood
+@concrete struct VonNeumann <: AbstractNeighborhood
     radius::Int
     function VonNeumann(radius::Int)
         radius >= 0 || throw(ArgumentError("radius must be nonnegative"))
@@ -126,7 +129,17 @@ function Base.show(io::IO, neighborhood::VonNeumann)
     return print(io, "VonNeumann(", neighborhood.radius, ")")
 end
 
-function __offsets(neighborhood::Moore)
+"""
+    neighborhood_offsets(neighborhood::AbstractNeighborhood)
+
+Return an iterable of `(row_offset, column_offset)` tuples describing the cells in
+`neighborhood`. The center offset `(0, 0)` must not be included.
+
+Custom [`AbstractNeighborhood`](@ref) subtypes must implement this method.
+"""
+function neighborhood_offsets end
+
+function neighborhood_offsets(neighborhood::Moore)
     radius = neighborhood.radius
     return (
         (row, column)
@@ -135,7 +148,7 @@ function __offsets(neighborhood::Moore)
     )
 end
 
-function __offsets(neighborhood::VonNeumann)
+function neighborhood_offsets(neighborhood::VonNeumann)
     radius = neighborhood.radius
     return (
         (row, column)
@@ -143,6 +156,19 @@ function __offsets(neighborhood::VonNeumann)
             if !(row == 0 && column == 0) && abs(row) + abs(column) <= radius
     )
 end
+
+"""
+    neighborhood_radius(neighborhood::AbstractNeighborhood)
+    neighborhood_radius(rule::AbstractCellularAutomatonRule)
+
+Return the spatial radius or extent used by `neighborhood` or `rule`.
+
+Custom [`AbstractNeighborhood`](@ref) subtypes must implement this method.
+"""
+function neighborhood_radius end
+
+neighborhood_radius(neighborhood::Moore) = neighborhood.radius
+neighborhood_radius(neighborhood::VonNeumann) = neighborhood.radius
 
 """
     AbstractUpdateScheme
