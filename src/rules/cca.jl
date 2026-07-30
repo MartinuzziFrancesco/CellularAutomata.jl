@@ -76,11 +76,6 @@ function __cca_evolution(
     return map(__CCAUpdate(cell, rule, boundary, left, right), eachindex(cell))
 end
 
-"""
-    neighborhood_radius(rule::AbstractCellularAutomatonRule)
-
-Return the spatial neighborhood radius used by `rule`.
-"""
 neighborhood_radius(cca::CCA) = cca.radius
 
 function Base.show(io::IO, cca::CCA)
