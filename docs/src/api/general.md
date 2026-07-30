@@ -4,6 +4,9 @@
     CellularAutomaton
     next_state
     rollout
+    AbstractUpdateScheme
+    Synchronous
+    Stochastic
     cellular_automaton_rule
     evolution_history
     generation_count

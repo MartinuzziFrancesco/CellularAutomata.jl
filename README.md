@@ -41,6 +41,23 @@
 CellularAutomata.jl offers lightweight and ready to use implementations of
 cellular automata, one and two dimensional.
 
+## Features
+
+- **Discrete CA** (`DCA`): elementary, general (any radius/state count,
+  symmetric or asymmetric neighborhoods), and totalistic rules, following
+  Wolfram's *A New Kind of Science* numbering.
+- **Continuous CA** (`CCA`): real-valued totalistic rules.
+- **Life-like CA** (`Life`): Conway's Game of Life and any birth/survival
+  variant, in the Golly notation.
+- **Boundary conditions**: `Periodic`, `Reflecting`, `ConstantBoundary`.
+- **Update schemes**: `Synchronous` (default) and `Stochastic(rate)` for
+  per-cell probabilistic updates, given an explicit `rng`.
+- **Functional core** (`next_state`, `rollout`): non-mutating, AD/GPU-friendly
+  building blocks for custom or neural cellular automata, alongside the
+  stateful `CellularAutomaton` wrapper.
+- **Analysis**: `evolution_history`, `lempel_ziv` complexity, and other
+  accessor functions.
+
 ## Installation
 CellularAutomata.jl is registered on the general registry. For the installation use either of:
 

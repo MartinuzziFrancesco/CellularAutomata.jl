@@ -8,20 +8,28 @@ without changing the existing discrete-rule API.
 ## Functional core API
 
 ```julia
-next_state(rule, state; boundary=Periodic()) -> state
-rollout(rule, state, steps; boundary=Periodic(), save=false) -> result
+next_state(rule, state; boundary=Periodic(), scheme=Synchronous(), rng=nothing) -> state
+rollout(rule, state, steps; boundary=Periodic(), scheme=Synchronous(),
+        rng=nothing, save=false) -> result
 ```
 
-`next_state` is a pure function: it does not mutate `state` or captured parameter
-arrays. `rollout` is the orchestration layer. It returns the final state by default,
-which is the preferred path inside a loss function. With `save=true`, it returns the
-initial state and all subsequent states with time on the last axis.
+`next_state` does not mutate `state` or captured parameter arrays. `rollout` is the
+orchestration layer. It returns the final state by default, which is the preferred
+path inside a loss function. With `save=true`, it returns the initial state and all
+subsequent states with time on the last axis.
 `CellularAutomaton` remains a compatibility wrapper and preserves its original
 history layout.
 
 Boundary behavior is represented by small types — `Periodic`, `Reflecting`, and
 `ConstantBoundary` — rather than being embedded in every rule implementation.
 Neighborhood extraction is likewise shared across rules.
+
+Update schemes follow the same pattern: `Synchronous` (default) applies every
+cell's transition, while `Stochastic(rate)` keeps a cell's previous value unless
+a randomly drawn per-cell mask selects it. Stochastic updates require an explicit
+`rng` argument threaded through `next_state`/`rollout`; drawing a mask advances
+that RNG. The sampled mask is treated as data by the transition, so gradients do
+not differentiate through the random draw or the discrete selection decision.
 
 ## State and rule representation
 
@@ -45,9 +53,9 @@ end
 
 spatial_dimensions(::NeuralRule) = 2
 
-function CellularAutomata.next_state(rule::NeuralRule, x; boundary=Periodic())
+function CellularAutomata.__step(rule::NeuralRule, x, boundary)
     features = rule.perceive(x, boundary)
-    return x + rule.update(features)
+    return x + rule.update(features) # proposed next state
 end
 ```
 
@@ -59,10 +67,10 @@ that narrow boundary.
 
 ## Migration sequence
 
- 1. **Implemented:** pure `next_state`, functional `rollout`, explicit boundary types,
-    shared neighborhood access, compatibility through `CellularAutomaton`, and
-    multi-step ForwardDiff coverage. Lookup-based DCA/TCA and thresholded Life rules
-    remain intentionally nondifferentiable.
+ 1. **Implemented:** non-mutating `next_state`, functional `rollout`, explicit
+    boundary types, shared neighborhood access, compatibility through
+    `CellularAutomaton`, and multi-step ForwardDiff coverage. Lookup-based DCA/TCA
+    and thresholded Life rules remain intentionally nondifferentiable.
  2. Test reverse-mode AD and GPU arrays after selecting the package's supported ML
     stack.
  3. Add a generic continuous multidimensional local rule with a documented

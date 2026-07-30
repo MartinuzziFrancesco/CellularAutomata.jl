@@ -35,6 +35,10 @@ if GROUP in ("All", "Core")
         @safetestset "Edge cases and hierarchy" include("regression_test.jl")
     end
 
+    @testset "Update schemes" begin
+        @safetestset "Synchronous and Stochastic" include("update_scheme_test.jl")
+    end
+
     @testset "Life-like" begin
         @safetestset "Life glider" include("glider_test.jl")
         @safetestset "Life blinker" include("blinker_test.jl")
