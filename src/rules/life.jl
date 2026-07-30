@@ -8,13 +8,13 @@ abstract type AbstractLifeLikeCellularAutomatonRule <: AbstractCellularAutomaton
 @concrete struct Life <: AbstractLifeLikeCellularAutomatonRule
     born
     survive
-    radius::Int
+    neighborhood
 end
 
 spatial_dimensions(::Life) = 2
 
 """
-    Life(life_description; radius=1)
+    Life(life_description; radius=1, neighborhood=Moore(radius))
 
 Construct a Life-like cellular-automaton rule using Golly birth/survival notation.
 
@@ -25,7 +25,10 @@ Construct a Life-like cellular-automaton rule using Golly birth/survival notatio
 
 # Keyword arguments
 
-  - `radius`: Radius of the square neighborhood. Defaults to 1.
+  - `radius`: Radius of the default [`Moore`](@ref) neighborhood. Defaults to 1. Ignored
+    if `neighborhood` is passed explicitly.
+  - `neighborhood`: An [`AbstractNeighborhood`](@ref), such as `Moore(radius)` (default)
+    or `VonNeumann(radius)`.
 
 # Examples
 
@@ -45,10 +48,13 @@ julia> next_state(life, blinker)
  0  0  0  0  0
 ```
 """
-function Life(life_description::Tuple; radius::Int = 1)
-    radius >= 1 || throw(ArgumentError("radius must be at least 1"))
+function Life(
+        life_description::Tuple; radius::Int = 1,
+        neighborhood::AbstractNeighborhood = Moore(radius)
+    )
+    neighborhood.radius >= 1 || throw(ArgumentError("radius must be at least 1"))
     born, survive = life_description
-    return Life(born, survive, radius)
+    return Life(born, survive, neighborhood)
 end
 
 function (life::Life)(starting_array::AbstractMatrix)
@@ -56,30 +62,26 @@ function (life::Life)(starting_array::AbstractMatrix)
 end
 
 function __step(life::Life, state::AbstractMatrix, boundary::AbstractBoundaryCondition)
-    return __life_evolution(state, life.born, life.survive, life.radius, boundary)
+    return __life_evolution(state, life.born, life.survive, life.neighborhood, boundary)
 end
 
 @concrete struct __LifeUpdate
     state
     born
     survive
-    radius
+    neighborhood
     boundary
 end
 
 function (update::__LifeUpdate)(index::CartesianIndex{2})
     row, column = Tuple(index)
-    radius = update.radius
     alive = 0
-    for column_offset in (-radius):radius, row_offset in (-radius):radius
-
-        if !iszero(row_offset) || !iszero(column_offset)
-            alive += Int(
-                __boundary_get(
-                    update.state, update.boundary, row + row_offset, column + column_offset
-                ),
-            )
-        end
+    for (row_offset, column_offset) in __offsets(update.neighborhood)
+        alive += Int(
+            __boundary_get(
+                update.state, update.boundary, row + row_offset, column + column_offset
+            ),
+        )
     end
     current = update.state[index]
     lives = (isone(current) && alive in update.survive) ||
@@ -91,15 +93,23 @@ function __life_evolution(
         starting_array::AbstractMatrix,
         born,
         survive,
-        radius::Int,
+        neighborhood::AbstractNeighborhood,
         boundary::AbstractBoundaryCondition = Periodic()
     )
-    update = __LifeUpdate(starting_array, born, survive, radius, boundary)
+    update = __LifeUpdate(starting_array, born, survive, neighborhood, boundary)
     return map(update, CartesianIndices(starting_array))
 end
 
-neighborhood_radius(life::Life) = life.radius
+neighborhood_radius(life::Life) = life.neighborhood.radius
 
 function Base.show(io::IO, life::Life)
-    return print(io, "Life(", (life.born, life.survive), "; radius=", life.radius, ")")
+    if life.neighborhood isa Moore
+        return print(
+            io, "Life(", (life.born, life.survive), "; radius=",
+            life.neighborhood.radius, ")"
+        )
+    end
+    return print(
+        io, "Life(", (life.born, life.survive), "; neighborhood=", life.neighborhood, ")"
+    )
 end

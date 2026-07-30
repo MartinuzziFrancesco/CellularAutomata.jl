@@ -81,6 +81,70 @@ function Base.show(io::IO, boundary::ConstantBoundary)
 end
 
 """
+    AbstractNeighborhood
+
+Supertype for two-dimensional neighborhood shapes, used to enumerate the cells
+around a given cell (excluding the cell itself).
+"""
+abstract type AbstractNeighborhood end
+
+"""
+    Moore(radius=1)
+
+Square neighborhood: every cell within Chebyshev distance `radius`, excluding the
+center. This is the classic Game-of-Life neighborhood and the default for
+[`Life`](@ref).
+"""
+struct Moore <: AbstractNeighborhood
+    radius::Int
+    function Moore(radius::Int)
+        radius >= 0 || throw(ArgumentError("radius must be nonnegative"))
+        return new(radius)
+    end
+end
+Moore(; radius::Int = 1) = Moore(radius)
+
+"""
+    VonNeumann(radius=1)
+
+Diamond neighborhood: every cell within Manhattan distance `radius`, excluding the
+center.
+"""
+struct VonNeumann <: AbstractNeighborhood
+    radius::Int
+    function VonNeumann(radius::Int)
+        radius >= 0 || throw(ArgumentError("radius must be nonnegative"))
+        return new(radius)
+    end
+end
+VonNeumann(; radius::Int = 1) = VonNeumann(radius)
+
+function Base.show(io::IO, neighborhood::Moore)
+    return print(io, "Moore(", neighborhood.radius, ")")
+end
+function Base.show(io::IO, neighborhood::VonNeumann)
+    return print(io, "VonNeumann(", neighborhood.radius, ")")
+end
+
+function __offsets(neighborhood::Moore)
+    radius = neighborhood.radius
+    return (
+        (row, column)
+            for row in (-radius):radius, column in (-radius):radius
+            if !(row == 0 && column == 0)
+    )
+end
+
+function __offsets(neighborhood::VonNeumann)
+    radius = neighborhood.radius
+    return (
+        (row, column)
+            for row in (-radius):radius, column in (-radius):radius
+            if !(row == 0 && column == 0) && abs(row) + abs(column) <= radius
+    )
+end
+
+"""
     AbstractUpdateScheme
 
 Supertype for cellular-automaton update schemes, controlling which cells apply a

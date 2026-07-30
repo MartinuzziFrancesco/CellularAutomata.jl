@@ -14,6 +14,7 @@ include("measures.jl")
 export AbstractCellularAutomaton, AbstractCellularAutomatonRule
 export AbstractBoundaryCondition, Periodic, Reflecting, ConstantBoundary
 export AbstractUpdateScheme, Synchronous, Stochastic
+export AbstractNeighborhood, Moore, VonNeumann
 export AbstractDiscreteCellularAutomatonRule
 export AbstractContinuousCellularAutomatonRule
 export AbstractTotalisticCellularAutomatonRule

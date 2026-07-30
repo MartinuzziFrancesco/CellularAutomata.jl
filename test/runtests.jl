@@ -42,5 +42,6 @@ if GROUP in ("All", "Core")
     @testset "Life-like" begin
         @safetestset "Life glider" include("glider_test.jl")
         @safetestset "Life blinker" include("blinker_test.jl")
+        @safetestset "Neighborhoods" include("neighborhood_test.jl")
     end
 end

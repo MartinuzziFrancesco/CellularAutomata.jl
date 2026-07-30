@@ -3,3 +3,10 @@
 ```@docs
     Life
 ```
+
+## Neighborhoods
+```@docs
+    AbstractNeighborhood
+    Moore
+    VonNeumann
+```
