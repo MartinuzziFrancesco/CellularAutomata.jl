@@ -5,6 +5,7 @@ pages = [
     "Examples" => [
         "One dimensional CA" => "onedim/onedimensionca.md"
         "Two dimensional CA" => "twodim/twodimensionca.md"
+        "Testing CAs as RNGs" => "onedim/rng_testing.md"
     ],
     "API Documentation" => Any[
         "General APIs" => "api/general.md"
