@@ -44,4 +44,8 @@ if GROUP in ("All", "Core")
         @safetestset "Life blinker" include("blinker_test.jl")
         @safetestset "Neighborhoods" include("neighborhood_test.jl")
     end
+
+    @testset "Random" begin
+        @safetestset "CellularAutomatonRNG" include("random_test.jl")
+    end
 end

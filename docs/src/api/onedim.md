@@ -13,3 +13,8 @@
 ```@docs
     CCA
 ```
+
+## Random number generation
+```@docs
+    CellularAutomatonRNG
+```
