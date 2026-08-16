@@ -87,7 +87,8 @@ Supertype for two-dimensional neighborhood shapes, used to enumerate the cells
 around a given cell (excluding the cell itself).
 
 Subtypes must implement [`neighborhood_offsets`](@ref) and
-[`neighborhood_radius`](@ref).
+[`neighborhood_radius`](@ref); [`neighborhood_weight`](@ref) is optional and defaults
+to `1` for every offset.
 """
 abstract type AbstractNeighborhood end
 
@@ -169,6 +170,58 @@ function neighborhood_radius end
 
 neighborhood_radius(neighborhood::Moore) = neighborhood.radius
 neighborhood_radius(neighborhood::VonNeumann) = neighborhood.radius
+
+"""
+    Kernel(radius, weight)
+
+Circular, weighted neighborhood: every cell within Euclidean distance `radius` of the
+center (excluding the center itself) is weighted by `weight(distance / radius)`, a
+function of the normalized distance in `(0, 1]`. This is the neighborhood shape used
+by Lenia-style continuous cellular automata, where `weight` is the kernel's radial
+profile. No built-in rule consumes [`neighborhood_weight`](@ref) yet; `Kernel` combined
+with an existing rule such as [`Life`](@ref) only affects which cells are counted, not
+their contribution.
+"""
+struct Kernel{F} <: AbstractNeighborhood
+    radius::Int
+    weight::F
+    function Kernel{F}(radius::Int, weight::F) where {F}
+        radius >= 1 || throw(ArgumentError("radius must be at least 1"))
+        return new{F}(radius, weight)
+    end
+end
+
+Kernel(radius::Int, weight::F) where {F} = Kernel{F}(radius, weight)
+
+function Base.show(io::IO, neighborhood::Kernel)
+    return print(io, "Kernel(", neighborhood.radius, ", ", neighborhood.weight, ")")
+end
+
+function neighborhood_offsets(neighborhood::Kernel)
+    radius = neighborhood.radius
+    return (
+        (row, column)
+            for row in (-radius):radius, column in (-radius):radius
+            if !(row == 0 && column == 0) && row^2 + column^2 <= radius^2
+    )
+end
+
+neighborhood_radius(neighborhood::Kernel) = neighborhood.radius
+
+"""
+    neighborhood_weight(neighborhood::AbstractNeighborhood, row_offset, column_offset)
+
+Return the weight applied to the cell at `(row_offset, column_offset)` in
+`neighborhood`. Defaults to `1` for every offset, matching unweighted neighborhoods
+such as [`Moore`](@ref) and [`VonNeumann`](@ref); [`Kernel`](@ref) overrides this to
+return its radial weight profile.
+"""
+neighborhood_weight(::AbstractNeighborhood, row_offset, column_offset) = 1
+
+function neighborhood_weight(neighborhood::Kernel, row_offset, column_offset)
+    distance = sqrt(row_offset^2 + column_offset^2) / neighborhood.radius
+    return neighborhood.weight(distance)
+end
 
 """
     AbstractUpdateScheme

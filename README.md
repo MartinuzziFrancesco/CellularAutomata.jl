@@ -53,7 +53,9 @@ cellular automata, one and two dimensional.
 - **Update schemes**: `Synchronous` (default) and `Stochastic(rate)` for
   per-cell probabilistic updates, given an explicit `rng`.
 - **Neighborhoods**: `Moore` (default, square) and `VonNeumann` (diamond) shapes
-  for `Life`, extensible to custom `AbstractNeighborhood` subtypes.
+  for `Life`, plus a weighted, circular `Kernel` shape (groundwork for future
+  convolution-based rules such as Lenia); extensible to custom
+  `AbstractNeighborhood` subtypes.
 - **Functional core** (`next_state`, `rollout`): non-mutating, AD/GPU-friendly
   building blocks for custom or neural cellular automata, alongside the
   stateful `CellularAutomaton` wrapper.
