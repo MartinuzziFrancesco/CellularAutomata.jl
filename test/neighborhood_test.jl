@@ -12,8 +12,10 @@ CellularAutomata.neighborhood_offsets(::HorizontalNeighborhood) = ((0, -1), (0, 
 @testset "constructor validation" begin
     @test neighborhood_radius(Moore(2)) == 2
     @test neighborhood_radius(VonNeumann(; radius = 2)) == 2
+    @test neighborhood_radius(Kernel(2, identity)) == 2
     @test_throws ArgumentError Moore(-1)
     @test_throws ArgumentError VonNeumann(-1)
+    @test_throws ArgumentError Kernel(0, identity)
     @test_throws ArgumentError Life(((3,), (2, 3)); radius = 0)
     @test_throws ArgumentError Life(((3,), (2, 3)); neighborhood = VonNeumann(0))
 end
@@ -21,6 +23,7 @@ end
 @testset "show methods" begin
     @test repr(Moore(1)) == "Moore(1)"
     @test repr(VonNeumann(2)) == "VonNeumann(2)"
+    @test repr(Kernel(1, identity)) == "Kernel(1, identity)"
     @test repr(Life(((3,), (2, 3)))) == "Life(((3,), (2, 3)); radius=1)"
     @test repr(Life(((3,), (2, 3)); neighborhood = VonNeumann(1))) ==
         "Life(((3,), (2, 3)); neighborhood=VonNeumann(1))"
@@ -37,6 +40,33 @@ end
     @test (0, 0) ∉ vonneumann_offsets
     @test (1, 1) ∉ vonneumann_offsets
     @test (1, 0) ∈ vonneumann_offsets
+
+    kernel_offsets = Set(neighborhood_offsets(Kernel(2, identity)))
+    @test (0, 0) ∉ kernel_offsets
+    @test (1, 0) ∈ kernel_offsets
+    @test (2, 2) ∉ kernel_offsets # outside the circular radius, unlike Moore
+    @test kernel_offsets == Set([
+        (row, column)
+            for row in -2:2, column in -2:2
+            if !(row == 0 && column == 0) && row^2 + column^2 <= 4
+    ])
+    @test all(row^2 + column^2 <= 4 for (row, column) in kernel_offsets)
+end
+
+@testset "neighborhood_weight" begin
+    @test neighborhood_weight(Moore(1), 1, 1) == 1
+    @test neighborhood_weight(VonNeumann(1), 1, 0) == 1
+
+    kernel = Kernel(2, r -> 1 - r)
+    @test neighborhood_weight(kernel, 2, 0) ≈ 0
+    @test neighborhood_weight(kernel, 1, 0) ≈ 0.5
+    # symmetric under sign flips: weight depends only on Euclidean distance
+    @test neighborhood_weight(kernel, -1, 0) ≈ neighborhood_weight(kernel, 1, 0)
+    @test neighborhood_weight(kernel, 0, -1) ≈ neighborhood_weight(kernel, 1, 0)
+    @test all(
+        0 <= neighborhood_weight(kernel, row, column) <= 1
+            for (row, column) in neighborhood_offsets(kernel)
+    )
 end
 
 @testset "VonNeumann and Moore neighborhoods can disagree" begin

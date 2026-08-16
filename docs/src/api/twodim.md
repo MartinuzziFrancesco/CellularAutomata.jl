@@ -9,5 +9,7 @@
     AbstractNeighborhood
     Moore
     VonNeumann
+    Kernel
     neighborhood_offsets
+    neighborhood_weight
 ```
